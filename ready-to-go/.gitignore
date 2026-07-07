@@ -1,0 +1,9 @@
+# Node dependencies (regenerate with `npm install`)
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editor cruft
+.DS_Store

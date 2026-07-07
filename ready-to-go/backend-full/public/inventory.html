@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vending Backend - Inventory</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">initialize - refill - capacity</p>
+      <h1>Inventory &amp; Refill</h1>
+      <p class="subtitle">Each column is 26 cm tall and one product is 2.2 cm, so a column holds at most 10 products. Set how many are loaded now, or refill up to the max.</p>
+    </div>
+    <div class="actions">
+      <nav class="nav">
+        <a class="nav-link" href="/index.html">Operate</a>
+        <a class="nav-link active" href="/inventory.html">Inventory</a>
+        <a class="nav-link" href="/config.html">Writer Config</a>
+      </nav>
+      <button class="secondary" id="refreshBtn">Refresh</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <section id="alertBanner" class="banner ok">Loading columns...</section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div><p class="section-tag">Initialize</p><h2>Set current column counts</h2></div>
+        <div class="button-row" style="margin:0"><button id="initBtn">Save all counts</button></div>
+      </div>
+      <p class="hint">Enter the exact number of products loaded in each column (0-10). Saving overwrites the stored stock. Refill adds to it, capped at the max.</p>
+      <div id="columnGrid" class="column-grid"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header"><div><p class="section-tag">Log</p><h2>Recent Inventory Log</h2></div></div>
+      <div class="table-wrap"><table id="logTable"></table></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="/inventory.js" type="module"></script>
+</body>
+</html>

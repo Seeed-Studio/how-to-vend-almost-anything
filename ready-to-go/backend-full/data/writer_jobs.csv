@@ -1,0 +1,1 @@
+job_id,order_number,user_name,rfid_payload,rfid_card_uid,status,created_at,claimed_at,written_at,device_id,message,job_type

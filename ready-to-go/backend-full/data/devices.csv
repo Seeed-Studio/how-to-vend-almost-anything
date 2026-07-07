@@ -1,0 +1,4 @@
+device_id,device_type,api_key,enabled,notes
+backend-center,writer,BACKEND_CENTER_SECRET,true,Legacy writer station
+wio-rfid-writer,writer,WIO_WRITER_SECRET,true,Wio Terminal RFID writer connected to backend-center
+frontend-1,reader,FRONTEND_1_SECRET,true,RFID reader vending machine

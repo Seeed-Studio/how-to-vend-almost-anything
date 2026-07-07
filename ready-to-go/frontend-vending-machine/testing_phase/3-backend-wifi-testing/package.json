@@ -1,0 +1,9 @@
+{
+  "name": "3-backend-wifi-testing",
+  "version": "1.0.0",
+  "description": "Zero-dependency verify + report backend for the Wio Terminal phase-3 WiFi test",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

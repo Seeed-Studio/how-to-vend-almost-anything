@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: seeed-vending-backend
+    env: node
+    rootDir: backend-full
+    buildCommand: npm install
+    startCommand: npm start

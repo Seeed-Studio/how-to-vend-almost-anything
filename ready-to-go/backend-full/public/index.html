@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vending Backend - Operate</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">write cards - watch stock</p>
+      <h1>Vending Machine Backend</h1>
+      <p class="subtitle">Write a direct order card or a selecting balance card for the Wio writer.</p>
+    </div>
+    <div class="actions">
+      <nav class="nav">
+        <a class="nav-link active" href="/index.html">Operate</a>
+        <a class="nav-link" href="/inventory.html">Inventory</a>
+        <a class="nav-link" href="/config.html">Config</a>
+      </nav>
+      <button class="secondary" id="refreshButton">Refresh</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <section id="writerBanner" class="banner info">Checking Wio RFID writer...</section>
+    <section id="alertBanner" class="banner warn hidden"></section>
+
+    <section id="metrics" class="metrics-grid"></section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div><p class="section-tag">Operate</p><h2>Write a card</h2></div>
+        <div class="mode-tabs"><button class="mode-tab active" data-mode="product">Direct order</button><button class="mode-tab" data-mode="balance">Selecting balance</button></div>
+      </div>
+
+      <!-- DIRECT ORDER MODE -->
+      <div id="productPane" class="mode-pane">
+        <div class="operate-grid">
+          <div>
+            <p class="section-tag">Step 1 - set quantities (any mix, e.g. 2 of each)</p>
+            <div id="productGrid" class="product-grid"></div>
+          </div>
+          <div class="operate-side">
+            <p class="section-tag">Step 2 - customer</p>
+            <div id="cartSummary" class="selected-card empty-state">Set a quantity on one or more products.</div>
+            <div class="form-grid">
+              <label><span>User Name</span><input id="user_name" placeholder="customer name" /></label>
+              <label><span>Amount Paid</span><input id="amount_paid" type="number" step="0.01" placeholder="auto = sum of prices" /></label>
+            </div>
+            <div class="button-row"><button id="createOrderButton">Create order + queue card</button></div>
+            <p class="hint">All chosen products go on one card. Stock is deducted when the customer collects.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SELECTING BALANCE MODE -->
+      <div id="balancePane" class="mode-pane hidden">
+        <div class="operate-grid">
+          <div class="balance-hero">
+            <p class="section-tag">Stored value</p>
+            <p class="hint">The balance is tracked here by user name; the card only stores the selecting type + name. The customer picks products on the machine, spending this balance.</p>
+            <div class="quick-amounts" id="quickAmounts"></div>
+          </div>
+          <div class="operate-side">
+            <div class="form-grid">
+              <label><span>User Name</span><input id="bal_user_name" placeholder="customer name" /></label>
+              <label><span>Amount</span><input id="bal_amount" type="number" step="0.01" min="0" placeholder="e.g. 50" /></label>
+              <label><span>Mode</span><select id="bal_mode"><option value="add">Add to balance</option><option value="set">Set exact balance</option></select></label>
+            </div>
+            <div class="button-row"><button id="writeBalanceButton">Update balance + queue card</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="payload-box">
+        <div class="payload-header"><strong>Last write job</strong><span class="hint">Present a card on the Wio writer to encode it</span></div>
+        <pre id="payloadOutput">No card queued yet.</pre>
+        <ol id="writerSteps" class="writer-steps"></ol>
+      </div>
+    </section>
+
+    <section class="layout-two">
+      <section class="panel"><div class="panel-header"><div><p class="section-tag">Operations</p><h2>Recent Orders</h2></div></div><div class="table-wrap"><table id="ordersTable"></table></div></section>
+      <section class="panel"><div class="panel-header"><div><p class="section-tag">Stored value</p><h2>Balance Cards</h2></div></div><div class="table-wrap"><table id="cardsTable"></table></div></section>
+    </section>
+
+    <section class="panel"><div class="panel-header"><div><p class="section-tag">RFID Writer</p><h2>Recent Card Writes</h2></div></div><div class="table-wrap"><table id="writerJobsTable"></table></div></section>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>
