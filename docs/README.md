@@ -9,7 +9,7 @@ Read them in order, or jump to the layer you need.
 | Layer | Statement | In one line |
 | --- | --- | --- |
 | 1 | [The Idea System](01-idea-system.md) | Fabrication as local infrastructure — the premise and the guiding question. |
-| 2 | [The Reference System](02-reference-system.md) | The Xiao vending machine as a concrete, working case. |
+| 2 | [The Reference System](02-reference-system.md) | Where the idea comes to life — an open-source, modular machine anyone can source, assemble, and redesign. |
 | 3 | [System Design](03-system-design.md) | Generalizing the machine into a portable, event-driven architecture. |
 | 4 | [Deployment Framework](04-deployment-framework.md) | Turning the system into a kit any lab can reproduce. |
 | 5 | [Real World Value](05-real-world-value.md) | From a single machine to a distributed local economy. |
@@ -22,10 +22,10 @@ Layer 1 asks the question. Layer 2 answers it with a real machine. Layer 3 extra
 
 ## From narrative to code
 
-The concrete implementation of Layers 2 and 4 lives in [`../xiao-vending-machine/`](../xiao-vending-machine). The table below maps each layer to what you can actually open, run, or flash.
+The concrete implementation of Layers 2 and 4 lives in [`../xiao-vending-machine-full-code-system/`](../xiao-vending-machine-full-code-system). The table below maps each layer to what you can actually open, run, or flash.
 
 | Layer | Where it becomes real |
 | --- | --- |
-| 2 — Reference System | [`xiao-vending-machine/backend-full/`](../xiao-vending-machine/backend-full), [`xiao-vending-machine/frontend-vending-machine/`](../xiao-vending-machine/frontend-vending-machine) |
-| 3 — System Design | The backend API in [`xiao-vending-machine/backend-full/src/server.mjs`](../xiao-vending-machine/backend-full/src/server.mjs) |
-| 4 — Deployment Framework | [`xiao-vending-machine/scripts/`](../xiao-vending-machine/scripts), [`xiao-vending-machine/render.yaml`](../xiao-vending-machine/render.yaml), [`xiao-vending-machine/CODESPACES_SETUP.md`](../xiao-vending-machine/CODESPACES_SETUP.md) |
+| 2 — Reference System | [`xiao-vending-machine-full-code-system/backend-full/`](../xiao-vending-machine-full-code-system/backend-full), [`xiao-vending-machine-full-code-system/frontend-vending-machine/`](../xiao-vending-machine-full-code-system/frontend-vending-machine) |
+| 3 — System Design | The backend API in [`xiao-vending-machine-full-code-system/backend-full/src/server.mjs`](../xiao-vending-machine-full-code-system/backend-full/src/server.mjs) |
+| 4 — Deployment Framework | [`xiao-vending-machine-full-code-system/scripts/`](../xiao-vending-machine-full-code-system/scripts), [`xiao-vending-machine-full-code-system/render.yaml`](../xiao-vending-machine-full-code-system/render.yaml), [`xiao-vending-machine-full-code-system/CODESPACES_SETUP.md`](../xiao-vending-machine-full-code-system/CODESPACES_SETUP.md) |

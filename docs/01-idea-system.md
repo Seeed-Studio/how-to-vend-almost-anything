@@ -18,7 +18,7 @@ The idea layer explores that question along three lines.
 
 - **Skills that serve local needs.** A lab is most valuable when it is coupled to its surroundings — responding to real constraints and real people rather than to abstract production targets.
 - **Complexity broken into modules.** Large systems become approachable when decomposed into parts that can be understood and replaced independently. Vending is an ideal teaching case because it decomposes so cleanly: identity, ordering, control, and dispensing.
-- **Value created locally.** Instead of optimizing for scale, the emphasis shifts to accessibility, adaptability, and immediate usefulness — value measured by proximity to need.
+- **Value created locally.** Instead of optimizing for scale, the emphasis shifts to accessibility, adaptability, and immediate usefulness — value measured by proximity to need. And when a good local design is kept open and shareable, it becomes everyone's starting point rather than a one-off.
 
 ## What this layer is (and is not)
 
