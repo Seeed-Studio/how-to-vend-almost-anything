@@ -36,7 +36,9 @@ function renderColumns() {
   $('columnGrid').innerHTML = products.map(p => {
     const pct = Math.round(Math.min(100, (p.inventory / (p.max_capacity || 10)) * 100));
     const barClass = p.inventory <= 0 ? 'empty' : (p.needs_refill ? 'low' : 'ok');
+    const img = p.image_path ? `<div class="column-thumb"><img src="${p.image_path}" alt="${p.product_name}" /></div>` : '';
     return `<article class="column-card">
+      ${img}
       <div class="column-head"><div><div class="tag">Servo ${p.servo_id} &middot; slot ${p.slot_id}</div><h3>${p.product_name}</h3></div>${badge(p)}</div>
       <div class="capacity-bar"><span class="capacity-fill ${barClass}" style="width:${pct}%"></span></div>
       <div class="capacity-label">${p.inventory} / ${p.max_capacity} loaded &middot; refill threshold ${p.low_stock_threshold}</div>

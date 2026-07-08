@@ -129,7 +129,7 @@ P001,XIAO ESP32-S3 Sense,1,0,15.99
 
 # product_meta.csv  (display + rules, joined on product_id)
 product_id,slot_id,low_stock_threshold,max_capacity,active,tag,description,feature_1,feature_2,feature_3,image_path,product_url
-P001,A1,3,10,true,Vision + Voice AI,...,...,...,...,/assets/products/xiao-esp32-s3-sense.png,https://...
+P001,A1,3,10,true,Vision + Voice AI,...,...,...,...,/assets/products/xiao-esp32-s3-sense.jpg,https://...
 ```
 
 **Keep these in sync (the invariants that break dispensing if ignored):**

@@ -20,6 +20,10 @@ Phase 3 is a **pair** that runs together: the PC backend
 `3-backend-wifi-testing` and the Wio sketch `3-wio-terminal-wifi-testing`
 (start the backend first, then point the Wio's `BACKEND_BASE` at it).
 
+After the full stack is running on the assembled machine, see the end-to-end
+**[direct dispensing](../../xiao-vending-machine-assemble-steps/README.md#testing-phase--dispense-modes)** and
+**[balance dispensing](../../xiao-vending-machine-assemble-steps/README.md#testing-phase--dispense-modes)** test videos in the assembly guide.
+
 The original single-sketch demos are kept for reference as
 `1-servo-testing-non-used/` and `3-servero-rfid-wifi-testing-non-used/`.
 Other helpers live alongside: `0-servo-set-id`, `servo-id-scan`,

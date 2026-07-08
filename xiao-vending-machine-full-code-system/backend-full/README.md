@@ -42,7 +42,7 @@ and the frontend stops dispensing from a column that cannot fulfill the request.
 ## Data files (`data/`)
 
 - `inventory.csv` - `product_id,name,servo_id,stock,price` (canonical)
-- `product_meta.csv` - `product_id,slot_id,low_stock_threshold,max_capacity,active,...`
+- `product_meta.csv` - `product_id,slot_id,low_stock_threshold,max_capacity,active,...` (includes `image_path` under `public/assets/products/`)
 - `cards.csv` / `card_meta.csv` - stored-value balance accounts (selecting)
 - `card_ledger.csv` - TOPUP / SET / PURCHASE / REFUND history
 - `orders.csv` - direct orders + selecting checkouts (`product_id=SELECT`)

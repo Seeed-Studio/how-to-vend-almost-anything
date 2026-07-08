@@ -214,6 +214,8 @@ button:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
 /* inventory page - column capacity */
 .column-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
 .column-card{border:1px solid var(--line);border-radius:18px;padding:16px;background:linear-gradient(180deg,#fff,#f6faef)}
+.column-thumb{aspect-ratio:1/1;max-width:120px;margin-bottom:12px;background:linear-gradient(135deg,#eef6df,#f6faef);border-radius:14px;display:grid;place-items:center}
+.column-thumb img{max-width:82%;max-height:82%;object-fit:contain}
 .column-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
 .column-head h3{margin:4px 0 0}
 .capacity-bar{height:14px;border-radius:999px;background:#e4ebe0;overflow:hidden}

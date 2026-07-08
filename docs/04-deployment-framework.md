@@ -25,9 +25,9 @@ The deployable system comes in two halves: **software** you copy to a booth PC, 
 | Backend + dashboard | [`xiao-vending-machine-full-code-system/backend-full/`](../xiao-vending-machine-full-code-system/backend-full) | CSV-backed Node.js server and the Operate / Inventory / Config pages |
 | Device firmware | [`xiao-vending-machine-full-code-system/frontend-vending-machine/`](../xiao-vending-machine-full-code-system/frontend-vending-machine) | The customer-facing reader, plus step-by-step bring-up sketches |
 | Run helper | [`xiao-vending-machine-full-code-system/scripts/start_backend.sh`](../xiao-vending-machine-full-code-system/scripts/start_backend.sh) | Installs dependencies and starts the server anywhere |
-| Hardware & assembly | [`xiao-vending-machine-assemble-steps/`](../xiao-vending-machine-assemble-steps) | The bill of materials, editable STL/STEP design files, and a ten-step build guide |
+| Hardware & assembly | [`xiao-vending-machine-assemble-steps/`](../xiao-vending-machine-assemble-steps) | The bill of materials, editable STL/STEP design files, a ten-step build guide, and dispense test videos |
 
-The hardware side answers two of the kit requirements above directly: the [assembly guide](../xiao-vending-machine-assemble-steps/README.md) is the **bill of materials** and the **mechanical assembly** instructions, photographed step by step.
+The hardware side answers two of the kit requirements above directly: the [assembly guide](../xiao-vending-machine-assemble-steps/README.md) is the **bill of materials** and the **mechanical assembly** instructions, photographed step by step. Its [assets folder](../xiao-vending-machine-assemble-steps/assets) also holds end-to-end recordings of **direct dispensing** and **balance dispensing** on the finished machine.
 
 Start the backend on any PC:
 

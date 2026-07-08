@@ -37,6 +37,7 @@ how-to-vend-almost-anything/
 │   ├── render.yaml                            One-click backend hosting on Render.
 │   └── CODESPACES_SETUP.md                    Running the backend in GitHub Codespaces.
 └── xiao-vending-machine-assemble-steps/   The hardware: printable parts, cut files, and a 10-step build guide.
+    ├── assets/                              Assembly photos and end-to-end dispense test videos.
     └── hardware-preparatory/stl-files/        The STL (print) and STEP (case) design files.
 ```
 
