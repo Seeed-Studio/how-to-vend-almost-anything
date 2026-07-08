@@ -151,13 +151,13 @@ After hardware assembly and software bring-up, verify both customer flows on the
 
 A **direct-order card** carries a fixed product list. The customer taps the card and the machine dispenses every item on it in one pass.
 
-<video src="assets/direct-dispense-testing.mp4" controls width="720"></video>
+<video src="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-assemble-steps/assets/direct-dispense-testing.mp4" controls width="720" preload="metadata"></video>
 
 ### Balance dispensing
 
 A **selecting balance card** stores a customer name and stored value. The customer picks products on the Wio Terminal joystick until the balance is spent.
 
-<video src="assets/balance-dispense-testing.mp4" controls width="720"></video>
+<video src="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-assemble-steps/assets/balance-dispense-testing.mp4" controls width="720" preload="metadata"></video>
 
 For the incremental bring-up path before this end-to-end test, see [`testing_phase/`](../xiao-vending-machine-full-code-system/frontend-vending-machine/testing_phase) in the code system.
 
