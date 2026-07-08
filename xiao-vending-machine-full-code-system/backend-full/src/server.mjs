@@ -504,7 +504,7 @@ app.get('/api/device/status', async (req, res, next) => {
 });
 
 // Connection status of the backend Wio RFID writer (WiFi heartbeat). Backs the
-// Writer Config page. Considered online if a heartbeat arrived in the last 15s.
+// Config page. Considered online if a heartbeat arrived in the last 15s.
 app.get('/api/device/writer-status', async (req, res, next) => {
   try {
     const [statuses, jobs] = await Promise.all([readCsv('device_status.csv'), readCsv('writer_jobs.csv')]);

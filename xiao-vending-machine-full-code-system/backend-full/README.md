@@ -12,7 +12,7 @@ refill, and drives two Wio Terminals:
   ready and writes cards on demand (no per-card upload).
 
 ```
-Operator browser ── Operate / Inventory / Writer Config ─┐
+Operator browser ── Operate / Inventory / Config ─┐
                                                          │  REST + CSV
 Backend Wio writer ── poll job / write card / heartbeat ─┼── src/server.mjs :3000 ── data/*.csv
                                                          │
@@ -61,7 +61,7 @@ Open `http://localhost:3000`. Pages:
   (queues a job for the Wio writer), plus live metrics and refill alerts.
 - **Inventory** (`/inventory.html`) - initialize each column's current count and
   refill up to the max, with capacity bars and FULL / REFILL badges.
-- **Writer Config** (`/config.html`) - confirm the backend Wio writer is
+- **Config** (`/config.html`) - confirm the backend Wio writer is
   connected (heartbeat) and see the exact firmware constants to hardcode.
 
 Find your LAN IP for the Wio Terminals: `ipconfig` (Windows) or

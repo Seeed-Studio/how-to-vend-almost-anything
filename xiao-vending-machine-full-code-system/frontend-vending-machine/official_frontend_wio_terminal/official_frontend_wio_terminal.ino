@@ -97,41 +97,260 @@ long  selNeeds[SERVO_NUM]  = {0, 0, 0, 0};
 long  selActive[SERVO_NUM] = {1, 1, 1, 1};
 String selNames[SERVO_NUM];
 
-// ---------------- DISPLAY ----------------
+// ---------------- DISPLAY (Seeed Studio branded UI) ----------------
+// 320x240 redesign matching the static mockups in
+// frontend-vending-machine/ui-for-each-phase. Only TFT_eSPI primitives are
+// used so the whole look is portable. Palette in RGB565:
+//   Seeed Green #8FC31F  +  deep "Seeed Blue" navy screens.
+#define S565(r, g, b) ((uint16_t)((((r) & 0xF8) << 8) | (((g) & 0xFC) << 3) | ((b) >> 3)))
+static const uint16_t C_BG      = S565(6, 40, 62);     // #06283E navy screen
+static const uint16_t C_BG2     = S565(11, 46, 68);    // row / card surface
+static const uint16_t C_BAR     = S565(1, 17, 28);     // status + hint bars
+static const uint16_t C_GREEN   = S565(143, 195, 31);  // Seeed Green
+static const uint16_t C_GREEN_D = S565(110, 154, 22);  // deep green
+static const uint16_t C_INK     = S565(234, 244, 249); // near-white text
+static const uint16_t C_MUTED   = S565(143, 174, 194); // secondary text
+static const uint16_t C_AMBER   = S565(255, 176, 32);
+static const uint16_t C_RED     = S565(255, 91, 98);
+static const uint16_t C_INFO    = S565(67, 180, 228);
+static const uint16_t C_LINE    = S565(30, 60, 82);
+static const uint16_t C_GREENDIM = S565(20, 42, 10);
+
+#define GLYPH_NONE  0
+#define GLYPH_CHECK 1
+#define GLYPH_CROSS 2
+#define GLYPH_WARN  3
+#define GLYPH_INFO  4
+#define GLYPH_CARD  5
+#define GLYPH_CLOCK 6
+#define GLYPH_BOX   7
+#define GLYPH_SPIN  8
+#define GLYPH_LEAF  9
+#define GLYPH_AUTO  255
+
+void thickLine(int x0, int y0, int x1, int y1, uint16_t col, int t) {
+  for (int i = -(t / 2); i <= t / 2; i++) {
+    tft.drawLine(x0, y0 + i, x1, y1 + i, col);
+    tft.drawLine(x0 + i, y0, x1 + i, y1, col);
+  }
+}
+
+void drawGlyph(int cx, int cy, uint8_t g, uint16_t col) {
+  switch (g) {
+    case GLYPH_CHECK:
+      thickLine(cx - 11, cy + 1, cx - 3, cy + 9, col, 3);
+      thickLine(cx - 3, cy + 9, cx + 12, cy - 8, col, 3);
+      break;
+    case GLYPH_CROSS:
+      thickLine(cx - 9, cy - 9, cx + 9, cy + 9, col, 3);
+      thickLine(cx + 9, cy - 9, cx - 9, cy + 9, col, 3);
+      break;
+    case GLYPH_WARN:
+      tft.drawTriangle(cx, cy - 13, cx - 14, cy + 11, cx + 14, cy + 11, col);
+      tft.drawTriangle(cx, cy - 12, cx - 13, cy + 10, cx + 13, cy + 10, col);
+      tft.fillRect(cx - 1, cy - 5, 3, 9, col);
+      tft.fillRect(cx - 1, cy + 7, 3, 3, col);
+      break;
+    case GLYPH_INFO:
+      tft.drawCircle(cx, cy, 13, col);
+      tft.drawCircle(cx, cy, 12, col);
+      tft.fillRect(cx - 1, cy - 7, 3, 3, col);
+      tft.fillRect(cx - 1, cy - 2, 3, 10, col);
+      break;
+    case GLYPH_CARD:
+      tft.drawRoundRect(cx - 14, cy - 10, 20, 20, 3, col);
+      tft.drawRoundRect(cx - 13, cy - 9, 18, 18, 3, col);
+      tft.fillRect(cx - 10, cy - 5, 7, 5, col);
+      tft.drawFastVLine(cx + 10, cy - 6, 12, col);
+      tft.drawFastVLine(cx + 13, cy - 8, 16, col);
+      break;
+    case GLYPH_CLOCK:
+      tft.drawCircle(cx, cy, 13, col);
+      tft.drawCircle(cx, cy, 12, col);
+      thickLine(cx, cy, cx, cy - 7, col, 2);
+      thickLine(cx, cy, cx + 5, cy + 3, col, 2);
+      break;
+    case GLYPH_BOX:
+      tft.drawRect(cx - 12, cy - 6, 24, 16, col);
+      tft.drawRect(cx - 12, cy - 7, 24, 17, col);
+      tft.drawFastHLine(cx - 12, cy + 1, 24, col);
+      tft.fillTriangle(cx - 12, cy - 6, cx, cy - 12, cx, cy - 6, col);
+      tft.fillTriangle(cx + 12, cy - 6, cx, cy - 12, cx, cy - 6, col);
+      break;
+    case GLYPH_SPIN: {
+      const int px[8] = {0, 10, 14, 10, 0, -10, -14, -10};
+      const int py[8] = {-14, -10, 0, 10, 14, 10, 0, -10};
+      for (int i = 0; i < 8; i++) {
+        uint16_t c = (i == 0) ? col : (i == 7 ? C_GREEN_D : C_LINE);
+        tft.fillCircle(cx + px[i], cy + py[i], 2, c);
+      }
+      break;
+    }
+    case GLYPH_LEAF:
+      thickLine(cx, cy + 13, cx, cy - 3, col, 3);
+      tft.fillTriangle(cx - 1, cy + 3, cx - 15, cy - 3, cx - 3, cy - 11, col);
+      tft.fillTriangle(cx + 1, cy - 3, cx + 15, cy - 9, cx + 3, cy - 15, C_GREEN_D);
+      break;
+    default: break;
+  }
+}
+
+void drawMedallion(int cx, int cy, uint8_t glyph, uint16_t col) {
+  uint16_t dim = C_BG2;
+  if (col == C_GREEN) dim = S565(20, 42, 10);
+  else if (col == C_RED) dim = S565(50, 16, 18);
+  else if (col == C_AMBER) dim = S565(50, 36, 6);
+  else if (col == C_INFO) dim = S565(8, 36, 50);
+  tft.fillCircle(cx, cy, 30, dim);
+  tft.drawCircle(cx, cy, 30, col);
+  tft.drawCircle(cx, cy, 29, col);
+  if (glyph != GLYPH_NONE) drawGlyph(cx, cy, glyph, col);
+}
+
+// persistent seeed studio brand bar + live wifi indicator (top 26 px)
+void drawStatusBar() {
+  tft.fillRect(0, 0, 320, 26, C_BAR);
+  tft.drawFastHLine(0, 26, 320, C_GREEN);
+  tft.fillRoundRect(9, 7, 12, 12, 3, C_GREEN);
+  tft.setTextSize(1);
+  tft.setTextDatum(TL_DATUM);
+  tft.setTextColor(C_GREEN, C_BAR);
+  tft.drawString("seeed", 27, 9);
+  tft.setTextColor(C_MUTED, C_BAR);
+  tft.drawString("studio", 59, 9);
+  bool wl = (WiFi.status() == WL_CONNECTED);
+  uint16_t wc = wl ? C_GREEN : C_RED;
+  tft.setTextDatum(TR_DATUM);
+  tft.setTextColor(wc, C_BAR);
+  tft.drawString(wl ? "online" : "offline", 298, 9);
+  tft.fillCircle(309, 13, 3, wc);
+}
+
+void drawHintBar(const char* txt) {
+  tft.fillRect(0, 214, 320, 26, C_BAR);
+  tft.drawFastHLine(0, 214, 320, C_LINE);
+  tft.setTextSize(1);
+  tft.setTextDatum(ML_DATUM);
+  tft.setTextColor(C_MUTED, C_BAR);
+  tft.drawString(txt, 12, 228);
+}
+
+uint8_t fitSize(const char* s, int maxw, uint8_t maxSize) {
+  int len = strlen(s);
+  uint8_t sz = maxSize;
+  while (sz > 1 && len * 6 * sz > maxw) sz--;
+  return sz;
+}
+
+// Full-detail message screen: title=eyebrow (small, coloured), l1=headline,
+// l2/l3=subtitle lines, colour selects the accent, glyph the status icon.
+void displayScreenEx(const char* title, const char* l1, const char* l2,
+                     const char* l3, uint16_t color, uint8_t glyph, const char* hint) {
+  tft.fillScreen(C_BG);
+  drawStatusBar();
+
+  uint16_t accent = color;
+  uint8_t g = glyph;
+  if (color == TFT_GREEN)       { accent = C_GREEN; if (g == GLYPH_AUTO) g = GLYPH_CHECK; }
+  else if (color == TFT_RED)    { accent = C_RED;   if (g == GLYPH_AUTO) g = GLYPH_CROSS; }
+  else if (color == TFT_YELLOW) { accent = C_AMBER; if (g == GLYPH_AUTO) g = GLYPH_WARN; }
+  else if (color == TFT_CYAN)   { accent = C_INFO;  if (g == GLYPH_AUTO) g = GLYPH_INFO; }
+  else if (g == GLYPH_AUTO)     { g = GLYPH_NONE; }
+
+  int y;
+  if (g != GLYPH_NONE) { drawMedallion(160, 80, g, accent); y = 120; }
+  else { y = 74; }
+
+  tft.setTextDatum(TC_DATUM);
+  if (title && title[0]) {
+    tft.setTextSize(1);
+    tft.setTextColor(accent, C_BG);
+    tft.drawString(title, 160, y);
+    y += 16;
+  }
+  if (l1 && l1[0]) {
+    uint8_t ts = fitSize(l1, 300, 3);
+    tft.setTextSize(ts);
+    tft.setTextColor(C_INK, C_BG);
+    tft.drawString(l1, 160, y);
+    y += (ts >= 3 ? 30 : (ts == 2 ? 22 : 14));
+  }
+  tft.setTextSize(1);
+  tft.setTextColor(C_MUTED, C_BG);
+  if (l2 && l2[0]) { tft.drawString(l2, 160, y); y += 15; }
+  if (l3 && l3[0]) { tft.drawString(l3, 160, y); y += 15; }
+
+  drawHintBar(hint ? hint : "seeed studio   -   XIAO Vending");
+}
+
+// Backwards-compatible 5-arg entry used across the flows (auto glyph, no hint).
 void displayScreen(const char* title, const char* l1, const char* l2, const char* l3, uint16_t color) {
-  tft.fillScreen(TFT_BLACK);
-  tft.setTextColor(color, TFT_BLACK);
-  tft.setTextSize(2);
-  tft.setCursor(20, 30);
-  tft.println(title);
-  tft.drawFastHLine(0, 70, 320, TFT_DARKGREY);
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  tft.setTextSize(2);
-  tft.setCursor(20, 100); tft.println(l1);
-  tft.setCursor(20, 140); tft.println(l2);
-  tft.setCursor(20, 180); tft.println(l3);
+  displayScreenEx(title, l1, l2, l3, color, GLYPH_AUTO, nullptr);
 }
 
 void showWelcome() {
+  tft.fillScreen(C_BG);
+  drawStatusBar();
+  tft.setTextDatum(TC_DATUM);
   if (!rfidReady) {
-    displayScreen("XIAO Vending", "Press A to start", "the RFID reader", "", TFT_YELLOW);
+    drawMedallion(160, 84, GLYPH_CARD, C_AMBER);
+    tft.setTextSize(1); tft.setTextColor(C_AMBER, C_BG);
+    tft.drawString("READER OFF", 160, 126);
+    tft.setTextSize(3); tft.setTextColor(C_INK, C_BG);
+    tft.drawString("Press A", 160, 144);
+    tft.setTextSize(1); tft.setTextColor(C_MUTED, C_BG);
+    tft.drawString("to start the RFID reader", 160, 182);
+    drawHintBar("Press button A to begin");
   } else {
-    displayScreen("XIAO Vending", "Scan your card", "to collect / shop", "", TFT_CYAN);
+    drawMedallion(160, 80, GLYPH_CARD, C_GREEN);
+    tft.setTextSize(1); tft.setTextColor(C_GREEN, C_BG);
+    tft.drawString("WELCOME", 160, 120);
+    tft.setTextSize(3); tft.setTextColor(C_INK, C_BG);
+    tft.drawString("Scan your card", 160, 138);
+    tft.setTextSize(1); tft.setTextColor(C_MUTED, C_BG);
+    tft.drawString("Collect an order or shop your balance", 160, 176);
+    drawHintBar("Tap a card on the reader");
   }
 }
 
 void showDispenseProgress(const char* who, byte id, int t, int times) {
-  tft.fillScreen(TFT_BLACK);
-  tft.setTextColor(TFT_GREEN, TFT_BLACK);
-  tft.setTextSize(3);
-  tft.setCursor(20, 25); tft.println("DISPENSING");
-  tft.drawFastHLine(0, 70, 320, TFT_DARKGREY);
-  tft.setTextSize(2);
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  tft.setCursor(20, 100); tft.print("Card: "); tft.println(who);
-  tft.setTextColor(TFT_CYAN, TFT_BLACK);
-  tft.setCursor(20, 140); tft.print("Servo "); tft.print(id);
-  tft.setCursor(20, 175); tft.print("Move "); tft.print(t); tft.print("/"); tft.print(times);
+  tft.fillScreen(C_BG);
+  drawStatusBar();
+  char buf[40];
+  tft.setTextDatum(TL_DATUM);
+  tft.setTextSize(1); tft.setTextColor(C_GREEN, C_BG);
+  snprintf(buf, sizeof(buf), "DISPENSING  -  ITEM %d OF %d", t, times);
+  tft.drawString(buf, 18, 44);
+  tft.setTextSize(3); tft.setTextColor(C_INK, C_BG);
+  snprintf(buf, sizeof(buf), "Column %d", id);
+  tft.drawString(buf, 18, 66);
+  tft.setTextSize(2); tft.setTextColor(C_MUTED, C_BG);
+  snprintf(buf, sizeof(buf), "Servo %d", id);
+  tft.drawString(buf, 18, 104);
+  tft.setTextSize(1); tft.setTextColor(C_MUTED, C_BG);
+  snprintf(buf, sizeof(buf), "Card: %s", who);
+  tft.drawString(buf, 18, 134);
+  tft.setTextDatum(TR_DATUM); tft.setTextSize(2); tft.setTextColor(C_GREEN, C_BG);
+  snprintf(buf, sizeof(buf), "%d/%d", t, times);
+  tft.drawString(buf, 302, 100);
+  int bx = 18, by = 168, bw = 284, bh = 14;
+  tft.drawRoundRect(bx, by, bw, bh, 4, C_LINE);
+  float frac = times > 0 ? (float)t / times : 0;
+  int fw = (int)((bw - 4) * frac);
+  if (fw > 0) tft.fillRoundRect(bx + 2, by + 2, fw, bh - 4, 3, C_GREEN);
+  drawHintBar("Please wait  -  keep the card in place");
+}
+
+void showBootSplash() {
+  tft.fillScreen(C_BG);
+  drawStatusBar();
+  drawMedallion(160, 84, GLYPH_LEAF, C_GREEN);
+  tft.setTextDatum(TC_DATUM);
+  tft.setTextSize(3); tft.setTextColor(C_INK, C_BG);
+  tft.drawString("XIAO Vending", 160, 128);
+  tft.setTextSize(1); tft.setTextColor(C_MUTED, C_BG);
+  tft.drawString("Powered by seeed studio", 160, 162);
+  drawHintBar("Starting up  -  homing servos");
 }
 
 // ---------------- SERVO HELPERS ----------------
@@ -345,13 +564,17 @@ const char* wifiStatusText(int s) {
 bool connectWiFi() {
   if (WiFi.status() == WL_CONNECTED) { wifiReady = true; return true; }
 
-  tft.fillScreen(TFT_BLACK);
-  tft.setTextColor(TFT_CYAN, TFT_BLACK);
-  tft.setTextSize(2);
-  tft.setCursor(20, 22); tft.println("Connecting WiFi");
-  tft.drawFastHLine(0, 56, 320, TFT_DARKGREY);
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  tft.setCursor(20, 72); tft.print("SSID: "); tft.println(WIFI_SSID);
+  tft.fillScreen(C_BG);
+  drawStatusBar();
+  drawMedallion(160, 80, GLYPH_SPIN, C_INFO);
+  tft.setTextDatum(TC_DATUM);
+  tft.setTextSize(1); tft.setTextColor(C_INFO, C_BG);
+  tft.drawString("CONNECTING", 160, 118);
+  tft.setTextSize(2); tft.setTextColor(C_INK, C_BG);
+  tft.drawString("Joining Wi-Fi", 160, 134);
+  tft.setTextSize(1); tft.setTextColor(C_MUTED, C_BG);
+  tft.drawString((String("SSID  ") + WIFI_SSID).c_str(), 160, 160);
+  drawHintBar("Connecting to Wi-Fi...");
 
   Serial.print("[WIFI] Connecting to: "); Serial.println(WIFI_SSID);
   WiFi.disconnect(true);          // clear any half-open state from a prior try
@@ -370,14 +593,18 @@ bool connectWiFi() {
     Serial.print("[WIFI] attempt "); Serial.print(attempts); Serial.print("/");
     Serial.print(MAX_ATTEMPTS); Serial.print(" status="); Serial.println(s);
 
-    tft.fillRect(0, 104, 320, 110, TFT_BLACK);
-    tft.setTextSize(2);
-    tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-    tft.setCursor(20, 110); tft.print("Attempt "); tft.print(attempts); tft.print("/"); tft.print(MAX_ATTEMPTS);
-    tft.setCursor(20, 144); tft.print("Status: "); tft.print(s);
-    tft.setTextSize(1);
-    tft.setTextColor(TFT_DARKGREY, TFT_BLACK);
-    tft.setCursor(20, 178); tft.print(wifiStatusText(s));
+    tft.fillRect(0, 176, 320, 32, C_BG);
+    tft.setTextDatum(TC_DATUM);
+    tft.setTextSize(1); tft.setTextColor(C_MUTED, C_BG);
+    {
+      char at[40];
+      snprintf(at, sizeof(at), "Attempt %d / %d   %s", attempts, MAX_ATTEMPTS, wifiStatusText(s));
+      tft.drawString(at, 160, 180);
+    }
+    int bx = 60, by = 194, bw = 200, bh = 8;
+    tft.drawRoundRect(bx, by, bw, bh, 3, C_LINE);
+    int fw = (int)((bw - 2) * ((float)attempts / MAX_ATTEMPTS));
+    if (fw > 0) tft.fillRoundRect(bx + 1, by + 1, fw, bh - 2, 2, C_GREEN);
 
     if (attempts == 12 && WiFi.status() != WL_CONNECTED) {   // nudge the radio once
       Serial.println("[WIFI] re-begin");
@@ -455,66 +682,78 @@ float cartTotal(const int* times) {
 }
 
 void drawSelectButton(int x, int y, int w, int h, const char* label, bool hl, uint16_t accent) {
-  uint16_t fill = hl ? accent : TFT_BLACK;
-  uint16_t txt  = hl ? TFT_BLACK : accent;
-  tft.fillRect(x, y, w, h, fill);
-  tft.drawRect(x, y, w, h, accent);
+  if (hl) {
+    tft.fillRoundRect(x, y, w, h, 6, accent);
+    tft.setTextColor(C_BG, accent);
+  } else {
+    tft.fillRoundRect(x, y, w, h, 6, C_BG);
+    tft.drawRoundRect(x, y, w, h, 6, accent);
+    tft.setTextColor(accent, C_BG);
+  }
+  tft.setTextDatum(MC_DATUM);
   tft.setTextSize(2);
-  tft.setTextColor(txt, fill);
-  tft.setCursor(x + 14, y + 8);
-  tft.print(label);
+  tft.drawString(label, x + w / 2, y + h / 2);
 }
 
 void drawSelectDashboard(int cursor, const int* times) {
-  tft.fillScreen(TFT_BLACK);
-  tft.setTextColor(TFT_GREEN, TFT_BLACK);
-  tft.setTextSize(2);
-  tft.setCursor(8, 4); tft.println("SELECT PRODUCTS");
+  tft.fillScreen(C_BG);
 
+  // header + right-aligned brand tag
+  tft.setTextDatum(TL_DATUM);
+  tft.setTextSize(2); tft.setTextColor(C_GREEN, C_BG);
+  tft.drawString("SELECT", 10, 8);
+  tft.setTextColor(C_INK, C_BG);
+  tft.drawString("PRODUCTS", 88, 8);
+  tft.setTextDatum(TR_DATUM); tft.setTextSize(1); tft.setTextColor(C_MUTED, C_BG);
+  tft.drawString("seeed studio", 310, 6);
+
+  // balance strip
   float total = cartTotal(times);
   float left = selBalance - total;
-  tft.setTextSize(1);
-  tft.setTextColor(left < 0 ? TFT_RED : TFT_CYAN, TFT_BLACK);
-  tft.setCursor(8, 26);
-  tft.print("Bal $"); tft.print(selBalance, 2);
-  tft.print("  Cost $"); tft.print(total, 2);
-  tft.print("  Left $"); tft.print(left, 2);
-  tft.drawFastHLine(0, 38, 320, TFT_DARKGREY);
+  tft.setTextDatum(TL_DATUM); tft.setTextSize(1);
+  tft.setTextColor(C_MUTED, C_BG);
+  tft.drawString((String("Bal $") + String(selBalance, 2)).c_str(), 10, 31);
+  tft.drawString((String("Cost $") + String(total, 2)).c_str(), 120, 31);
+  tft.setTextColor(left < 0 ? C_RED : C_GREEN, C_BG);
+  tft.drawString((String("Left $") + String(left, 2)).c_str(), 220, 31);
+  tft.drawFastHLine(8, 44, 304, C_LINE);
 
-  int y = 44;
+  // one row per servo/column
+  const int rowH = 27, gap = 2, top = 48;
   for (int i = 0; i < SERVO_NUM; i++) {
+    int y = top + i * (rowH + gap);
+    int cy = y + rowH / 2;
     bool hl = (cursor == i);
-    if (hl) tft.fillRect(4, y - 2, 312, 30, TFT_BLUE);
-    uint16_t bg = hl ? TFT_BLUE : TFT_BLACK;
     bool sellable = (selStock[i] > 0 && selActive[i] == 1);
-    uint16_t fg = !sellable ? TFT_DARKGREY : (times[i] > 0 ? TFT_GREEN : TFT_WHITE);
-    tft.setTextColor(fg, bg);
-    tft.setTextSize(2);
-    tft.setCursor(10, y);
-    tft.print("ID"); tft.print(ID[i]);
-    tft.setCursor(70, y);
-    tft.print("$"); tft.print(selPrice[i], 2);
-    tft.setCursor(200, y);
-    tft.print("x"); tft.print(times[i]); tft.print("/"); tft.print((int)selStock[i]);
-    // short name / refill flag
-    tft.setTextSize(1);
-    tft.setTextColor(selNeeds[i] ? TFT_YELLOW : TFT_DARKGREY, bg);
-    tft.setCursor(70, y + 16);
-    if (selStock[i] <= 0) tft.print("empty");
-    else if (selNeeds[i]) tft.print("low");
-    else { String nm = selNames[i]; if (nm.length() > 20) nm = nm.substring(0, 20); tft.print(nm); }
-    y += 32;
+    uint16_t rowbg = hl ? C_GREENDIM : C_BG2;
+    tft.fillRoundRect(6, y, 308, rowH, 5, rowbg);
+    if (hl) tft.drawRoundRect(6, y, 308, rowH, 5, C_GREEN);
+
+    tft.setTextDatum(ML_DATUM); tft.setTextSize(2);
+    tft.setTextColor(hl ? C_GREEN : C_MUTED, rowbg);
+    tft.drawString(String(ID[i]).c_str(), 16, cy);
+
+    String nm = selNames[i]; if (nm.length() == 0) nm = "Product";
+    if (nm.length() > 13) nm = nm.substring(0, 13);
+    tft.setTextColor(!sellable ? C_MUTED : C_INK, rowbg);
+    tft.drawString(nm.c_str(), 36, cy);
+
+    tft.setTextSize(1); tft.setTextColor(C_MUTED, rowbg);
+    tft.setTextDatum(MR_DATUM);
+    tft.drawString((String("$") + String(selPrice[i], 2)).c_str(), 250, cy);
+
+    uint16_t cntcol = (times[i] > 0) ? C_GREEN : (sellable ? C_INK : C_MUTED);
+    if (selStock[i] <= 0) cntcol = C_RED;
+    else if (selNeeds[i]) cntcol = C_AMBER;
+    tft.setTextSize(2); tft.setTextColor(cntcol, rowbg);
+    tft.drawString((String(times[i]) + "/" + String((int)selStock[i])).c_str(), 306, cy);
   }
 
-  tft.drawFastHLine(0, y + 2, 320, TFT_DARKGREY);
-  int by = y + 8;
-  drawSelectButton(20, by, 120, 30, "BUY", cursor == SEL_OK, TFT_GREEN);
-  drawSelectButton(170, by, 130, 30, "CLEAR", cursor == SEL_CLEAR, TFT_RED);
+  int by = top + SERVO_NUM * (rowH + gap) + 4;
+  drawSelectButton(10, by, 180, 30, "BUY", cursor == SEL_OK, C_GREEN);
+  drawSelectButton(200, by, 110, 30, "CLEAR", cursor == SEL_CLEAR, C_RED);
 
-  tft.setTextSize(1);
-  tft.setTextColor(TFT_DARKGREY, TFT_BLACK);
-  tft.setCursor(8, by + 36);
-  tft.println("Joy U/D move  L/R qty  Press pick  A cancel");
+  drawHintBar("Joy move   L/R qty   Press pick   A cancel");
 }
 
 // Returns true and fills timesOut[] if the customer confirmed a non-empty,
@@ -600,8 +839,8 @@ void runDirect() {
   String resp = postJsonToBackend("/api/frontend/verify-card", body, code);
 
   if (!(code >= 200 && code < 300) || resp.indexOf("\"allow_dispense\":true") < 0) {
-    if (resp.indexOf("needs_refill") >= 0) displayScreen("SOLD OUT", "Needs refill", "See booth staff", "", TFT_RED);
-    else if (resp.indexOf("already used") >= 0) displayScreen("USED", "Already collected", "", "", TFT_RED);
+    if (resp.indexOf("needs_refill") >= 0) displayScreenEx("SOLD OUT", "Needs refill", "See booth staff", "", C_AMBER, GLYPH_BOX, "Staff refill from the dashboard");
+    else if (resp.indexOf("already used") >= 0) displayScreenEx("USED", "Already collected", "One collection per card", "", C_RED, GLYPH_CLOCK, "Ask staff for a new card");
     else if (resp.indexOf("not found") >= 0) displayScreen("NOT FOUND", "Order not found", "See booth staff", "", TFT_RED);
     else displayScreen("DENIED", "Not approved", "See booth staff", "", TFT_RED);
     delay(1800);
@@ -702,7 +941,7 @@ void runSelecting() {
 
   if (!(code >= 200 && code < 300) || cresp.indexOf("\"allow_dispense\":true") < 0) {
     if (cresp.indexOf("insufficient_balance") >= 0) displayScreen("DENIED", "Low balance", "", "", TFT_RED);
-    else if (cresp.indexOf("needs_refill") >= 0) displayScreen("SOLD OUT", "Needs refill", "See booth staff", "", TFT_RED);
+    else if (cresp.indexOf("needs_refill") >= 0) displayScreenEx("SOLD OUT", "Needs refill", "See booth staff", "", C_AMBER, GLYPH_BOX, "Staff refill from the dashboard");
     else displayScreen("DENIED", "Not approved", "See booth staff", "", TFT_RED);
     delay(1800);
     return;
@@ -731,7 +970,7 @@ void scanRFIDCard() {
 
   currentCardUID = getScannedUIDString();
   Serial.print("[RFID] UID: "); Serial.println(currentCardUID);
-  displayScreen("Checking...", "Card detected", "Please wait", "", TFT_CYAN);
+  displayScreenEx("CARD DETECTED", "Reading...", "Hold your card still", "", C_INFO, GLYPH_SPIN, "Authenticating card");
 
   String payload = "";
   bool readOk = readPayloadFromCard(payload);
@@ -777,7 +1016,8 @@ void setup() {
 
   tft.init();
   tft.setRotation(3);
-  tft.fillScreen(TFT_BLACK);
+  showBootSplash();
+  delay(1200);
 
   Serial1.begin(1000000);
   st.pSerial = &Serial1;

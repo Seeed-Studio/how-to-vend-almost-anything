@@ -7,3 +7,6 @@ npm-debug.log*
 
 # OS / editor cruft
 .DS_Store
+
+# Local UI mockups (not shipped with the project)
+frontend-vending-machine/ui-for-each-phase/

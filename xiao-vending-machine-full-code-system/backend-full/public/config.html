@@ -9,6 +9,10 @@
 <body>
   <header class="topbar">
     <div>
+      <div class="brand-lockup-pc">
+        <span class="mark"><svg width="21" height="21" viewBox="0 0 24 24" fill="none"><path d="M12 21V10.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><path d="M11 12C11 8 8 5 3 5c0 4 3 7 8 7Z" fill="#fff"/><path d="M13 10.5c0-3.4 3-5.8 7.8-5.8 0 3.4-3 5.8-7.8 5.8Z" fill="#EAF7CE"/></svg></span>
+        <span class="wm"><b>seeed</b><small>studio</small></span>
+      </div>
       <p class="eyebrow">Wio Terminals - WiFi - flashing</p>
       <h1>Device Config</h1>
       <p class="subtitle">Set each Wio Terminal's WiFi and upload its firmware over USB. Both sketches live inside this project, so there is nothing else to open.</p>
@@ -33,7 +37,8 @@
       <div id="serverIpList" class="server-ip-list">Detecting...</div>
     </section>
 
-    <!-- FRONTEND WIO -->
+    <!-- FRONTEND + BACKEND WIO (side by side) -->
+    <div class="wio-cards-row">
     <section class="panel wio-card">
       <div class="panel-header">
         <div><p class="section-tag">Part 1 - frontend-vending-machine</p><h2>Frontend Wio (reader)</h2></div>
@@ -85,6 +90,7 @@
         </div>
       </div>
     </section>
+    </div>
 
     <section class="panel">
       <p class="hint">Two Wio Terminals look identical over USB. If both are plugged in at once, use the serial number in the port list to pick the right one - or plug in one at a time. Firmware is uploaded once; after that each Wio just runs.</p>
