@@ -81,28 +81,235 @@ String jsonValue(const String& json, const String& key) {
   return json.substring(p, end);
 }
 
-void drawDashboard(const String& message) {
-  tft.fillScreen(TFT_BLACK);
-  tft.setTextSize(2);
-  tft.setTextColor(TFT_GREEN, TFT_BLACK);
-  tft.drawString("RFID WRITER", 10, 8);
+// ---------------- DISPLAY (Seeed Studio branded UI) ----------------
+// Matches the customer-facing reader (official_frontend_wio_terminal): same
+// palette + status/hint bars + status medallions, so the two Wio Terminals
+// look like one product. 320x240, TFT_eSPI primitives only.
+#define S565(r, g, b) ((uint16_t)((((r) & 0xF8) << 8) | (((g) & 0xFC) << 3) | ((b) >> 3)))
+static const uint16_t C_BG      = S565(6, 40, 62);
+static const uint16_t C_BG2     = S565(11, 46, 68);
+static const uint16_t C_BAR     = S565(1, 17, 28);
+static const uint16_t C_GREEN   = S565(143, 195, 31);
+static const uint16_t C_GREEN_D = S565(110, 154, 22);
+static const uint16_t C_INK     = S565(234, 244, 249);
+static const uint16_t C_MUTED   = S565(143, 174, 194);
+static const uint16_t C_AMBER   = S565(255, 176, 32);
+static const uint16_t C_RED     = S565(255, 91, 98);
+static const uint16_t C_INFO    = S565(67, 180, 228);
+static const uint16_t C_LINE    = S565(30, 60, 82);
+static const uint16_t C_GREENDIM = S565(20, 42, 10);
 
+#define GLYPH_NONE  0
+#define GLYPH_CHECK 1
+#define GLYPH_CROSS 2
+#define GLYPH_WARN  3
+#define GLYPH_INFO  4
+#define GLYPH_CARD  5
+#define GLYPH_SPIN  8
+#define GLYPH_LEAF  9
+
+void thickLine(int x0, int y0, int x1, int y1, uint16_t col, int t) {
+  for (int i = -(t / 2); i <= t / 2; i++) {
+    tft.drawLine(x0, y0 + i, x1, y1 + i, col);
+    tft.drawLine(x0 + i, y0, x1 + i, y1, col);
+  }
+}
+
+void drawGlyph(int cx, int cy, uint8_t g, uint16_t col) {
+  switch (g) {
+    case GLYPH_CHECK:
+      thickLine(cx - 11, cy + 1, cx - 3, cy + 9, col, 3);
+      thickLine(cx - 3, cy + 9, cx + 12, cy - 8, col, 3);
+      break;
+    case GLYPH_CROSS:
+      thickLine(cx - 9, cy - 9, cx + 9, cy + 9, col, 3);
+      thickLine(cx + 9, cy - 9, cx - 9, cy + 9, col, 3);
+      break;
+    case GLYPH_WARN:
+      tft.drawTriangle(cx, cy - 13, cx - 14, cy + 11, cx + 14, cy + 11, col);
+      tft.drawTriangle(cx, cy - 12, cx - 13, cy + 10, cx + 13, cy + 10, col);
+      tft.fillRect(cx - 1, cy - 5, 3, 9, col);
+      tft.fillRect(cx - 1, cy + 7, 3, 3, col);
+      break;
+    case GLYPH_INFO:
+      tft.drawCircle(cx, cy, 13, col);
+      tft.drawCircle(cx, cy, 12, col);
+      tft.fillRect(cx - 1, cy - 7, 3, 3, col);
+      tft.fillRect(cx - 1, cy - 2, 3, 10, col);
+      break;
+    case GLYPH_CARD:
+      tft.drawRoundRect(cx - 14, cy - 10, 20, 20, 3, col);
+      tft.drawRoundRect(cx - 13, cy - 9, 18, 18, 3, col);
+      tft.fillRect(cx - 10, cy - 5, 7, 5, col);
+      tft.drawFastVLine(cx + 10, cy - 6, 12, col);
+      tft.drawFastVLine(cx + 13, cy - 8, 16, col);
+      break;
+    case GLYPH_SPIN: {
+      const int px[8] = {0, 10, 14, 10, 0, -10, -14, -10};
+      const int py[8] = {-14, -10, 0, 10, 14, 10, 0, -10};
+      for (int i = 0; i < 8; i++) {
+        uint16_t c = (i == 0) ? col : (i == 7 ? C_GREEN_D : C_LINE);
+        tft.fillCircle(cx + px[i], cy + py[i], 2, c);
+      }
+      break;
+    }
+    case GLYPH_LEAF:
+      thickLine(cx, cy + 13, cx, cy - 3, col, 3);
+      tft.fillTriangle(cx - 1, cy + 3, cx - 15, cy - 3, cx - 3, cy - 11, col);
+      tft.fillTriangle(cx + 1, cy - 3, cx + 15, cy - 9, cx + 3, cy - 15, C_GREEN_D);
+      break;
+    default: break;
+  }
+}
+
+void drawMedallion(int cx, int cy, uint8_t glyph, uint16_t col) {
+  uint16_t dim = C_BG2;
+  if (col == C_GREEN) dim = S565(20, 42, 10);
+  else if (col == C_RED) dim = S565(50, 16, 18);
+  else if (col == C_AMBER) dim = S565(50, 36, 6);
+  else if (col == C_INFO) dim = S565(8, 36, 50);
+  tft.fillCircle(cx, cy, 30, dim);
+  tft.drawCircle(cx, cy, 30, col);
+  tft.drawCircle(cx, cy, 29, col);
+  if (glyph != GLYPH_NONE) drawGlyph(cx, cy, glyph, col);
+}
+
+void drawStatusBar() {
+  tft.fillRect(0, 0, 320, 26, C_BAR);
+  tft.drawFastHLine(0, 26, 320, C_GREEN);
+  tft.fillRoundRect(9, 7, 12, 12, 3, C_GREEN);
   tft.setTextSize(1);
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  tft.drawString(String("WiFi: ") + (WiFi.status() == WL_CONNECTED ? "OK" : "NO"), 10, 42);
-  tft.drawString(String("Server: ") + (serverConnected ? "OK" : "NO"), 10, 62);
-  tft.drawString(String("RFID: ") + (rfidReady ? "READY" : "NOT READY"), 10, 82);
-  tft.drawString(String("Card: ") + (cardPresent ? "PRESENT" : "WAITING"), 10, 102);
-  tft.drawString(String("UID: ") + (lastCardUid.length() ? lastCardUid : "-"), 10, 122);
-  tft.drawString(String("Job: ") + (currentJobId.length() ? currentJobId : "-"), 10, 142);
-  tft.drawString(String("Order: ") + (currentOrderNumber.length() ? currentOrderNumber : "-"), 10, 162);
+  tft.setTextDatum(TL_DATUM);
+  tft.setTextColor(C_GREEN, C_BAR);
+  tft.drawString("seeed", 27, 9);
+  tft.setTextColor(C_MUTED, C_BAR);
+  tft.drawString("studio", 59, 9);
+  bool wl = (WiFi.status() == WL_CONNECTED);
+  uint16_t wc = wl ? C_GREEN : C_RED;
+  tft.setTextDatum(TR_DATUM);
+  tft.setTextColor(wc, C_BAR);
+  tft.drawString(wl ? "online" : "offline", 298, 9);
+  tft.fillCircle(309, 13, 3, wc);
+}
 
-  tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-  tft.drawString(message.substring(0, 38), 10, 200);
+void drawHintBar(const char* txt) {
+  tft.fillRect(0, 214, 320, 26, C_BAR);
+  tft.drawFastHLine(0, 214, 320, C_LINE);
+  tft.setTextSize(1);
+  tft.setTextDatum(ML_DATUM);
+  tft.setTextColor(C_MUTED, C_BAR);
+  tft.drawString(txt, 12, 228);
+}
+
+uint8_t fitSize(const char* s, int maxw, uint8_t maxSize) {
+  int len = strlen(s);
+  uint8_t sz = maxSize;
+  while (sz > 1 && len * 6 * sz > maxw) sz--;
+  return sz;
+}
+
+void drawStatusPill(int x, int y, int w, const char* label, const char* val, uint16_t col) {
+  tft.fillRoundRect(x, y, w, 34, 7, C_BG2);
+  tft.drawRoundRect(x, y, w, 34, 7, C_LINE);
+  tft.setTextDatum(TC_DATUM);
+  tft.setTextSize(1);
+  tft.setTextColor(C_MUTED, C_BG2);
+  tft.drawString(label, x + w / 2, y + 6);
+  tft.setTextColor(col, C_BG2);
+  tft.drawString(val, x + w / 2, y + 19);
+}
+
+// Big centered feedback screen (card detected / writing / success / failed).
+void drawState(const char* eyebrow, const char* title, const char* subtitle,
+               uint8_t glyph, uint16_t accent, const char* hint) {
+  tft.fillScreen(C_BG);
+  drawStatusBar();
+  drawMedallion(160, 84, glyph, accent);
+  tft.setTextDatum(TC_DATUM);
+  tft.setTextSize(1); tft.setTextColor(accent, C_BG);
+  tft.drawString(eyebrow, 160, 126);
+  uint8_t ts = fitSize(title, 300, 3);
+  tft.setTextSize(ts); tft.setTextColor(C_INK, C_BG);
+  tft.drawString(title, 160, 144);
+  tft.setTextSize(1); tft.setTextColor(C_MUTED, C_BG);
+  tft.drawString(subtitle, 160, 144 + (ts >= 3 ? 32 : 24));
+  drawHintBar(hint);
+}
+
+void showBootSplash() {
+  tft.fillScreen(C_BG);
+  drawStatusBar();
+  drawMedallion(160, 84, GLYPH_LEAF, C_GREEN);
+  tft.setTextDatum(TC_DATUM);
+  tft.setTextSize(3); tft.setTextColor(C_INK, C_BG);
+  tft.drawString("RFID Writer", 160, 128);
+  tft.setTextSize(1); tft.setTextColor(C_MUTED, C_BG);
+  tft.drawString("Powered by seeed studio", 160, 162);
+  drawHintBar("Card-writing station  -  starting up");
+}
+
+void showConnecting() {
+  tft.fillScreen(C_BG);
+  drawStatusBar();
+  drawMedallion(160, 82, GLYPH_SPIN, C_INFO);
+  tft.setTextDatum(TC_DATUM);
+  tft.setTextSize(1); tft.setTextColor(C_INFO, C_BG);
+  tft.drawString("CONNECTING", 160, 120);
+  tft.setTextSize(2); tft.setTextColor(C_INK, C_BG);
+  tft.drawString("Joining Wi-Fi", 160, 136);
+  tft.setTextSize(1); tft.setTextColor(C_MUTED, C_BG);
+  tft.drawString((String("SSID  ") + WIFI_SSID).c_str(), 160, 162);
+  drawHintBar("Connecting to the backend network");
+}
+
+// Live status dashboard shown while idle / waiting for a job or a card.
+void drawDashboard(const String& message) {
+  tft.fillScreen(C_BG);
+  drawStatusBar();
+
+  tft.setTextDatum(TL_DATUM);
+  tft.setTextSize(1); tft.setTextColor(C_GREEN, C_BG);
+  tft.drawString("CARD WRITER STATION", 12, 34);
+
+  bool wl = (WiFi.status() == WL_CONNECTED);
+  drawStatusPill(8,   48, 71, "WIFI",   wl ? "OK" : "NO",              wl ? C_GREEN : C_RED);
+  drawStatusPill(85,  48, 71, "SERVER", serverConnected ? "OK" : "NO", serverConnected ? C_GREEN : C_AMBER);
+  drawStatusPill(162, 48, 71, "RFID",   rfidReady ? "OK" : "NO",       rfidReady ? C_GREEN : C_RED);
+  drawStatusPill(239, 48, 71, "CARD",   cardPresent ? "YES" : "--",    cardPresent ? C_GREEN : C_MUTED);
+
+  tft.fillRoundRect(8, 88, 304, 74, 8, C_BG2);
+  String jobV   = currentJobId.length() ? currentJobId : "-";
+  String orderV = currentOrderNumber.length() ? currentOrderNumber : "-";
+  String uidV   = lastCardUid.length() ? lastCardUid : "-";
+  if (jobV.length() > 22) jobV = jobV.substring(0, 22);
+  if (orderV.length() > 22) orderV = orderV.substring(0, 22);
+  if (uidV.length() > 22) uidV = uidV.substring(0, 22);
+  tft.setTextSize(1); tft.setTextDatum(ML_DATUM);
+  tft.setTextColor(C_MUTED, C_BG2); tft.drawString("JOB",      22, 102);
+  tft.setTextColor(C_INK,   C_BG2); tft.drawString(jobV.c_str(), 96, 102);
+  tft.setTextColor(C_MUTED, C_BG2); tft.drawString("ORDER",    22, 124);
+  tft.setTextColor(C_INK,   C_BG2); tft.drawString(orderV.c_str(), 96, 124);
+  tft.setTextColor(C_MUTED, C_BG2); tft.drawString("CARD UID", 22, 146);
+  tft.setTextColor(C_INK,   C_BG2); tft.drawString(uidV.c_str(), 96, 146);
+
+  uint16_t acc = C_GREEN;
+  String m = message; m.toLowerCase();
+  if (m.indexOf("fail") >= 0 || m.indexOf("error") >= 0) acc = C_RED;
+  else if (m.indexOf("writ") >= 0 || m.indexOf("connect") >= 0 || m.indexOf("detect") >= 0) acc = C_INFO;
+  else if (currentJobId.length() > 0) acc = C_AMBER;
+  tft.fillRoundRect(8, 168, 304, 32, 8, C_BG2);
+  tft.drawRoundRect(8, 168, 304, 32, 8, acc);
+  tft.fillCircle(24, 184, 4, acc);
+  String mm = message; if (mm.length() > 44) mm = mm.substring(0, 44);
+  tft.setTextDatum(ML_DATUM); tft.setTextSize(1); tft.setTextColor(C_INK, C_BG2);
+  tft.drawString(mm.c_str(), 38, 184);
+
+  drawHintBar(currentJobId.length() ? "Job queued  -  place a blank card to write"
+                                     : "Create an order on the dashboard to queue a card");
 }
 
 bool connectWifi() {
-  drawDashboard("Connecting WiFi...");
+  showConnecting();
   WiFi.disconnect(true);          // clear any half-open state
   delay(150);
   WiFi.mode(WIFI_STA);            // rpcWiFi is unreliable without an explicit mode
@@ -225,7 +432,8 @@ void setup() {
   Serial.begin(115200);
   tft.begin();
   tft.setRotation(3);
-  drawDashboard("Booting...");
+  showBootSplash();
+  delay(1000);
 
   Wire1.begin();          // Wio Grove I2C is on Wire1 (see Emakefun_RFID.cpp remap)
   mfrc522.PCD_Init();
@@ -251,20 +459,23 @@ void loop() {
   if (mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial()) {
     cardPresent = true;
     lastCardUid = readUidString();
-    drawDashboard("Card detected.");
+    drawState("CARD DETECTED", "Card found", "Reading the tag", GLYPH_SPIN, C_INFO, "Hold the card on the reader");
 
     if (currentJobId.length() > 0 && currentPayload.length() > 0) {
-      drawDashboard("Writing card...");
+      {
+        String sub = currentOrderNumber.length() ? (String("Order ") + currentOrderNumber) : String("Balance top-up card");
+        drawState("WRITING", "Writing card", sub.c_str(), GLYPH_CARD, C_INFO, "Keep the card still on the reader");
+      }
       bool ok = writePayloadToCard(currentPayload);
       if (ok) {
         reportJobResult(true, "RFID card written successfully");
-        drawDashboard("Write OK. Remove card.");
+        drawState("SUCCESS", "Card written", "You can remove the card", GLYPH_CHECK, C_GREEN, "Ready for the next job");
         currentJobId = "";
         currentOrderNumber = "";
         currentPayload = "";
       } else {
         reportJobResult(false, "RFID write failed. Check card type/auth/key.");
-        drawDashboard("Write failed.");
+        drawState("FAILED", "Write failed", "Check card type, then retry", GLYPH_CROSS, C_RED, "Use a MIFARE Classic 1K card");
         currentJobId = "";
         currentOrderNumber = "";
         currentPayload = "";
