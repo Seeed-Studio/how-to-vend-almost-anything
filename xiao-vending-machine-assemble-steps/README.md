@@ -47,12 +47,13 @@ Off-the-shelf components and stock material to source separately. Every product 
 
 Driven by the [code system](../xiao-vending-machine-full-code-system); wiring and flashing are covered there.
 
-| Component | Qty | Notes |
-| --- | --- | --- |
-| Wio Terminal | 2 | Front reader (in the machine) + card writer (operator desk) |
-| Feetech SMS/STS bus servo | 4 | One per dispensing column |
-| Emakefun I2C RFID reader | 1 | On the front Wio's Grove I2C (`Wire1`) bus |
-| MIFARE Classic 1K card | as needed | Direct-order and selecting-balance cards |
+| Component | Qty | Notes | Example |
+| --- | --- | --- | --- |
+| Wio Terminal | 2 | Front reader (in the machine) + card writer (operator desk) | [Seeed Wio Terminal](https://www.seeedstudio.com/Wio-Terminal-p-4509.html) |
+| Feetech ST3215 C044 bus servo | 4 | UART serial bus — one per dispensing column | [Seeed ST3215 C044](https://www.seeedstudio.com/Feetech-ST-3215-C044-Heavy-Duty-Servo-7-4V-1-191-Gear-Reduction-p-6460.html) |
+| Grove NFC reader (I2C) | 1 | I2C RFID reader — Grove I2C (`Wire1`) on pins 27/28 | [Seeed Grove NFC ST25DV64](https://www.seeedstudio.com/Grove-NFC-ST25DV64KC-p-5688.html) |
+| Grove 125KHz RFID reader (UART) | 1 | UART RFID reader — alternative interface | [Seeed Grove 125KHz RFID](https://www.seeedstudio.com/Grove-125KHz-RFID-Reader.html) |
+| M1 RFID tag (13.56 MHz) | as needed | Works with either RFID reader above | [Seeed M1 RFID Tag](https://www.seeedstudio.com/M1-RFID-Tag-13-56MH-p-923.html) |
 
 ### Power
 
@@ -173,9 +174,9 @@ The customer-facing Wio Terminal drives two peripherals through the 40-pin heade
 
 The four Feetech serial servos share one UART bus. Connect the servo controller's **RX** to header pin **8 (TXD)** and **TX** to pin **10 (RXD)**. Share **GND** with the Wio (pin 9 or any GND).
 
-### Part 2 — RFID reader (I2C)
+### Part 2 — RFID reader
 
-The Emakefun MFRC522 reader sits on I2C. Connect **SDA** to pin **27**, **SCL** to pin **28**, **5V** to pin **2**, and **GND** to pin **9**.
+Use either RFID reader above — the M1 tags work with both. For the **I2C** reader (Grove NFC), connect **SDA** to pin **27**, **SCL** to pin **28**, **5V** to pin **2**, and **GND** to pin **9**. For the **UART** reader (Grove 125KHz), wire per its datasheet to the Wio's UART pins.
 
 Both peripherals must be on the same Wio Terminal that runs [`official_frontend_wio_terminal`](../xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal). The second Wio Terminal is the operator-side **card writer** — it only needs WiFi to the backend and its own RFID module; flash it from the [Config page](../xiao-vending-machine-full-code-system/backend-full/public/config.html).
 
