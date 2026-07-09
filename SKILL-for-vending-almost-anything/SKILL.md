@@ -9,8 +9,9 @@ description: >-
   Codespaces, or USB-writer mode), flashing/configuring the Wio Terminals (WiFi,
   backend URL, device keys), choosing a deployment topology (MCU-only offline,
   PC-on-LAN, cloud, or one-box USB writer), adding/removing products or changing
-  prices/servo mapping/stock/capacity, recalibrating servos, or debugging the
-  card verify / checkout / dispense flow.
+  prices/servo mapping/stock/capacity, recalibrating servos, debugging the
+  card verify / checkout / dispense flow, sourcing parts and assembling the
+  hardware, or adapting the mechanical design to vend a different product.
 disable-model-invocation: true
 ---
 
@@ -53,6 +54,24 @@ Two **card types** (the `type` is written onto the card by the writer):
 - **selecting** — a stored-value balance card; the customer picks products on the
   Wio screen. Balance lives in `cards.csv`, not on the card.
   `{"type":"selecting","user_name":..,"v":1}`
+
+## The hardware (parts + build)
+
+The code drives a physical machine whose build lives in the sibling folder
+`xiao-vending-machine-assemble-steps/`:
+
+- **Bill of materials — what to buy:** the "What you'll buy" section of
+  `xiao-vending-machine-assemble-steps/README.md` (2× Wio Terminal, 4× Feetech
+  ST3215 bus servo, an RFID reader + M1 tags, a 12 V 10 A adapter + a 12 V→5 V
+  buck converter, hinge / lock / M3 heat-set nuts / M3×20 + M4×20 screws, 4× PVC
+  column, a PC front board). Every link there is an example — any equivalent works.
+- **Assembly:** ten photographed steps plus the Wio Terminal wiring diagram
+  (servo UART on header pins 8/10; RFID on the Grove I2C pins 27/28).
+- **Design files:** editable STL (print) and STEP (case) under
+  `xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/`.
+
+**Power:** one **12 V** input drives the four servos; a **12 V→5 V buck converter**
+supplies the 5 V USB that powers the Wio Terminal, so a single adapter runs both.
 
 ## Step 1 — pick a deployment topology
 
@@ -146,6 +165,20 @@ P001,A1,3,10,true,Vision + Voice AI,...,...,...,...,/assets/products/xiao-esp32-
 Full CSV schema for all files (orders, cards, ledger, devices, logs) is in
 [reference-backend.md](reference-backend.md).
 
+### Vend something else (make it your own)
+
+"Vend almost anything" means adapting this reference, not rebuilding from zero.
+The `1 product → 1 servo → 1 column` model is deliberately generic:
+
+- **Different product:** resize or redesign the printed `dispenser` / `dispenser
+  arm` and the PVC column for the new item (editable STL/STEP in the assembly
+  guide), then recapture servo travel with `testing_phase/1-a` + `1-b`.
+- **Everything else is unchanged:** the backend, card types, dashboard, and REST
+  API do not care what a column holds — only the `product_meta.csv` labels/prices
+  and the servo plan change.
+
+Reuse the architecture; swap the physical front end.
+
 ## Change the parameters
 
 | Parameter | Where | Notes |
@@ -185,4 +218,7 @@ More scripted checks and the full request/response contract are in
 - [reference-deployment.md](reference-deployment.md) — the four topologies A–D end
   to end, including the offline MCU-only sketch, and how changing products /
   parameters differs per topology.
-```
+
+The physical build — bill of materials, Wio Terminal wiring diagram, ten assembly
+steps, dispense test videos, and editable STL/STEP design files — lives in the
+sibling folder `xiao-vending-machine-assemble-steps/` (see its `README.md`).
