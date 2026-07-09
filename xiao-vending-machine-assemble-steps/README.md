@@ -39,9 +39,46 @@ Every design file is open and editable, so you can adapt a part before you make 
 
 STEP files are editable CAD solids — adapt them, then export for your own printer, CNC, or laser cutter.
 
-### Off-the-shelf electronics
+## What you'll buy
 
-Sourced separately and driven by the [code system](../xiao-vending-machine-full-code-system): two Wio Terminals (the front reader and the card writer), four Feetech SMS/STS bus servos, an Emakefun I2C RFID reader, and MIFARE Classic cards. Wiring and flashing are covered there.
+Off-the-shelf components and stock material to source separately. Every product link below is an **example** — any equivalent part works.
+
+### Electronics & compute
+
+Driven by the [code system](../xiao-vending-machine-full-code-system); wiring and flashing are covered there.
+
+| Component | Qty | Notes |
+| --- | --- | --- |
+| Wio Terminal | 2 | Front reader (in the machine) + card writer (operator desk) |
+| Feetech SMS/STS bus servo | 4 | One per dispensing column |
+| Emakefun I2C RFID reader | 1 | On the front Wio's Grove I2C (`Wire1`) bus |
+| MIFARE Classic 1K card | as needed | Direct-order and selecting-balance cards |
+
+### Power
+
+The machine needs one **12 V input** to power the servos and a **5 V USB input** to power the Wio Terminal. The 12 V 10 A adapter supplies the 12 V rail for the four servos; the buck converter steps that 12 V down to the 5 V USB that powers the Wio Terminal, so a single adapter runs everything.
+
+| Component | Qty | Notes | Example |
+| --- | --- | --- | --- |
+| 12 V 10 A power adapter | 1 | 12 V input — powers the four bus servos | [Seeed FY1209900 12V 10A](https://www.seeedstudio.com/FY1209900-12V-10A-Power-Adapter-12V-10A-p-6496.html) |
+| Buck converter (12 V/24 V → 5 V) | 1 | Steps 12 V down to the 5 V USB that powers the Wio Terminal | [Seeed CPT-C5 12V/24V→5V](https://www.seeedstudio.com/CPT-C5-power-converter-12V-24V-switch-to-5V.html) |
+
+### Fasteners & mechanical hardware
+
+| Component | Qty | Notes | Example |
+| --- | --- | --- | --- |
+| Hinge | 1 | Top lid — opens for refilling | — |
+| Lock | 1 | Top lid — secures the machine | — |
+| M3 injection-molded copper heat-set nut | as needed | Threaded inserts pressed into the printed parts | [AliExpress](https://ja.aliexpress.com/item/1005006472962973.html) |
+| M3×20 screw + nut | as needed | General assembly fixings | — |
+| M4×20 screw + nut | as needed | General assembly fixings | — |
+
+### Structural material
+
+| Material | Qty | Notes |
+| --- | --- | --- |
+| PVC column | 4 | The four product columns (product tubes) |
+| PC (polycarbonate) board | 1 | Front panel that carries the customer-facing Wio Terminal |
 
 ## Assembly, step by step
 
