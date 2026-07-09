@@ -52,14 +52,8 @@ body {
 .actions { display: flex; gap: 12px; align-items: center; }
 
 /* Seeed brand lockup (header) */
-.brand-lockup-pc { display: flex; align-items: center; gap: 11px; margin-bottom: 16px; }
-.brand-lockup-pc .mark {
-  width: 36px; height: 36px; border-radius: 11px; flex: none;
-  background: linear-gradient(150deg, #8FC31F, #6E9A16); display: grid; place-items: center;
-  box-shadow: 0 8px 20px rgba(143, 195, 31, 0.4);
-}
-.brand-lockup-pc .wm b { color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 1.08rem; letter-spacing: -0.01em; display: block; line-height: 1; }
-.brand-lockup-pc .wm small { color: var(--brand-strong); text-transform: uppercase; letter-spacing: 0.3em; font-size: 0.58rem; font-weight: 700; }
+.brand-lockup-pc { display: flex; align-items: center; margin-bottom: 16px; }
+.seeed-logo { height: 36px; width: auto; display: block; }
 
 .page { padding: 28px; display: grid; gap: 22px; }
 .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }

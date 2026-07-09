@@ -1,1 +1,2 @@
 job_id,order_number,user_name,rfid_payload,rfid_card_uid,status,created_at,claimed_at,written_at,device_id,message,job_type
+WJ-7HK_WGOX,,matthew,"{""type"":""selecting"",""user_name"":""matthew"",""v"":1}",,PENDING,2026-07-09T03:24:22.360Z,,,,Waiting for card on Wio writer,BALANCE

@@ -69,6 +69,26 @@ Flash [`backend-full/wio-rfid-writer`](xiao-vending-machine-full-code-system/bac
 
 On **Operate**, create a **direct** order or a **selecting** balance card; present a blank card to the writer to encode it, then present it to the machine reader to dispense. See the dispense demos in the [assembly guide](xiao-vending-machine-assemble-steps/README.md#testing-phase--dispense-modes).
 
+## What a successful deployment looks like
+
+Once the backend is running and the boards are flashed, the operator dashboard should look like this — a quick visual check that each step landed.
+
+**1. Config — flash each Wio Terminal.** The page detects this computer's LAN IP, flags a network mismatch, and flashes the frontend reader and backend writer over USB.
+
+![Config page — flashing firmware](docs/assets/1-flashing-firmware.jpeg)
+
+**2. Inventory — load the columns.** Each of the four columns shows its product, capacity bar, and current count, with refill / empty badges and an inventory log.
+
+![Inventory page — manage stock](docs/assets/2-inventory-manage.jpeg)
+
+**3. Operate — write cards and watch stock.** Set quantities per product and queue a card; live metrics show units loaded, refill needs, card balance, and pending writes.
+
+![Operate page — purchasing](docs/assets/3-operating-page-purchasing.jpeg)
+
+The last write job, recent orders, balance cards, and card-write queue are all logged below.
+
+![Operate page — write job and logs](docs/assets/3-operating-page-log.jpg)
+
 ## The framework, layer by layer
 
 | Layer | Statement | In one line |
