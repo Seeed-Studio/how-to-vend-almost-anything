@@ -67,11 +67,10 @@ The machine needs one **12 V input** to power the servos and a **5 V USB input**
 
 | Component | Qty | Notes | Example |
 | --- | --- | --- | --- |
-| Hinge | 1 | Top lid — opens for refilling | — |
-| Lock | 1 | Top lid — secures the machine | — |
-| M3 injection-molded copper heat-set nut | as needed | Threaded inserts pressed into the printed parts | [AliExpress](https://ja.aliexpress.com/item/1005006472962973.html) |
-| M3×20 screw + nut | as needed | General assembly fixings | — |
-| M4×20 screw + nut | as needed | General assembly fixings | — |
+| Hinge | 2 | Top lid — opens for refilling | [AliExpress](https://www.aliexpress.com/item/1005012567977773.html) |
+| Lock | 1 | Top lid — secures the machine | [AliExpress](https://www.aliexpress.com/item/1005010288396245.html) |
+| M3 injection-molded copper heat-set nut | as needed | Threaded inserts pressed into the printed parts | [AliExpress](https://www.aliexpress.com/item/1005006472962973.html) |
+| M3×20 / M4×20 screw + nut kit | as needed | General assembly fixings | [AliExpress](https://www.aliexpress.com/item/1005005879037174.html) |
 
 ### Structural material
 
