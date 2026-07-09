@@ -34,9 +34,9 @@
 #include "Emakefun_RFID.h"
 
 // ---------------- User config ----------------
-const char* WIFI_SSID = "SEEED-MKT";
-const char* WIFI_PASSWORD = "edgemaker2023";
-const char* API_BASE = "http://192.168.7.164:3000";  // example: http://192.168.1.20:3000
+const char* WIFI_SSID = "Your wifi name";
+const char* WIFI_PASSWORD = "Your wifi password";
+const char* API_BASE = "http://192.168.120.94:3000";  // example: http://192.168.1.20:3000
 const char* DEVICE_ID = "wio-rfid-writer";
 const char* API_KEY = "WIO_WRITER_SECRET";
 

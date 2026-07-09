@@ -36,12 +36,12 @@
 // =====================================================
 
 // ---------------- WIFI / BACKEND ----------------
-const char* WIFI_SSID = "SEEED-MKT";
-const char* WIFI_PASSWORD = "edgemaker2023";
+const char* WIFI_SSID = "Your wifi name";
+const char* WIFI_PASSWORD = "Your wifi password";
 
 // Same-WiFi backend example: "http://192.168.1.20:3000"
 // Public deployment example:  "https://your-app.onrender.com"
-const char* BACKEND_BASE_URL = "http://192.168.7.164:3000";
+const char* BACKEND_BASE_URL = "http://192.168.1.1:3000";
 
 const char* DEVICE_ID = "frontend-1";
 const char* API_KEY = "FRONTEND_1_SECRET";
