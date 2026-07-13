@@ -56,26 +56,6 @@ mismatch, and flashes each Wio with one click.
 Stock is deducted at collection time, so a valid card is still refused if a
 column needs a refill.
 
-## Real operation (reference)
-
-End-to-end recordings of the finished machine running the official firmware and backend. Click a still to open the full video.
-
-### Direct-order dispense
-
-A pre-written **direct** card is tapped; the machine dispenses the queued products in one pass.
-
-[![Direct-order dispense](../docs/assets/real-operation-order-dispense.jpg)](../docs/assets/real-operation-order-dispense.mp4)
-
-[Full recording (MP4)](../docs/assets/real-operation-order-dispense.mp4)
-
-### Balance / selecting dispense
-
-A **selecting** balance card is tapped; the customer picks products on the Wio Terminal until the balance is spent.
-
-[![Balance dispense](../docs/assets/real-operation-balance-dispense.jpg)](../docs/assets/real-operation-balance-dispense.mp4)
-
-[Full recording (MP4)](../docs/assets/real-operation-balance-dispense.mp4)
-
 ## Backend deployment on Render (optional)
 
 ```text

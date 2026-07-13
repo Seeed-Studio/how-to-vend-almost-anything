@@ -89,6 +89,26 @@ The last write job, recent orders, balance cards, and card-write queue are all l
 
 ![Operate page — write job and logs](docs/assets/3-operating-page-log.jpg)
 
+## Real operation (reference machine)
+
+With the machine assembled and the software running, this is what end-to-end dispensing looks like on the reference build — laptop dashboard, writer Wio, and the customer-facing reader on the machine.
+
+### Direct order dispense
+
+Tap an **Order** (direct) card; the machine releases every product on that card in one pass.
+
+[![Direct order dispense](docs/assets/real-operation-order-dispense.jpg)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/assets/real-operation-order-dispense.mp4)
+
+[Watch the recording (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/assets/real-operation-order-dispense.mp4)
+
+### Balance / selecting dispense
+
+Tap a **Balance** (selecting) card, pick products on the Wio screen, and collect from the bin.
+
+[![Balance dispense](docs/assets/real-operation-balance-dispense.jpg)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/assets/real-operation-balance-dispense.mp4)
+
+[Watch the recording (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/assets/real-operation-balance-dispense.mp4)
+
 ## The framework, layer by layer
 
 | Layer | Statement | In one line |

@@ -14,9 +14,9 @@ Every design file is open and editable, so you can adapt a part before you make 
 
 | Part | Quantity | Notes |
 | --- | --- | --- |
-| `dispenser.stl` | 4 | Common dispenser body — the default for general products |
-| `dispenser-specific.stl` | 4 | Product-specific dispenser body — use instead of `dispenser.stl` when the stock needs a tighter or shaped fit |
-| `dispenser arm.stl` | 4 | Works with either dispenser body |
+| `dispenser.stl` | 4 | **Common** dispenser body — default for a standard product size |
+| `dispenser-specific.stl` | 4 | **Product-specific** dispenser body — print this instead of `dispenser.stl` when adapting the mechanism for a different product geometry |
+| `dispenser arm.stl` | 4 | |
 | `Spur Gear 24 teeth.stl` | 1 | |
 | `Tube support .stl` | 1 | |
 | `Pillar A .stl` | 1 | |
@@ -27,6 +27,8 @@ Every design file is open and editable, so you can adapt a part before you make 
 | `LED holder .stl` | 1 | |
 | `LED diffuser.stl` | 1 | |
 | `small feet .stl` | 4 | |
+
+Print **either** `dispenser.stl` **or** `dispenser-specific.stl` for each column (four bodies total) — not both. Use the common body for the reference product; switch to the specific body when you redesign the dispenser for your own item.
 
 ### Case & structural parts — [`case/`](hardware-preparatory/stl-files/case) (STEP)
 
@@ -87,7 +89,7 @@ Each step pairs the CAD design with a photo of the real build.
 
 ### 1. The dispenser unit
 
-Build one dispensing column: the dispenser body, its arm, and the 24-tooth spur gear that a bus servo turns to release a single product. Print either `dispenser.stl` (common) or `dispenser-specific.stl` (product-shaped fit) — not both for the same column.
+Build one dispensing column: the dispenser body (`dispenser.stl` for the common / reference product, or `dispenser-specific.stl` when adapting for a different product), its arm, and the 24-tooth spur gear that a bus servo turns to release a single product.
 
 | Design | Real build |
 | --- | --- |
