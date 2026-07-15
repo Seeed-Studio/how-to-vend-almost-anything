@@ -170,9 +170,10 @@ Full CSV schema for all files (orders, cards, ledger, devices, logs) is in
 "Vend almost anything" means adapting this reference, not rebuilding from zero.
 The `1 product → 1 servo → 1 column` model is deliberately generic:
 
-- **Different product:** resize or redesign the printed `dispenser` / `dispenser
-  arm` and the PVC column for the new item (editable STL/STEP in the assembly
-  guide), then recapture servo travel with `testing_phase/1-a` + `1-b`.
+- **Different product:** print `dispenser-specific.stl` instead of the common
+  `dispenser.stl`, and/or resize the printed `dispenser` / `dispenser arm` and
+  the PVC column for the new item (editable STL/STEP in the assembly guide),
+  then recapture servo travel with `testing_phase/1-a` + `1-b`.
 - **Everything else is unchanged:** the backend, card types, dashboard, and REST
   API do not care what a column holds — only the `product_meta.csv` labels/prices
   and the servo plan change.
