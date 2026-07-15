@@ -1,1 +1,2 @@
 device_id,device_type,server_connected,rfid_ready,card_present,last_card_uid,current_job_id,last_seen_at,message
+wio-rfid-writer,writer,true,true,false,94 7D 14 BB,,2026-07-10T14:49:16.226Z,Idle. Waiting for server job

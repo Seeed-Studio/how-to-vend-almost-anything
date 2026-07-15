@@ -1,2 +1,4 @@
 time,card_uid,user_name,type,amount,balance_after,actor,notes
 2026-07-09T03:24:22.358Z,,matthew,TOPUP,2123,2123,operator,queued for Wio writer
+2026-07-10T14:35:23.725Z,,matt,TOPUP,50,50,operator,queued for Wio writer
+2026-07-10T14:35:35.290Z,94 7D 14 BB,matt,PURCHASE,31.98,18.02,frontend-1,P004x2

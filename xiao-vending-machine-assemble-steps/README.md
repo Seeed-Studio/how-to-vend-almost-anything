@@ -12,20 +12,21 @@ Every design file is open and editable, so you can adapt a part before you make 
 
 ### 3D-printed parts — [`parts/`](hardware-preparatory/stl-files/parts) (STL)
 
-| Part | Quantity |
-| --- | --- |
-| `dispenser.stl` | 4 |
-| `dispenser arm.stl` | 4 |
-| `Spur Gear 24 teeth.stl` | 1 |
-| `Tube support .stl` | 1 |
-| `Pillar A .stl` | 1 |
-| `Pillar B.stl` | 1 |
-| `L holder.stl` | 6 |
-| `slider_wio holder .stl` | 1 |
-| `RF ID cap .stl` | 1 |
-| `LED holder .stl` | 1 |
-| `LED diffuser.stl` | 1 |
-| `small feet .stl` | 4 |
+| Part | Quantity | Notes |
+| --- | --- | --- |
+| `dispenser.stl` | 4 | Common dispenser body — the default for general products |
+| `dispenser-specific.stl` | 4 | Product-specific dispenser body — use instead of `dispenser.stl` when the stock needs a tighter or shaped fit |
+| `dispenser arm.stl` | 4 | Works with either dispenser body |
+| `Spur Gear 24 teeth.stl` | 1 | |
+| `Tube support .stl` | 1 | |
+| `Pillar A .stl` | 1 | |
+| `Pillar B.stl` | 1 | |
+| `L holder.stl` | 6 | |
+| `slider_wio holder .stl` | 1 | |
+| `RF ID cap .stl` | 1 | |
+| `LED holder .stl` | 1 | |
+| `LED diffuser.stl` | 1 | |
+| `small feet .stl` | 4 | |
 
 ### Case & structural parts — [`case/`](hardware-preparatory/stl-files/case) (STEP)
 
@@ -86,7 +87,7 @@ Each step pairs the CAD design with a photo of the real build.
 
 ### 1. The dispenser unit
 
-Build one dispensing column: the dispenser body, its arm, and the 24-tooth spur gear that a bus servo turns to release a single product.
+Build one dispensing column: the dispenser body, its arm, and the 24-tooth spur gear that a bus servo turns to release a single product. Print either `dispenser.stl` (common) or `dispenser-specific.stl` (product-shaped fit) — not both for the same column.
 
 | Design | Real build |
 | --- | --- |
@@ -122,7 +123,7 @@ Fit the slider that carries and positions the customer-facing Wio Terminal.
 
 | Design | Real build |
 | --- | --- |
-| ![Slider — design](assets/5-slider-part-design.png) | ![Slider — real build](assets/5-slider-part-real-life.jpg) |
+| ![Slider — design](assets/5-slider-part-design.jpeg) | ![Slider — real build](assets/5-slider-part-real-life.jpg) |
 
 ### 6. The Wio Terminal & RFID reader
 
@@ -130,7 +131,7 @@ Install the front Wio Terminal and seat the RFID reader behind its cap, with the
 
 | Design | Real build |
 | --- | --- |
-| ![Wio Terminal and RFID — design](assets/6-wio-terminal-rfid-design.png) | ![Wio Terminal and RFID — real build](assets/6-wio-terminal-rfid-real-life.jpg) |
+| ![Wio Terminal and RFID — design](assets/6-wio-terminal-rfid-design.jpg) | ![Wio Terminal and RFID — real build](assets/6-wio-terminal-rfid-real-life.jpg) |
 
 ### 7. The column tops
 
