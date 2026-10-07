@@ -136,6 +136,9 @@ button { cursor: pointer; }
 .part-facts div:nth-child(2) { padding-left:8px; }
 .part-facts span { display:block; color:#64716b; font-size:8px; letter-spacing:.12em; margin-bottom:4px; }
 .part-facts strong { font-size:11px; }
+.part-size { display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin:0 0 16px; }
+.part-size span { color:#64716b; font-size:8px; letter-spacing:.12em; }
+.part-size strong { font-size:13px; }
 .version-card { border:1px solid var(--line); padding:15px; margin-bottom:10px; }
 .version-card.current { border-color:rgba(159,210,27,.35); background:rgba(159,210,27,.05); }
 .version-card.previous { opacity:.7; }
