@@ -106,6 +106,7 @@ function renderInspector(partId) {
       <div><span>QTY</span><strong>${part.variantOf ? 'ALT ' : ''}×${part.qty}</strong></div>
       <div><span>FORMAT</span><strong>${(current.format || part.format).toUpperCase()}</strong></div>
     </div>
+    <p class="part-size"><span>TRUE SIZE</span><strong>${formatMillimeters(loadedObjects.get(part.id)?.userData.realSize)}</strong></p>
     <div class="version-card current">
       <div><span>CURRENT</span><strong>${current.version || 'V0'}${current.isReplacement ? ' replacement' : ' reference'}</strong></div>
       <p>${current.isReplacement ? (current.note || 'Current published replacement.') : 'No replacement has been published for this part yet.'}</p>
@@ -127,14 +128,14 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.05;
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 1000);
-camera.position.set(0, 25, 78);
+const camera = new THREE.PerspectiveCamera(36, 1, 0.005, 200);
+camera.position.set(0.4, 0.55, 1.8);
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.dampingFactor = .06;
 controls.target.set(0, 0, 0);
-controls.minDistance = 28;
-controls.maxDistance = 180;
+controls.minDistance = 0.03;
+controls.maxDistance = 30;
 
 scene.add(new THREE.HemisphereLight(0xeef8ef, 0x16201c, 2.6));
 const key = new THREE.DirectionalLight(0xffffff, 3.2); key.position.set(28, 38, 50); scene.add(key);
@@ -151,20 +152,6 @@ let activeFilter = 'all';
 let explodedAmount = .74;
 let occtPromise = null;
 
-const groupCenters = {
-  shell: -28,
-  frame: -13,
-  dispensing: 2,
-  interface: 18,
-  foundation: 31
-};
-const groupCompact = {
-  shell: -8,
-  frame: -4,
-  dispensing: 0,
-  interface: 4,
-  foundation: 8
-};
 const groupZ = { shell:-2, frame:1, dispensing:0, interface:2, foundation:-1 };
 const materialBase = {
   shell: 0xb7c5bc,
@@ -179,26 +166,52 @@ function meshMaterial(part, selected=false) {
   return new THREE.MeshStandardMaterial({ color, roughness:.58, metalness:.08, transparent:true, opacity: activeFilter === 'all' || activeFilter === part.group ? 1 : .08 });
 }
 
-function normalizeObject(object, target=5.4) {
+function formatMillimeters(size) {
+  if (!size) return 'Measuring…';
+  const mm = (value) => Math.round(value * 1000);
+  return `${mm(size.x)} × ${mm(size.y)} × ${mm(size.z)} mm`;
+}
+
+function centerToRealMeters(object) {
+  object.updateMatrixWorld(true);
   const box = new THREE.Box3().setFromObject(object);
-  const size = new THREE.Vector3(); box.getSize(size);
-  const center = new THREE.Vector3(); box.getCenter(center);
-  const max = Math.max(size.x,size.y,size.z) || 1;
-  object.position.sub(center);
-  const scale = target / max;
-  object.scale.setScalar(scale);
+  const size = new THREE.Vector3();
+  const center = new THREE.Vector3();
+  box.getSize(size);
+  box.getCenter(center);
+  object.traverse((child) => {
+    if (!child.isMesh) return;
+    const geometry = child.geometry.clone();
+    geometry.applyMatrix4(child.matrixWorld);
+    geometry.translate(-center.x, -center.y, -center.z);
+    child.geometry = geometry;
+  });
+  object.traverse((child) => {
+    child.position.set(0, 0, 0);
+    child.rotation.set(0, 0, 0);
+    child.scale.set(1, 1, 1);
+    child.updateMatrix();
+  });
+  object.userData.realSize = size;
+  return object;
+}
+
+function convertMillimetersToMeters(object) {
+  object.traverse((child) => {
+    if (!child.isMesh) return;
+    child.geometry = child.geometry.clone();
+    child.geometry.scale(0.001, 0.001, 0.001);
+  });
 }
 
 function makeProxy(part) {
-  const shapes = {
-    'outer-enclosure':[5.0,7.2,4.3], 'top-plate':[5.2,.6,3.2], 'back-plate':[4.8,6.2,.45],
-    'lock-holder':[2.2,1.2,1.3], 'mag-plate':[2.6,.5,1.5]
-  };
-  const dims = shapes[part.id] || [3,3,3];
-  const geo = new THREE.BoxGeometry(...dims);
+  const geo = new THREE.BoxGeometry(0.05, 0.05, 0.05);
   const mesh = new THREE.Mesh(geo, meshMaterial(part));
   const edges = new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({color:0xe5eee9,transparent:true,opacity:.22}));
-  const group = new THREE.Group(); group.add(mesh,edges); group.userData.proxy = true;
+  const group = new THREE.Group();
+  group.add(mesh, edges);
+  group.userData.proxy = true;
+  group.userData.realSize = new THREE.Vector3(0.05, 0.05, 0.05);
   return group;
 }
 
@@ -231,32 +244,8 @@ async function loadStep(part, model) {
     geometry.computeBoundingSphere();
     group.add(new THREE.Mesh(geometry, meshMaterial(part)));
   }
-  normalizeObject(group, 6.3);
-  return group;
-}
-
-function fitBakedGeometry(object, target) {
-  object.updateMatrixWorld(true);
-  const box = new THREE.Box3().setFromObject(object);
-  const size = new THREE.Vector3();
-  const center = new THREE.Vector3();
-  box.getSize(size);
-  box.getCenter(center);
-  const scale = target / (Math.max(size.x, size.y, size.z) || 1);
-  object.traverse((child) => {
-    if (!child.isMesh) return;
-    const geometry = child.geometry.clone();
-    geometry.applyMatrix4(child.matrixWorld);
-    geometry.translate(-center.x, -center.y, -center.z);
-    geometry.scale(scale, scale, scale);
-    child.geometry = geometry;
-  });
-  object.traverse((child) => {
-    child.position.set(0, 0, 0);
-    child.rotation.set(0, 0, 0);
-    child.scale.set(1, 1, 1);
-    child.updateMatrix();
-  });
+  convertMillimetersToMeters(group);
+  return centerToRealMeters(group);
 }
 
 async function loadGlb(part, model) {
@@ -271,32 +260,50 @@ async function loadGlb(part, model) {
     else previous?.dispose?.();
     if (!child.name || /^(cube|object|scene|mesh)/i.test(child.name)) child.name = part.id;
   });
-  fitBakedGeometry(object, part.format === 'step' ? 6.3 : 5.5);
-  return object;
+  return centerToRealMeters(object);
 }
 
 async function loadStl(part, model) {
   const geometry = await stlLoader.loadAsync(resolvePath(model.source));
   geometry.computeVertexNormals();
-  geometry.computeBoundingBox();
-  geometry.center();
   const mesh = new THREE.Mesh(geometry, meshMaterial(part));
-  normalizeObject(mesh, 5.5);
-  return mesh;
+  convertMillimetersToMeters(mesh);
+  return centerToRealMeters(mesh);
+}
+
+function realSizeOf(part) {
+  const size = loadedObjects.get(part.id)?.userData.realSize;
+  return size ? size.clone() : new THREE.Vector3(0.05, 0.05, 0.05);
 }
 
 function currentPartPosition(part) {
-  const sameGroup = manifest.parts.filter((p) => p.group === part.group);
-  const index = sameGroup.findIndex((p) => p.id === part.id);
-  const count = sameGroup.length;
-  const expandedX = groupCenters[part.group];
-  const compactX = groupCompact[part.group];
-  const x = THREE.MathUtils.lerp(compactX, expandedX, explodedAmount);
-  const expandedY = (index - (count - 1) / 2) * 7.2;
-  const compactY = (index - (count - 1) / 2) * 2.0;
-  const y = THREE.MathUtils.lerp(compactY, expandedY, explodedAmount);
-  const z = THREE.MathUtils.lerp(0, groupZ[part.group] * 3 + (index % 2 ? 2.2 : -1.4), explodedAmount);
-  return new THREE.Vector3(x,y,z);
+  const gapY = THREE.MathUtils.lerp(0.008, 0.045, explodedAmount);
+  const gapX = THREE.MathUtils.lerp(0.02, 0.09, explodedAmount);
+  const columns = manifest.groups.map((group) => {
+    const parts = manifest.parts.filter((item) => item.group === group.id);
+    const width = Math.max(...parts.map((item) => realSizeOf(item).x), 0.001);
+    return { id: group.id, width };
+  });
+  const totalW = columns.reduce((sum, column) => sum + column.width, 0) + gapX * Math.max(columns.length - 1, 0);
+  let cursor = -totalW / 2;
+  const groupX = new Map();
+  for (const column of columns) {
+    cursor += column.width / 2;
+    groupX.set(column.id, cursor);
+    cursor += column.width / 2 + gapX;
+  }
+  const sameGroup = manifest.parts.filter((item) => item.group === part.group);
+  const sizes = sameGroup.map((item) => realSizeOf(item));
+  const totalH = sizes.reduce((sum, size) => sum + size.y, 0) + gapY * Math.max(sameGroup.length - 1, 0);
+  let y = totalH / 2;
+  let partY = 0;
+  sameGroup.forEach((item, index) => {
+    y -= sizes[index].y / 2;
+    if (item.id === part.id) partY = y;
+    y -= sizes[index].y / 2 + gapY;
+  });
+  const z = THREE.MathUtils.lerp(0, (groupZ[part.group] || 0) * 0.03, explodedAmount);
+  return new THREE.Vector3(groupX.get(part.group) || 0, partY, z);
 }
 
 function updatePositions(immediate=false) {
@@ -361,7 +368,8 @@ async function loadAll() {
   };
   await Promise.all([worker(),worker(),worker()]);
   document.getElementById('fallback-map').style.opacity = '0';
-  state.textContent = `${manifest.parts.length} display models · V0`;
+  state.textContent = `${manifest.parts.length} display models · true scale`;
+  updatePositions(true);
   fitAll();
   selectPart(selectedPartId,false);
 }
@@ -396,9 +404,12 @@ function selectPart(partId, focus=false) {
     const object = loadedObjects.get(partId);
     if (object) {
       const pos = object.position.clone();
-      controls.target.lerp(pos,.75);
-      const direction = camera.position.clone().sub(controls.target).normalize();
-      camera.position.copy(pos.clone().add(direction.multiplyScalar(34)));
+      const size = object.userData.realSize || new THREE.Vector3(0.1, 0.1, 0.1);
+      const distance = Math.max(size.x, size.y, size.z) * 2.8;
+      controls.target.copy(pos);
+      const direction = camera.position.clone().sub(pos);
+      if (direction.lengthSq() < 1e-6) direction.set(0.2, 0.25, 1);
+      camera.position.copy(pos.clone().add(direction.normalize().multiplyScalar(distance)));
     }
   }
 }
@@ -416,9 +427,7 @@ document.getElementById('explode-range').addEventListener('input',(event) => {
   updatePositions();
 });
 
-document.getElementById('reset-view').addEventListener('click',() => {
-  camera.position.set(0,25,78); controls.target.set(0,0,0); controls.update();
-});
+document.getElementById('reset-view').addEventListener('click', fitAll);
 document.getElementById('fit-view').addEventListener('click',fitAll);
 
 function fitAll() {
@@ -427,8 +436,9 @@ function fitAll() {
   const size = new THREE.Vector3(); box.getSize(size);
   const center = new THREE.Vector3(); box.getCenter(center);
   const max = Math.max(size.x,size.y,size.z);
+  const distance = max * 1.75;
   controls.target.copy(center);
-  camera.position.set(center.x, center.y + max * .3, center.z + Math.max(62,max * 1.15));
+  camera.position.set(center.x + distance * 0.18, center.y + distance * 0.28, center.z + distance);
   camera.lookAt(center); controls.update();
 }
 
