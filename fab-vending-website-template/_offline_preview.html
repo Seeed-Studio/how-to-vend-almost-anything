@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Exploded Machine | How to Vend Almost Anything</title>
+  <meta name="description" content="Explore the XIAO vending machine as a versioned exploded system. Inspect the current open-source models and follow each replacement as the design evolves." />
+  <meta name="theme-color" content="#111715" />
+  <link rel="stylesheet" href="exploded.css" />
+</head>
+<body>
+  <a class="skip-link" href="#explorer">Skip to explorer</a>
+
+  <header class="exploded-header">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>HOW TO VEND ALMOST ANYTHING</span>
+    </a>
+    <nav aria-label="Exploded view navigation">
+      <a href="index.html">Program</a>
+      <a class="active" href="#explorer">Exploded view</a>
+      <a href="#parts-board">Parts</a>
+      <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noreferrer">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div class="intro-kicker"><span class="pulse"></span> PRODUCT SYSTEM / LIVE SOURCE MODELS</div>
+      <h1>Explode it.<br><em>Replace it.</em><br>Improve it.</h1>
+      <div class="intro-copy">
+        <p>
+          The machine is not a fixed object. It is a stack of replaceable parts. This page turns the current V0 CAD files into a visible product system, then keeps every new replacement attached to the part it supersedes.
+        </p>
+        <div class="intro-meta">
+          <span><strong id="part-count">18</strong> modeled parts</span>
+          <span><strong>5</strong> system groups</span>
+          <span><strong>V0</strong> reference baseline</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="explorer-shell" id="explorer">
+      <aside class="group-rail" aria-label="System groups">
+        <div class="rail-title">SYSTEM BULKS</div>
+        <button class="group-button active" data-group="all"><span>00</span><strong>Whole machine</strong><small>All modeled parts</small></button>
+        <div id="group-buttons"></div>
+        <div class="rail-note">Parts are spatially arranged for clarity. This is a product map, not an assembly-coordinate drawing.</div>
+      </aside>
+
+      <div class="viewport-panel">
+        <div class="viewport-topbar">
+          <div>
+            <span class="view-label">INTERACTIVE MODEL MAP</span>
+            <span class="load-state" id="load-state">Loading V0 source models…</span>
+          </div>
+          <div class="view-actions">
+            <button type="button" id="reset-view">Reset view</button>
+            <button type="button" id="fit-view">Fit all</button>
+          </div>
+        </div>
+
+        <div class="viewport" id="viewport">
+          <div class="reference-ghost" aria-hidden="true">
+            <img src="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-assemble-steps/assets/10-assemble-final-look-design.png" alt="" />
+          </div>
+          <div class="fallback-map" id="fallback-map" aria-hidden="true">
+            <div class="fallback-layer layer-shell">SHELL</div>
+            <div class="fallback-layer layer-frame">FRAME</div>
+            <div class="fallback-layer layer-dispense">DISPENSE</div>
+            <div class="fallback-layer layer-interface">INTERFACE</div>
+            <div class="fallback-layer layer-foundation">FEET</div>
+          </div>
+          <canvas id="model-canvas" aria-label="Interactive exploded 3D view"></canvas>
+          <div class="group-labels" aria-hidden="true">
+            <span>SHELL</span><span>FRAME</span><span>DISPENSING</span><span>INTERFACE</span><span>FOUNDATION</span>
+          </div>
+          <div class="viewport-help">DRAG TO ORBIT · SCROLL TO ZOOM · CLICK A PART TO INSPECT</div>
+        </div>
+
+        <div class="explode-control">
+          <div class="explode-copy">
+            <span>COMPACT</span>
+            <strong>Explode systems</strong>
+            <span>SEPARATED</span>
+          </div>
+          <input id="explode-range" type="range" min="0" max="100" value="74" aria-label="Exploded view amount" />
+        </div>
+      </div>
+
+      <aside class="inspector" aria-live="polite">
+        <div class="inspector-kicker">SELECTED PART</div>
+        <div id="inspector-content">
+          <div class="part-index">09 / V0</div>
+          <h2>Dispenser body</h2>
+          <p class="part-role">Common dispenser body for the reference product geometry.</p>
+          <div class="part-facts">
+            <div><span>GROUP</span><strong>Dispensing</strong></div>
+            <div><span>QTY</span><strong>×4</strong></div>
+            <div><span>FORMAT</span><strong>STL</strong></div>
+          </div>
+          <div class="version-card current">
+            <div><span>CURRENT</span><strong>V0 reference</strong></div>
+            <p>No replacement has been published for this part yet.</p>
+          </div>
+          <a class="source-link" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noreferrer">Open source model ↗</a>
+        </div>
+      </aside>
+    </section>
+
+    <section class="replacement-principle">
+      <div class="section-id">01 / PRODUCT EVOLUTION</div>
+      <div class="replacement-grid">
+        <h2>Never erase V0.<br>Layer the next part on top.</h2>
+        <div>
+          <p>Each physical part has a stable identity. A new model is added as a revision of that identity, not as an unexplained overwrite.</p>
+          <div class="revision-flow" aria-label="Replacement flow">
+            <span>V0<br><small>REFERENCE</small></span><i>→</i><span>V0.1<br><small>REPLACEMENT</small></span><i>→</i><span>V0.2<br><small>NEXT</small></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="parts-section" id="parts-board">
+      <div class="parts-heading">
+        <div>
+          <div class="section-id">02 / VERSIONED PARTS BOARD</div>
+          <h2>The machine, as replaceable units.</h2>
+        </div>
+        <p>Every card points back to the current file in the repository. When a replacement is added, the same card gains a revision history instead of disappearing.</p>
+      </div>
+      <div id="parts-groups"></div>
+    </section>
+
+    <section class="how-to-update" id="replacement-format">
+      <div class="section-id">03 / ADD ONE REPLACEMENT</div>
+      <div class="update-grid">
+        <div class="update-copy">
+          <h2>One new part.<br>One new record.</h2>
+          <p>You do not edit the V0 baseline. Add the new CAD file to the repository, then append one object to <code>replacements.js</code>. The page automatically makes the last revision current and keeps the previous model available for comparison.</p>
+        </div>
+        <pre><code>{
+  partId: "dispenser",
+  version: "V0.1",
+  title: "Wide product dispenser",
+  source: "replacements/v0.1/wide-dispenser.stl",
+  format: "stl",
+  date: "2026-10-20",
+  note: "What changed and why."
+}</code></pre>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div>
+        <span>OPEN PRODUCT / CONTINUOUS REVISION</span>
+        <h2>A machine people can understand is a machine people can improve.</h2>
+      </div>
+      <div class="cta-actions">
+        <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files" target="_blank" rel="noreferrer">Browse CAD source ↗</a>
+        <a href="index.html">Back to program page →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>HOW TO VEND ALMOST ANYTHING</span>
+    <span>Versioned exploded view · V0</span>
+  </footer>
+
+
+</body>
+</html>

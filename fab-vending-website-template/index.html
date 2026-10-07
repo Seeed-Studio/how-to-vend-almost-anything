@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How to Vend Almost Anything | Fab Lab Program V0</title>
+  <meta name="description" content="An open-source vending platform for Fab Labs. Start with XIAO, adapt the machine and catalog locally, and contribute reusable improvements back to the community." />
+  <meta property="og:title" content="How to Vend Almost Anything | Fab Lab Program V0" />
+  <meta property="og:description" content="One open vending machine in every Fab Lab. Version 0 is already buildable." />
+  <meta property="og:image" content="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-assemble-steps/assets/10-assemble-final-look-real-life.jpg" />
+  <meta name="theme-color" content="#f3f1e7" />
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="How to Vend Almost Anything home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>HOW TO VEND ALMOST ANYTHING</span>
+    </a>
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="#vision">Vision</a>
+      <a href="#v0">V0</a>
+      <a href="exploded.html">Exploded view</a>
+      <a href="#model">Open model</a>
+      <a href="#roadmap">Roadmap</a>
+      <a class="nav-cta" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <div class="eyebrow-row">
+          <span class="eyebrow">FAB LAB PROGRAM / VERSION 0</span>
+          <span class="live-dot">WORKING REFERENCE</span>
+        </div>
+        <h1>Put open hardware<br />within arm's reach.</h1>
+        <p class="hero-lede">
+          An open-source vending platform for Fab Labs. XIAO is the default starting stock;
+          every lab can adapt the machine, add what its community needs, and publish reusable improvements back to the commons.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#v0">Explore Version 0</a>
+          <a class="button button-quiet" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-assemble-steps" target="_blank" rel="noreferrer">Build the reference machine <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="hero-status" aria-label="Program status">
+          <div><strong>NOW</strong><span>Reference machine is buildable</span></div>
+          <div><strong>NEXT</strong><span>Pilot operating model</span></div>
+          <div><strong>LATER</strong><span>Fab Lab applications</span></div>
+        </div>
+      </div>
+
+      <figure class="hero-visual">
+        <div class="image-frame">
+          <img src="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-assemble-steps/assets/10-assemble-final-look-real-life.jpg" alt="Finished open-source vending machine reference build" />
+          <div class="image-label image-label-top">REFERENCE / 00</div>
+          <div class="image-label image-label-bottom">REAL BUILD · OPEN HARDWARE + SOFTWARE</div>
+        </div>
+        <figcaption>
+          <span>Version 0 is not a rendering.</span>
+          <span>It is assembled, flashed, stocked, and dispensing.</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="north-star" id="vision">
+      <div class="section-number">01 / NORTH STAR</div>
+      <div class="north-star-grid">
+        <h2>One open vending machine<br />in every Fab Lab.</h2>
+        <div class="north-star-copy">
+          <p>
+            A lab should not need a procurement cycle for every small board, sensor, cable, or locally useful part.
+            The machine becomes lightweight infrastructure: visible, nearby, refillable, and owned by the lab operating it.
+          </p>
+          <p>
+            The shared layer stays open. The local layer stays flexible. XIAO gives every deployment a common starting point without turning every lab into the same store.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="proof" id="v0">
+      <div class="section-heading">
+        <div>
+          <div class="section-number">02 / VERSION 0</div>
+          <h2>Proof before program.</h2>
+        </div>
+        <p>
+          Version 0 establishes the reference system first: hardware, software, assembly, operation, and real dispense flows.
+          The future Fab Lab program can build on evidence instead of a concept deck.
+        </p>
+      </div>
+
+      <div class="metrics" aria-label="Version 0 evidence metrics">
+        <div class="metric"><strong>4</strong><span>dispensing columns</span></div>
+        <div class="metric"><strong>10</strong><span>photographed build steps</span></div>
+        <div class="metric"><strong>2</strong><span>customer dispense modes</span></div>
+        <div class="metric"><strong>MIT</strong><span>repository license</span></div>
+      </div>
+
+      <div class="evidence-track" aria-label="Version 0 evidence">
+        <article class="evidence-card evidence-card-wide">
+          <div class="evidence-media">
+            <video controls preload="none" poster="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/assets/real-operation-order-dispense.jpg">
+              <source src="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/assets/real-operation-order-dispense.mp4" type="video/mp4" />
+              Your browser does not support embedded video.
+            </video>
+          </div>
+          <div class="evidence-meta"><span>01</span><strong>It dispenses in real operation.</strong><p>Direct-order and balance/selecting flows are already implemented on the reference machine.</p></div>
+        </article>
+
+        <article class="evidence-card">
+          <div class="evidence-media">
+            <img src="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/assets/3-operating-page-purchasing.jpeg" alt="Operator dashboard for creating orders and cards" />
+          </div>
+          <div class="evidence-meta"><span>02</span><strong>It has an operator system.</strong><p>Operate, inventory, and configuration are already part of the open software stack.</p></div>
+        </article>
+
+        <article class="evidence-card">
+          <div class="evidence-media">
+            <img src="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/assets/2-inventory-manage.jpeg" alt="Inventory management dashboard for the vending machine" />
+          </div>
+          <div class="evidence-meta"><span>03</span><strong>Stock is visible and refillable.</strong><p>Operators can track column inventory and refill state instead of treating the machine as a black box.</p></div>
+        </article>
+
+        <article class="evidence-card">
+          <div class="evidence-media">
+            <img src="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/assets/1-flashing-firmware.jpeg" alt="Configuration page used to flash device firmware" />
+          </div>
+          <div class="evidence-meta"><span>04</span><strong>Deployment is documented.</strong><p>The reference stack includes configuration and flashing flows, not only CAD files.</p></div>
+        </article>
+      </div>
+
+      <div class="source-row">
+        <span>Every proof point above comes from the current repository.</span>
+        <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noreferrer">Inspect the source <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <section class="system-section">
+      <div class="section-number">03 / THE SYSTEM</div>
+      <div class="system-grid">
+        <div class="system-intro">
+          <h2>A machine is only the visible layer.</h2>
+          <p>
+            The reusable product is the full system around it: an editable physical machine, local control software,
+            a default catalog, a refill practice, and an open path for each lab to adapt the deployment.
+          </p>
+        </div>
+        <div class="system-stack" role="list" aria-label="System layers">
+          <div class="stack-row" role="listitem"><span>01</span><strong>Open machine</strong><p>Printable and editable hardware, designed to be reproduced and changed.</p></div>
+          <div class="stack-row" role="listitem"><span>02</span><strong>Local operations</strong><p>Dashboard, inventory, device configuration, and dispense logic that a lab can run.</p></div>
+          <div class="stack-row" role="listitem"><span>03</span><strong>XIAO by default</strong><p>A common starting inventory that makes the network legible without limiting what a lab can add.</p></div>
+          <div class="stack-row" role="listitem"><span>04</span><strong>Local catalog</strong><p>Sensors, kits, adapters, or locally made parts can be added around the needs of each community.</p></div>
+          <div class="stack-row" role="listitem"><span>05</span><strong>Shared learning</strong><p>Useful remixes, fixes, deployment notes, and mechanisms can return to the open project.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="open-model" id="model">
+      <div class="section-heading compact-heading">
+        <div>
+          <div class="section-number">04 / OPEN PARTICIPATION MODEL</div>
+          <h2>Standardize the base.<br />Localize the rest.</h2>
+        </div>
+        <p>
+          The program should create a shared starting point without creating a centrally controlled catalog.
+          These are the proposed principles for the pilot phase; formal program terms will be published before applications open.
+        </p>
+      </div>
+
+      <div class="principles-grid">
+        <article class="principle"><span class="principle-id">A</span><h3>Start with XIAO</h3><p>Keep a useful selection of XIAO boards available as the common baseline across participating labs.</p></article>
+        <article class="principle"><span class="principle-id">B</span><h3>Vend what matters locally</h3><p>Add parts that shorten the path from idea to prototype in your own lab, city, school, or community.</p></article>
+        <article class="principle"><span class="principle-id">C</span><h3>Publish reusable improvements</h3><p>When you improve the machine, deployment process, or dispensing mechanism, make the reusable part visible to others.</p></article>
+        <article class="principle"><span class="principle-id">D</span><h3>Operate it as local infrastructure</h3><p>The lab owns the daily reality: placement, refill, maintenance, local assortment, and community fit.</p></article>
+      </div>
+
+      <div class="seeed-band">
+        <div>
+          <span class="seeed-kicker">BACKED BY SEEED STUDIO</span>
+          <h3>Reference hardware. XIAO ecosystem. Program support.</h3>
+        </div>
+        <p>
+          The pilot support package, eligibility, supply terms, and application process will be published when the program opens.
+          Version 0 stays focused on making the reference system inspectable and reproducible first.
+        </p>
+      </div>
+    </section>
+
+    <section class="roadmap" id="roadmap">
+      <div class="section-heading">
+        <div>
+          <div class="section-number">05 / PROPOSED ROLLOUT</div>
+          <h2>Build the network in public.</h2>
+        </div>
+        <p>The page itself can evolve with the project: today it is a status page; later it becomes the application and deployment entry point.</p>
+      </div>
+
+      <ol class="timeline">
+        <li class="is-now"><span class="timeline-index">00</span><div><strong>Reference machine</strong><p>Hardware, software, assembly guide, and real operation are published.</p></div><span class="timeline-state">NOW</span></li>
+        <li><span class="timeline-index">01</span><div><strong>Version 0 productization</strong><p>Turn the reference build into a cleaner package for repeatable Fab Lab deployment.</p></div><span class="timeline-state">NEXT</span></li>
+        <li><span class="timeline-index">02</span><div><strong>Pilot labs</strong><p>Run a small cohort, measure reliability, refill workload, product mix, and local adaptation needs.</p></div><span class="timeline-state">PILOT</span></li>
+        <li><span class="timeline-index">03</span><div><strong>Open applications</strong><p>Publish the Seeed-backed support package, eligibility, operating expectations, and application form.</p></div><span class="timeline-state">APPLY</span></li>
+        <li><span class="timeline-index">04</span><div><strong>Distributed network</strong><p>Share remixes and operating lessons so each new deployment starts from more collective knowledge.</p></div><span class="timeline-state">NETWORK</span></li>
+      </ol>
+    </section>
+
+    <section class="apply" id="apply">
+      <div class="apply-card">
+        <div class="apply-status"><span></span> APPLICATIONS NOT OPEN YET</div>
+        <h2>Build Version 0.<br />Help define Version 1.</h2>
+        <p>
+          The current call is not “apply now.” It is “inspect it, reproduce it, and tell us what a real Fab Lab deployment would need.”
+          When the pilot is ready, this page can become the application entry point.
+        </p>
+        <div class="apply-actions">
+          <a class="button button-primary" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noreferrer">Build V0 on GitHub <span aria-hidden="true">↗</span></a>
+          <a class="button button-quiet" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new" target="_blank" rel="noreferrer">Tell us what your lab needs <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <span class="brand-mark" aria-hidden="true"></span>
+      <strong>HOW TO VEND ALMOST ANYTHING</strong>
+    </div>
+    <p>Open-source reference under the MIT License · Seeed Studio · 2026</p>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+</body>
+</html>

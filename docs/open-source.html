@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Open-source stack | How to Vend Almost Anything</title>
+  <meta name="theme-color" content="#111715" />
+  <style>
+    :root{--ink:#111715;--paper:#f2f1e8;--green:#9fd21b;--muted:#5e6964;--line:rgba(17,23,21,.18)}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:inherit}.top{height:60px;padding:0 clamp(20px,4vw,60px);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);font-size:11px;font-weight:800;letter-spacing:.1em}.wrap{max-width:1180px;margin:auto;padding:90px clamp(22px,4vw,50px) 130px}.k{font-size:10px;font-weight:900;letter-spacing:.15em;color:var(--muted)}h1{font-size:clamp(56px,8vw,118px);line-height:.85;letter-spacing:-.065em;margin:22px 0 50px}h1 em{font-style:normal;color:#214f3e}.lead{font-size:20px;line-height:1.55;max-width:760px;color:#45514c;margin-bottom:70px}.grid{border-top:1px solid var(--line)}.item{display:grid;grid-template-columns:1fr 1.6fr auto;gap:24px;padding:22px 0;border-bottom:1px solid var(--line);align-items:start}.item h2{font-size:20px;margin:0}.item p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}.item small{font-size:9px;letter-spacing:.12em;color:#6f7a74}.note{margin-top:60px;padding:22px;border:1px solid var(--line);font-size:12px;line-height:1.7;color:var(--muted)}@media(max-width:700px){.item{grid-template-columns:1fr}.top span:last-child{display:none}}
+  </style>
+</head>
+<body>
+  <header class="top"><a href="exploded.html">← EXPLODED MACHINE</a><span>OPEN-SOURCE STACK / V0</span></header>
+  <main class="wrap">
+    <div class="k">OPEN PRODUCT / OPEN TOOLCHAIN</div>
+    <h1>Built with tools<br>people can <em>inspect.</em></h1>
+    <p class="lead">The public viewer is intentionally built from open web and CAD tooling. Source CAD remains in the repository; browser derivatives and runtime libraries should stay traceable to their upstream projects and licenses.</p>
+    <div class="grid">
+      <div class="item"><h2><a href="https://threejs.org/">Three.js ↗</a></h2><p>Primary WebGL renderer for the custom exploded scene, orbit controls, STL display, selection and revision interaction.</p><small>MIT</small></div>
+      <div class="item"><h2><a href="https://github.com/kovacsv/occt-import-js">occt-import-js ↗</a></h2><p>Open CASCADE/WebAssembly import layer used to triangulate STEP files in the browser for the V0 source-model path.</p><small>LGPL-2.1</small></div>
+      <div class="item"><h2><a href="https://github.com/kovacsv/Online3DViewer">Online 3D Viewer ↗</a></h2><p>Useful reference and conversion tool: it supports many CAD/mesh formats including STEP and STL, and can export glTF.</p><small>MIT</small></div>
+      <div class="item"><h2><a href="https://gltf-transform.dev/">glTF Transform ↗</a></h2><p>Recommended build-stage tool for cleaning, validating and optimizing web GLB derivatives.</p><small>MIT</small></div>
+      <div class="item"><h2><a href="https://github.com/zeux/meshoptimizer">meshoptimizer / gltfpack ↗</a></h2><p>Recommended mesh optimization and compression layer when the number of parts and revisions grows.</p><small>MIT</small></div>
+      <div class="item"><h2><a href="https://modelviewer.dev/">&lt;model-viewer&gt; ↗</a></h2><p>Optional lightweight viewer for a single replacement part, mobile-friendly preview, or future AR entry point.</p><small>Apache-2.0</small></div>
+      <div class="item"><h2><a href="https://www.blender.org/">Blender ↗</a></h2><p>Optional authoring/cleanup tool for staging, normals, materials and GLB export when a manual asset pass is useful.</p><small>GPL</small></div>
+    </div>
+    <div class="note"><strong>Deployment note.</strong> The V0 page references Three.js and occt-import-js from CDNs. If future production deployment vendors or redistributes those files directly, preserve the applicable license notices and upstream/source information. See <a href="THIRD_PARTY_NOTICES.md">THIRD_PARTY_NOTICES.md</a> in this package for the engineering inventory.</div>
+  </main>
+</body>
+</html>
