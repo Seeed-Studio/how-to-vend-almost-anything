@@ -1,0 +1,82 @@
+{
+  "updated_at": "2026-10-08",
+  "standards": [
+    {
+      "id": "part-identifiers",
+      "title": "零件编号与版本",
+      "summary": "稳定的零件编号；加入替换件时保留 Version Zero。",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "mechanical-interfaces",
+      "title": "机械接口与安装尺寸",
+      "summary": "替换零件必须遵守的孔、面和外形范围。",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "dispensing-modules",
+      "title": "被接受的出货模块定义",
+      "summary": "什么算作出货模块，以及它可以替换哪些参考零件。",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "product-dimensions",
+      "title": "兼容的产品尺寸",
+      "summary": "给定货道和出货机构能装下的包装尺寸。",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "electrical-interfaces",
+      "title": "电气与通信接口",
+      "summary": "参考搭建使用的电源、舵机总线、RFID 和网络连接。",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "software-contracts",
+      "title": "软件集成约定",
+      "summary": "替换控制器仍应遵守的验卡、结账和出货事件。",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "safety-maintenance",
+      "title": "机器安全与维护",
+      "summary": "实验室把机器留在别人可以使用的地方之前要做的检查。",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "inventory-information",
+      "title": "库存信息",
+      "summary": "一条目录和最近确认的数量有什么不同。",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "replacement-compatibility",
+      "title": "替换零件的兼容性",
+      "summary": "一个新零件对周围机器做了哪些假设。",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "documentation-testing",
+      "title": "文档与测试要求",
+      "summary": "替换件被显示为当前之前，应有的说明和证据。",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "installation-verification",
+      "title": "安装与目录核实",
+      "summary": "机器或产品出现在公开地图之前，审核者要核对什么。",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    }
+  ]
+}

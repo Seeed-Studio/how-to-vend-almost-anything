@@ -1,0 +1,62 @@
+name: Improve the dispensing mechanism
+description: Propose a tested change to how the reference machine releases a product.
+title: "[Dispensing]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The reference dispenser is in `xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/dispenser.stl`. Leave Version Zero in place and add a replacement.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+    validations:
+      required: true
+  - type: input
+    id: part-id
+    attributes:
+      label: Part id
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+    validations:
+      required: true
+  - type: input
+    id: source-cad
+    attributes:
+      label: Source CAD
+    validations:
+      required: true
+  - type: textarea
+    id: purpose
+    attributes:
+      label: Purpose
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility assumptions
+    validations:
+      required: true
+  - type: textarea
+    id: test-evidence
+    attributes:
+      label: Test evidence
+    validations:
+      required: true
+  - type: input
+    id: attribution
+    attributes:
+      label: Attribution
+    validations:
+      required: true
+  - type: input
+    id: license
+    attributes:
+      label: License
+    validations:
+      required: true

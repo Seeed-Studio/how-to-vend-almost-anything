@@ -1,0 +1,63 @@
+name: Submit an open-source improvement
+description: Propose a reusable machine change. Version Zero files stay in place.
+title: "[Improvement]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A replacement is appended. It does not overwrite the Version Zero CAD. An alternative part is not automatically a newer revision.
+  - type: input
+    id: part-id
+    attributes:
+      label: Part id
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+    validations:
+      required: true
+  - type: input
+    id: source-cad
+    attributes:
+      label: Source CAD path or URL
+    validations:
+      required: true
+  - type: textarea
+    id: purpose
+    attributes:
+      label: Purpose
+    validations:
+      required: true
+  - type: input
+    id: replaces
+    attributes:
+      label: Replaces
+      description: Part id of the previous revision, or "none" if this is an alternative rather than a successor.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility assumptions
+    validations:
+      required: true
+  - type: textarea
+    id: test-evidence
+    attributes:
+      label: Test evidence
+    validations:
+      required: true
+  - type: input
+    id: attribution
+    attributes:
+      label: Attribution
+    validations:
+      required: true
+  - type: input
+    id: license
+    attributes:
+      label: License
+    validations:
+      required: true

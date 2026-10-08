@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Exploded Machine | How to Vend Almost Anything</title>
+  <meta name="description" content="Explore the XIAO vending machine as a versioned exploded system. Inspect the current open-source models and follow each replacement as the design evolves." />
+  <meta name="theme-color" content="#003a4a" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/pages.css" />
+  <link rel="stylesheet" href="exploded.css" />
+  <link rel="stylesheet" href="assets/css/section-nav.css" />
+</head>
+<body>
+  <a class="skip-link" href="#explorer">Skip to explorer</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="identity" href="index.html" aria-label="Fab Lab Vending homepage">
+        <span class="identity-symbol" aria-hidden="true">+</span>
+        <span class="identity-label"><strong>Fab Lab Vending</strong><small>OPEN HARDWARE INITIATIVE</small></span>
+      </a>
+      <nav class="nav" aria-label="Main pages">
+        <a href="index.html">01 / Vision</a>
+        <a href="journey.html">02 / Journey</a>
+        <a href="network.html">03 / Network</a>
+        <a class="nav-github" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a class="nav-lang" href="../ch/exploded.html" hreflang="zh-Hans" lang="zh-Hans">中文</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="explorer-shell" id="explorer">
+      <aside class="group-rail" aria-label="System groups">
+        <div class="rail-title">SYSTEM BULKS</div>
+        <button class="group-button active" data-group="all"><span>00</span><strong>Whole machine</strong><small>All modeled parts</small></button>
+        <div id="group-buttons"></div>
+        <div class="rail-note">Every part uses the same CAD scale, so a small foot stays small beside the enclosure. Positions are arranged for clarity and are not assembly coordinates.</div>
+      </aside>
+
+      <div class="viewport-panel">
+        <div class="viewport-topbar">
+          <div>
+            <span class="view-label">INTERACTIVE MODEL MAP</span>
+            <span class="load-state" id="load-state">Loading V0 display models…</span>
+            <span class="selection-line" id="selection-line"></span>
+          </div>
+          <div class="view-actions">
+            <button type="button" id="reset-view">Reset view</button>
+            <button type="button" id="fit-view">Fit all</button>
+          </div>
+        </div>
+
+        <div class="viewport" id="viewport">
+          <div class="reference-ghost" aria-hidden="true">
+            <img src="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-assemble-steps/assets/10-assemble-final-look-design.png" alt="" />
+          </div>
+          <div class="fallback-map" id="fallback-map" aria-hidden="true">
+            <div class="fallback-layer layer-shell">SHELL</div>
+            <div class="fallback-layer layer-frame">FRAME</div>
+            <div class="fallback-layer layer-dispense">DISPENSE</div>
+            <div class="fallback-layer layer-interface">INTERFACE</div>
+            <div class="fallback-layer layer-foundation">FEET</div>
+          </div>
+          <canvas id="model-canvas" aria-label="Interactive exploded 3D view"></canvas>
+          <div class="group-labels" aria-hidden="true">
+            <span>SHELL</span><span>FRAME</span><span>DISPENSING</span><span>INTERFACE</span><span>FOUNDATION</span>
+          </div>
+          <div class="viewport-help">DRAG TO ORBIT · SCROLL TO ZOOM · CLICK A PART TO INSPECT</div>
+        </div>
+
+        <div class="explode-control">
+          <div class="explode-copy">
+            <span>COMPACT</span>
+            <strong>Explode systems</strong>
+            <span>SEPARATED</span>
+          </div>
+          <input id="explode-range" type="range" min="0" max="100" value="74" aria-label="Exploded view amount" />
+        </div>
+      </div>
+
+      <aside class="inspector" aria-live="polite">
+        <div class="inspector-kicker">SELECTED PART</div>
+        <div id="inspector-content">
+          <div class="part-index">09 / V0</div>
+          <h2>Dispenser body</h2>
+          <p class="part-role">Common dispenser body for the reference product geometry.</p>
+          <div class="part-facts">
+            <div><span>GROUP</span><strong>Dispensing</strong></div>
+            <div><span>QTY</span><strong>×4</strong></div>
+            <div><span>FORMAT</span><strong>STL</strong></div>
+          </div>
+          <a class="source-link" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noreferrer">Open source model ↗</a>
+        </div>
+      </aside>
+    </section>
+
+    <section class="intro">
+      <div class="intro-kicker"><span class="pulse"></span> PRODUCT SYSTEM / LIVE SOURCE MODELS</div>
+      <h1>Explode it.<br><em>Replace it.</em><br>Improve it.</h1>
+      <div class="intro-copy">
+        <p>
+          The machine is not a fixed object. It is a stack of replaceable parts. This page turns the current V0 CAD files into a visible product system, then keeps every new replacement attached to the part it supersedes.
+        </p>
+        <div class="intro-meta">
+          <span><strong id="part-count">18</strong> modeled parts</span>
+          <span><strong>5</strong> system groups</span>
+          <span><strong>V0</strong> reference baseline</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="replacement-principle" id="evolution">
+      <div class="section-id">01 / PRODUCT EVOLUTION</div>
+      <div class="replacement-grid">
+        <h2>Never erase V0.<br>Layer the next part on top.</h2>
+        <div>
+          <p>Each physical part has a stable identity. A new model is added as a revision of that identity, not as an unexplained overwrite.</p>
+          <div class="revision-flow" aria-label="Replacement flow">
+            <span>V0<br><small>REFERENCE</small></span><i>→</i><span>V0.1<br><small>REPLACEMENT</small></span><i>→</i><span>V0.2<br><small>NEXT</small></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-update" id="replacement-format">
+      <div class="section-id">02 / ADD ONE REPLACEMENT</div>
+      <div class="update-grid">
+        <div class="update-copy">
+          <h2>One new part.<br>One new record.</h2>
+          <p>You do not edit the V0 baseline. Add the new CAD file to the repository, then append one object to <code>replacements.js</code>. The page automatically makes the last revision current and keeps the previous model available for comparison.</p>
+        </div>
+        <pre><code>{
+  partId: "dispenser",
+  version: "V0.1",
+  title: "Wide product dispenser",
+  source: "replacements/v0.1/wide-dispenser.stl",
+  format: "stl",
+  date: "2026-10-20",
+  note: "What changed and why."
+}</code></pre>
+      </div>
+    </section>
+
+    <section class="display-standard" id="display-standard">
+      <div class="section-id">03 / 3D DISPLAY STANDARD</div>
+      <div class="standard-heading">
+        <h2>Make the model feel like a product,<br>not a CAD viewport.</h2>
+        <p>The page should preserve engineering truth while presenting the machine with one consistent visual language. These rules apply to V0 and every replacement that follows.</p>
+      </div>
+      <div class="standard-grid">
+        <article>
+          <span class="standard-no">01</span>
+          <h3>Camera</h3>
+          <p>Open on a three-quarter, slightly elevated view. Keep the machine readable at first glance. No permanent auto-spin; motion only follows user intent.</p>
+        </article>
+        <article>
+          <span class="standard-no">02</span>
+          <h3>Material</h3>
+          <p>Use matte, low-metalness CAD materials. System colors identify groups; color is not decoration. Avoid photoreal textures unless the real surface matters.</p>
+        </article>
+        <article>
+          <span class="standard-no">03</span>
+          <h3>Focus</h3>
+          <p>The selected/current part becomes lime. Non-selected geometry recedes. When an internal part is selected, the enclosure may ghost rather than disappear.</p>
+        </article>
+        <article>
+          <span class="standard-no">04</span>
+          <h3>Explosion</h3>
+          <p>Move parts along stable system directions and preserve spatial relationships. Default to a readable editorial explosion, while 0% always returns to the compact system.</p>
+        </article>
+        <article>
+          <span class="standard-no">05</span>
+          <h3>Labels</h3>
+          <p>Show stable part ID, human name, group, quantity and revision. Keep labels outside the geometry when possible and never cover the object with paragraph text.</p>
+        </article>
+        <article>
+          <span class="standard-no">06</span>
+          <h3>Motion</h3>
+          <p>Use short ease-out transitions for focus, filtering and replacement changes. Respect reduced-motion settings and never require animation to understand the state.</p>
+        </article>
+      </div>
+      <div class="model-states" aria-label="Model state display rules">
+        <div><i class="state-swatch current"></i><span>CURRENT</span><strong>Solid + lime focus</strong></div>
+        <div><i class="state-swatch baseline"></i><span>V0 BASELINE</span><strong>Neutral engineering material</strong></div>
+        <div><i class="state-swatch previous"></i><span>PREVIOUS</span><strong>Ghosted / lower opacity</strong></div>
+        <div><i class="state-swatch proposed"></i><span>PROPOSED</span><strong>Outline or dashed, never mistaken for released</strong></div>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div>
+        <span>OPEN PRODUCT / CONTINUOUS REVISION</span>
+        <h2>A machine people can understand is a machine people can improve.</h2>
+      </div>
+      <div class="cta-actions">
+        <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files" target="_blank" rel="noreferrer">Browse CAD source ↗</a>
+        <a href="journey.html#evolution">Back to the journey →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-inner">
+        <div>
+          <strong>Fab Lab Vending</strong>
+          <p>Versioned exploded view of the Version Zero reference. Positions are for explanation, not assembly coordinates.</p>
+        </div>
+        <div class="footer-links">
+          <a href="index.html">Vision</a>
+          <a href="journey.html">Journey</a>
+          <a href="network.html">Network</a>
+          <a href="exploded.html">Reference machine</a>
+          <a href="open-source.html">Open-source notices</a>
+          <a href="https://www.seeedstudio.com/blog/branding-kit/" target="_blank" rel="noopener noreferrer">Seeed branding</a>
+          <a href="SITE.md">Site guide</a>
+        </div>
+      </div>
+      <p class="footer-note">Three.js and occt-import-js load from a CDN for this viewer. Source CAD stays in the repository. See the open-source notices for licenses.</p>
+    </div>
+  </footer>
+
+  <nav class="section-nav" aria-label="Page sections">
+    <ol id="section-nav-list">
+      <li><a href="#explorer"><span class="section-nav-index">01</span><span class="section-nav-name">Model</span></a></li>
+      <li><a href="#evolution"><span class="section-nav-index">02</span><span class="section-nav-name">Evolution</span></a></li>
+      <li><a href="#replacement-format"><span class="section-nav-index">03</span><span class="section-nav-name">Replacement</span></a></li>
+      <li><a href="#display-standard"><span class="section-nav-index">04</span><span class="section-nav-name">Display</span></a></li>
+    </ol>
+    <button class="section-nav-toggle" type="button" aria-expanded="false" aria-controls="section-nav-list">
+      <span data-section-current>01</span><span aria-hidden="true">/</span><span>04</span>
+    </button>
+  </nav>
+  <script src="assets/js/section-nav.js"></script>
+
+  <script src="parts-manifest.js"></script>
+  <script src="replacements.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/occt-import-js@0.0.24/dist/occt-import-js.js"></script>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="exploded.js?v=inspector"></script>
+</body>
+</html>

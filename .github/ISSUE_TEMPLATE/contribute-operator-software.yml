@@ -1,0 +1,32 @@
+name: Improve the operator software
+description: Report or propose a change to the Operate, Inventory, or Config pages.
+title: "[Operator software]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Source lives in `xiao-vending-machine-full-code-system/backend-full`.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce it
+    validations:
+      required: true
+  - type: input
+    id: files
+    attributes:
+      label: Relevant source files
+    validations:
+      required: true

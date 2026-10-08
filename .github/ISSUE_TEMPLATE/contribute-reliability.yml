@@ -1,0 +1,29 @@
+name: Test machine reliability
+description: Report repeated dispense trials or a failure. This is not a safety certification.
+title: "[Reliability]: "
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Machine version tested
+    validations:
+      required: true
+  - type: input
+    id: cycles
+    attributes:
+      label: What you repeated
+      description: For example, number of dispense cycles and which mode.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: What failed or held
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Where the notes and any recording live
+    validations:
+      required: true

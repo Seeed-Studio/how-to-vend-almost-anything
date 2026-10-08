@@ -1,0 +1,41 @@
+name: Register interest
+description: Tell the project that a Fab Lab wants to follow the vending work. This does not install a machine or join a supply program.
+title: "[Lab interest]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A maintainer reviews this issue before any lab is added to `websites/en/data/labs.json` and `websites/ch/data/labs.json`. Registering interest does not create a map pin for a vending machine.
+  - type: input
+    id: lab-name
+    attributes:
+      label: Fab Lab name
+    validations:
+      required: true
+  - type: input
+    id: city
+    attributes:
+      label: City
+    validations:
+      required: true
+  - type: input
+    id: country
+    attributes:
+      label: Country
+    validations:
+      required: true
+  - type: input
+    id: fablabs-url
+    attributes:
+      label: Official FabLabs.io profile
+      description: Full https URL, if the lab has one.
+  - type: input
+    id: website
+    attributes:
+      label: Lab website
+  - type: textarea
+    id: note
+    attributes:
+      label: What the lab wants to know or try
+    validations:
+      required: true

@@ -1,0 +1,26 @@
+name: Create deployment documentation
+description: Write steps a second lab still has to invent. Mark gaps instead of filling them with guesses.
+title: "[Deployment docs]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Start from `xiao-vending-machine-assemble-steps/README.md` and `xiao-vending-machine-full-code-system/scripts/start_backend.sh`.
+  - type: textarea
+    id: gap
+    attributes:
+      label: What a second lab still has to figure out
+    validations:
+      required: true
+  - type: textarea
+    id: proposed
+    attributes:
+      label: Proposed checklist
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Repository files each step relies on
+    validations:
+      required: true

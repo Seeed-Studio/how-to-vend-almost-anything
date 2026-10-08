@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>旅程 · 如何售出几乎一切</title>
+  <meta name="description" content="开源售货参考机现在到了哪一步，哪些只是计划，哪些部分还需要贡献者。" />
+  <meta name="theme-color" content="#003a4a" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/pages.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="identity" href="index.html" aria-label="Fab Lab 售货首页">
+        <span class="identity-symbol" aria-hidden="true">+</span>
+        <span class="identity-label"><strong>Fab Lab 售货</strong><small>开源硬件计划</small></span>
+      </a>
+      <nav class="nav" aria-label="主要页面">
+        <a href="index.html">01 / 愿景</a>
+        <a href="journey.html" aria-current="page">02 / 旅程</a>
+        <a href="network.html">03 / 网络</a>
+        <a class="nav-github" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a class="nav-lang" href="../en/journey.html" hreflang="en" lang="en">EN</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <header class="shell page-hero" id="top">
+      <p class="eyebrow">旅程</p>
+      <h1>从一台开放的机器，到一套全球都能沿用的做法。</h1>
+      <p class="lede">顺着参考样机、仍然需要人来做的改进，以及售货机能够在各个 Fab Lab 复制之前必须完成的工作往下看。已完成的条目链到证据。计划中的条目还没开始。</p>
+    </header>
+
+    <section class="shell section" id="timeline">
+      <h2 class="visually-hidden">时间线</h2>
+      <p id="data-error" class="empty-note" hidden></p>
+      <noscript><p>这条路线从 JSON 加载。请启用 JavaScript，或直接阅读 <a href="data/roadmap.json">roadmap.json</a> directly.</p></noscript>
+      <div class="phases" id="phases"></div>
+    </section>
+
+    <div class="section-alt">
+      <section class="shell section" id="implementation">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">实现</p>
+            <h2>九个系统，各自有状态。</h2>
+          </div>
+          <p>已完成表示参考仓库里已经有它。进行中表示公开的提交路径存在，而网络还不存在。需要贡献者是一个开放问题。计划中表示还没做。</p>
+        </div>
+        <form class="filters" id="filters">
+          <label>系统
+            <select id="filter-system">
+              <option value="all">全部系统</option>
+            </select>
+          </label>
+          <label>状态
+            <select id="filter-status">
+              <option value="all">全部状态</option>
+              <option value="done">已完成</option>
+              <option value="in_progress">进行中</option>
+              <option value="needs_contributors">需要贡献者</option>
+              <option value="planned">计划中</option>
+            </select>
+          </label>
+          <label>机会
+            <select id="filter-opportunity">
+              <option value="any">全部模块</option>
+              <option value="open">开放的贡献</option>
+            </select>
+          </label>
+        </form>
+        <div class="module-grid" id="modules"></div>
+      </section>
+    </div>
+
+    <section class="shell section" id="evolution">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">产品演进</p>
+          <h2>Version Zero 保持完整。</h2>
+        </div>
+        <p>交互模型就是爆炸图。这份清单是同一批零件，并附有源 CAD。替换件是追加的，不会抹掉上一个文件。针对特定产品的出货机构是替代件，不是通用出货机构的下一版。</p>
+      </div>
+      <p><a class="btn btn-primary" href="exploded.html">打开爆炸图</a></p>
+      <p id="model-note" class="empty-note" style="margin: 16px 0"></p>
+      <div id="parts"></div>
+      <h3 style="margin: 28px 0 12px">已提交的替换件</h3>
+      <div class="part-grid" id="replacements"></div>
+    </section>
+
+    <div class="section-alt">
+      <section class="shell section" id="standards-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">从能工作的原型到共享标准</p>
+            <h2>从能工作的原型到共享标准。</h2>
+          </div>
+          <p>成熟度从想法、草稿、审核中到已接受。下面每一条都还是想法。没有一条是已批准的行业标准。</p>
+        </div>
+        <div class="standard-grid" id="standards"></div>
+      </section>
+    </div>
+
+    <section class="shell section" id="contribute">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">贡献</p>
+          <h2>有着手处的问题。</h2>
+        </div>
+        <p>每张卡片打开一份 GitHub issue 表单。工作仍然要人来做。表单会问问题、涉及的文件，以及“完成”是什么意思。设计替换件还会要求零件编号、CAD、版本、兼容性、测试证据、署名和许可。</p>
+      </div>
+      <div class="contrib-grid" id="contributions"></div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-inner">
+        <div>
+          <strong>Fab Lab 售货</strong>
+          <p>由矽递科技发起、面向 Fab Lab 的开源参考项目。</p>
+        </div>
+        <div class="footer-links">
+          <a href="index.html">愿景</a>
+          <a href="journey.html">旅程</a>
+          <a href="network.html">网络</a>
+          <a href="exploded.html">参考机器</a>
+          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">源代码 ↗</a>
+          <a href="open-source.html">开源声明</a>
+          <a href="https://www.seeedstudio.com/blog/branding-kit/" target="_blank" rel="noopener noreferrer">矽递品牌</a>
+          <a href="SITE.md">站点说明</a>
+          <a href="#top">回到顶部</a>
+        </div>
+      </div>
+      <p class="footer-note">参考硬件与软件发布在本仓库中。本站描述的项目支持、XIAO 供应和 Fab Lab 合作在确认之前都只是提议。这不是 Fab Foundation 的官方项目。页眉里的加号是项目符号，不是矽递科技的标志。正式标志见 <a href="https://www.seeedstudio.com/blog/branding-kit/">矽递品牌规范</a>.</p>
+    </div>
+  </footer>
+  <script src="replacements.js"></script>
+  <script src="assets/js/journey.js"></script>
+</body>
+</html>

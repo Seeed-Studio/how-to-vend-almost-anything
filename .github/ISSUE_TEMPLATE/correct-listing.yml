@@ -1,0 +1,29 @@
+name: Correct an existing listing
+description: Point at a lab, machine, product, or directory record that is wrong.
+title: "[Correction]: "
+body:
+  - type: input
+    id: record
+    attributes:
+      label: Record
+      description: Lab, machine, or product id, or the name as shown on the site.
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What is wrong
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: What it should say
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Evidence URL
+    validations:
+      required: true

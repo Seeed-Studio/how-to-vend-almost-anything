@@ -1,0 +1,9 @@
+{
+  "source": "https://www.fablabs.io/",
+  "attribution": "当此文件包含实验室时，名称和坐标来自 FabLabs.io API。名录条目不是参与这个售货项目，也不是 Fab Foundation 的背书。",
+  "api_base": null,
+  "fetched_at": null,
+  "status": "awaiting_token",
+  "note": "每日 GitHub Action 没有配置 FabLabs.io 访问令牌。GitHub Pages 不能登录。见 FABLABS_DIRECTORY.md。",
+  "labs": []
+}

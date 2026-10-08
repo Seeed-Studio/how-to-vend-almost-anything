@@ -1,0 +1,50 @@
+name: Add or update a product listing
+description: Name a product at a reviewed machine. A listing is not a claim that it is in stock.
+title: "[Product listing]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Stock and prices are not collected here. Use the availability form for a dated confirmation.
+  - type: input
+    id: lab-name
+    attributes:
+      label: Fab Lab name
+    validations:
+      required: true
+  - type: input
+    id: machine
+    attributes:
+      label: Machine
+      description: Version or machine id, if one has already been reviewed.
+    validations:
+      required: true
+  - type: input
+    id: product
+    attributes:
+      label: Product name
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Seeed Studio XIAO
+        - Electronics and components
+        - Locally fabricated items
+        - Educational kits
+        - Tools and accessories
+        - Other supported products
+    validations:
+      required: true
+  - type: input
+    id: product-url
+    attributes:
+      label: Product URL
+      description: Optional public page. Leave blank if there is none.
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Say if this product is made by the lab. Do not claim a live count.

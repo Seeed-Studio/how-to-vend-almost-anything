@@ -1,0 +1,187 @@
+{
+  "updated_at": "2026-10-08",
+  "modules": [
+    {
+      "id": "mechanical",
+      "name": "机械结构与外壳",
+      "system": "mechanical",
+      "purpose": "参考机可打印、可编辑的机体。",
+      "status": "done",
+      "existing": "STEP 外壳文件、STL 结构，以及完成外壳的装配照片。",
+      "missing": "供实验室专用面板和产品仓使用的共享安装尺寸。",
+      "contribution": "提出一套安装接口，同时不要就地替换 Version Zero 的文件。",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "一份别的实验室可以照着加工的接口草稿。"
+    },
+    {
+      "id": "dispensing",
+      "name": "出货机构",
+      "system": "dispensing",
+      "purpose": "后端授权卡片之后放出一件产品。",
+      "status": "done",
+      "existing": "四列出货机构、舵机驱动的摆臂，以及已录制的直接出货和余额出货。",
+      "missing": "针对参考货道装不下的产品尺寸，经过测试的机构。",
+      "contribution": "设计一个替换出货机构，附上零件编号、CAD、兼容性和一次出货测试。",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/websites/en/assets/real-operation-order-dispense.mp4",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "一个经过审核的替代出货机构，并且不覆盖 Version Zero。"
+    },
+    {
+      "id": "electronics",
+      "name": "电子与控制",
+      "system": "electronics",
+      "purpose": "感应卡片、驱动舵机，并和后端通信。",
+      "status": "done",
+      "existing": "两台 Wio Terminal、飞特 ST3215 总线舵机和一只 RFID 读卡器。控制器不是 XIAO。",
+      "missing": "以后的控制重新设计应成为新版本，而不是悄悄替换。",
+      "contribution": "在提议为当前方案之前，对照现有接线记录控制改动。",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "一份参考搭建的简短电气接口说明。"
+    },
+    {
+      "id": "software",
+      "name": "固件与后端软件",
+      "system": "software",
+      "purpose": "授权卡片、规划出货，并记录结果。",
+      "status": "done",
+      "existing": "Wio 固件、点亮草图，以及带运营、库存和配置的 Node.js 后端。",
+      "missing": "给改变了机构或产品映射的实验室一份写下来的软件约定。",
+      "contribution": "按写明的验收检查来改进操作员软件。",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-full-code-system/backend-full",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-operator-software.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "一份写明验卡、结账和出货完成的 API 说明。"
+    },
+    {
+      "id": "operations",
+      "name": "机器运营与库存",
+      "system": "operations",
+      "purpose": "让操作员看到货道、补货并发卡。",
+      "status": "done",
+      "existing": "参考仪表盘上的库存数量、补货状态和写卡。",
+      "missing": "一套面向不止一台机器的补货流程和可靠性记录。",
+      "contribution": "做重复出货试验，并公布失败了什么。",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/websites/en/assets/2-inventory-manage.jpeg",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-reliability.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "一段真实运营中的故障与补货记录。"
+    },
+    {
+      "id": "products",
+      "name": "产品兼容性与 XIAO 供应",
+      "system": "products",
+      "purpose": "说明机器能装什么，以及共享的默认产品可能是什么。",
+      "status": "planned",
+      "existing": "参考货道是存在的。XIAO 被命名为打算采用的默认产品类别，不是某台机器里的库存。",
+      "missing": "产品外形范围、陈列设想，以及任何已确认的供应。",
+      "contribution": "用尺寸和源模型定义一个产品模块。",
+      "evidence_url": "",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-product-module.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "一份尺寸说明：参考货道能装下的一件真实产品。"
+    },
+    {
+      "id": "deployment",
+      "name": "Fab Lab 部署与支持",
+      "system": "deployment",
+      "purpose": "把一次搭建变成另一个实验室能立起来、以后还能申请加入的东西。",
+      "status": "needs_contributors",
+      "existing": "单机装配指南、物料清单和后端启动脚本。",
+      "missing": "试点标准、支持方式，以及假设房间和网络都不同的部署说明。",
+      "contribution": "写下第二个实验室现在还得自己发明的步骤。",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/xiao-vending-machine-assemble-steps/README.md",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-deployment-docs.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "一份对照参考搭建审核过的部署清单。"
+    },
+    {
+      "id": "community",
+      "name": "社群基础设施",
+      "system": "community",
+      "purpose": "公开接收实验室提交，只发布有人核对过的内容。",
+      "status": "in_progress",
+      "existing": "本站和 GitHub Issue 表单。Pages 自己不能保存一份私密提交。",
+      "missing": "审核过的实验室记录、机器照片，以及日后取代 issue 队列的后端。",
+      "contribution": "登记兴趣，或在审核之后维护 JSON。",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=register-interest.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "如果有实验室提交，就产生第一条审核过的实验室记录。"
+    },
+    {
+      "id": "standards",
+      "name": "标准与核实",
+      "system": "standards",
+      "purpose": "在零件或目录成为“当前”之前，先约定编号、接口和必须做的检查。",
+      "status": "planned",
+      "existing": "Version Zero 清单里的零件编号，以及替换件只能追加的规则。",
+      "missing": "每一条提议中的标准。没有一条被接受。",
+      "contribution": "起草一条接口或文档规则，并把它标为想法。",
+      "evidence_url": "",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "一份写下来的草稿，仍然标为想法或草稿，不是已接受。"
+    }
+  ],
+  "contributions": [
+    {
+      "id": "improve-dispensing",
+      "title": "改进出货机构",
+      "problem": "参考出货机构只适合一种产品外形。其他包装会卡住、晃动或装不进去。",
+      "expected_output": "一个带版本的出货替换件：零件编号、源 CAD、它替换什么，以及一次简短的出货测试。",
+      "source_files": "xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/dispenser.stl",
+      "acceptance": "Version Zero 的文件保持不变。说明要写明兼容性并包含测试证据。",
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml"
+    },
+    {
+      "id": "product-module",
+      "title": "设计一个新产品模块",
+      "problem": "实验室需要一种办法来描述机器能装下的本地产品，而这和把该产品开源是两件事。",
+      "expected_output": "零件编号、源 CAD 或尺寸图、版本、用途和兼容性假设。",
+      "source_files": "websites/en/parts-manifest.js and websites/en/replacements.js",
+      "acceptance": "提交要区分替代零件和新修订，并写明 CAD 的许可。",
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-product-module.yml"
+    },
+    {
+      "id": "reliability",
+      "title": "测试机器可靠性",
+      "problem": "仓库说明出货是能工作的。它没有公布重复试验或故障记录。",
+      "expected_output": "一份测试说明：循环次数、什么失败了、改了什么。",
+      "source_files": "xiao-vending-machine-assemble-steps/README.md testing section",
+      "acceptance": "说明要对应一个机器版本，并且不声称通过了安全认证。",
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-reliability.yml"
+    },
+    {
+      "id": "operator-software",
+      "title": "改进操作员软件",
+      "problem": "当目录或货道变化时，实验室操作员仍需要看得懂仪表盘。",
+      "expected_output": "一次代码改动，或一份写明页面、期望结果和复现方法的缺陷说明。",
+      "source_files": "xiao-vending-machine-full-code-system/backend-full",
+      "acceptance": "运营、库存和配置仍然能运行，并且改动写在 pull request 里。",
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-operator-software.yml"
+    },
+    {
+      "id": "deployment-docs",
+      "title": "编写部署文档",
+      "problem": "装配指南能搭起一台机器。它还没有向另一个实验室说明房间、电源和交接。",
+      "expected_output": "一份另一个实验室能照着做的清单，缺口要标出来，而不是编造步骤。",
+      "source_files": "xiao-vending-machine-assemble-steps/README.md and xiao-vending-machine-full-code-system/scripts/start_backend.sh",
+      "acceptance": "每一步要么指向仓库里的一个文件，要么标明这是本地判断。",
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-deployment-docs.yml"
+    },
+    {
+      "id": "common-interfaces",
+      "title": "定义共同接口",
+      "problem": "原则上模块可以替换。安装、电气和软件边界还没有写成草稿。",
+      "expected_output": "一份标为想法的草稿，覆盖一种接口：机械、电气或软件。",
+      "source_files": "Version Zero 清单",
+      "acceptance": "文本不被描述为已批准的标准或行业标准。",
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml"
+    }
+  ]
+}

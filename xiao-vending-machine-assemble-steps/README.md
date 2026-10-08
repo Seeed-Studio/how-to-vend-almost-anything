@@ -1,8 +1,8 @@
 # Xiao Vending Machine — Hardware & Assembly
 
-*Print it, cut it, build it — the open-source hardware behind the [reference machine](../docs/02-reference-system.md).*
+*Print it, cut it, build it — the open-source hardware behind the [reference machine](../websites/en/index.html#reference).*
 
-This guide covers the physical build: the parts you fabricate, and ten photographed steps from a single dispenser to the finished machine. The software that brings it to life — backend, dashboard, and firmware — lives in [`xiao-vending-machine-full-code-system/`](../xiao-vending-machine-full-code-system). For where this fits in the bigger picture, see [Layer 4 — Deployment Framework](../docs/04-deployment-framework.md).
+This guide covers the physical build: the parts you fabricate, and ten photographed steps from a single dispenser to the finished machine. The software that brings it to life — backend, dashboard, and firmware — lives in [`xiao-vending-machine-full-code-system/`](../xiao-vending-machine-full-code-system). For where this fits in the bigger picture, see [Journey](../websites/en/journey.html).
 
 Photos, wiring diagram, and test videos live in [`assets/`](assets/).
 
@@ -207,4 +207,4 @@ For the incremental bring-up path before this end-to-end test, see [`testing_pha
 
 ## Next: bring it to life
 
-With the hardware assembled, install the software and flash the two Wio Terminals following [`xiao-vending-machine-full-code-system/`](../xiao-vending-machine-full-code-system) and [Layer 4 — Deployment Framework](../docs/04-deployment-framework.md).
+With the hardware assembled, install the software and flash the two Wio Terminals following [`xiao-vending-machine-full-code-system/`](../xiao-vending-machine-full-code-system) and [Journey](../websites/en/journey.html).

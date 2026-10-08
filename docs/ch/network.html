@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>网络 · 如何售出几乎一切</title>
+  <meta name="description" content="查找 Fab Lab；在机器经过审核之后，查看该实验室在售什么。名录里的实验室并不是本项目的成员。" />
+  <meta name="theme-color" content="#003a4a" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/pages.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="identity" href="index.html" aria-label="Fab Lab 售货首页">
+        <span class="identity-symbol" aria-hidden="true">+</span>
+        <span class="identity-label"><strong>Fab Lab 售货</strong><small>开源硬件计划</small></span>
+      </a>
+      <nav class="nav" aria-label="主要页面">
+        <a href="index.html">01 / 愿景</a>
+        <a href="journey.html">02 / 旅程</a>
+        <a href="network.html" aria-current="page">03 / 网络</a>
+        <a class="nav-github" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a class="nav-lang" href="../en/network.html" hreflang="en" lang="en">EN</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <header class="shell page-hero" id="top">
+      <p class="eyebrow">网络</p>
+      <h1>找到实验室。看看它在做什么。</h1>
+      <p class="lede">查看世界各地的 Fab Lab，发现参与中的售货机，并在实验室真正公布之后，找到本地能拿到的 XIAO 板和创客产品。地图从 FabLabs.io 名录开始。那里的一个点不是售货机，也不是 Fab Foundation 的背书。</p>
+    </header>
+
+    <div class="shell map-tools">
+      <form id="map-filters" class="filters">
+        <label>搜索
+          <input id="filter-search" type="search" placeholder="国家、城市或实验室" autocomplete="off" />
+        </label>
+        <label>参与
+          <select id="filter-status">
+            <option value="all">全部标记</option>
+            <option value="directory">名录条目</option>
+            <option value="interested">有兴趣</option>
+            <option value="pilot">试点</option>
+            <option value="verified">已核实的机器</option>
+            <option value="recent_update">新动态</option>
+          </select>
+        </label>
+        <label>机器
+          <select id="filter-machine">
+            <option value="any">不限</option>
+            <option value="with">有已审核的机器</option>
+            <option value="without">没有已审核的机器</option>
+          </select>
+        </label>
+        <label>产品类别
+          <select id="filter-category">
+            <option value="all">不限</option>
+          </select>
+        </label>
+        <label>最近
+          <span><input id="filter-recent" type="checkbox" /> 仅已核实的更新</span>
+        </label>
+      </form>
+      <ul class="legend">
+        <li><i class="swatch swatch-directory" aria-hidden="true"></i> 名录条目</li>
+        <li><i class="swatch swatch-interested" aria-hidden="true"></i> 有兴趣</li>
+        <li><i class="swatch swatch-pilot" aria-hidden="true"></i> 试点</li>
+        <li><i class="swatch swatch-verified" aria-hidden="true"></i> 已核实的机器</li>
+        <li><i class="swatch swatch-recent_update" aria-hidden="true"></i> 新动态</li>
+      </ul>
+      <p id="data-error" class="empty-note" hidden></p>
+    </div>
+
+    <div class="shell">
+      <div class="map-stage">
+        <div id="map" class="map-canvas" role="region" aria-label="Fab Lab 与已审核售货机的世界地图"></div>
+        <div class="map-side">
+          <p id="map-fallback" class="map-empty" hidden></p>
+          <div id="map-empty" class="map-empty" hidden></div>
+          <article id="lab-panel" class="lab-panel" hidden></article>
+          <h2 class="visually-hidden">实验室列表</h2>
+          <ul id="lab-list" class="lab-list"></ul>
+        </div>
+      </div>
+    </div>
+
+    <section class="shell section" id="find">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">来访者能找到什么</p>
+          <h2>一条目录不是库存数量。</h2>
+        </div>
+        <p>对已审核的实验室，产品可以出现在下面的类别里。“已列出的产品”只表示实验室写了它的名字。“最近确认可获得”需要一个日期。本站不编造实时库存或价格。</p>
+      </div>
+      <div class="category-grid">
+        <article><h3>Seeed Studio XIAO</h3><p>提议中的默认类别。本站没有确认任何库存。</p></article>
+        <article><h3>电子与元件</h3><p>实验室选择备着的板卡、传感器和零件。</p></article>
+        <article><h3>本地制作的物品</h3><p>实验室自己做的东西。它们不必开源。</p></article>
+        <article><h3>教育套件</h3><p>为课程或开放之夜准备的套装。</p></article>
+        <article><h3>工具与配件</h3><p>和电子产品放在一起的小工具。</p></article>
+        <article><h3>其他支持的产品</h3><p>已审核的机器被设置来放出的其他东西。</p></article>
+      </div>
+    </section>
+
+    <div class="section-alt">
+      <section class="shell section" id="new-machines">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">安装</p>
+            <h2>新的机器。新的创客。新的地方。</h2>
+          </div>
+          <p>这里只出现已提交并获批准的安装。</p>
+        </div>
+        <div class="feed" id="machine-feed"></div>
+      </section>
+    </div>
+
+    <section class="shell section" id="updates">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">社群动态</p>
+          <h2>带审核状态的公开信息流。</h2>
+        </div>
+        <p>安装、升级、新产品、可获得性变化、开源修改和运营笔记。每一条公开内容都需要来源、时间和已通过的审核。一份提议不是一条目录。</p>
+      </div>
+      <div class="feed" id="update-feed"></div>
+    </section>
+
+    <div class="section-alt">
+      <section class="shell section" id="submit">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">登记或更新你的实验室</p>
+            <h2>先经审核，再通过 GitHub issue 公开。</h2>
+          </div>
+          <p>GitHub Pages 自己不能保存表单。这些链接打开仓库里的 issue 表单。维护者审核 issue，然后编辑 JSON。以后的后端可以替换这个队列，而不必改这页的数据文件。</p>
+        </div>
+        <div class="submit-grid">
+          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=register-interest.yml"><strong>登记兴趣</strong><p>告诉我们实验室想关注这个项目。这不会安装一台机器。</p></a>
+          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=submit-installation.yml"><strong>提交已确认的安装</strong><p>机器版本、照片，以及审核者可以核对的来源。</p></a>
+          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=update-product.yml"><strong>添加或更新产品目录</strong><p>名称和类别。一条目录不是声称它有库存。</p></a>
+          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=update-availability.yml"><strong>更新产品可获得性</strong><p>在显示为最近确认之前，必须有一个日期。</p></a>
+          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=announce-upgrade.yml"><strong>公布机器升级</strong><p>改了什么，以及现在安装的是哪个版本。</p></a>
+          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=submit-improvement.yml"><strong>提交开源改进</strong><p>零件编号、CAD、版本、兼容性、测试证据、署名和许可。</p></a>
+          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=correct-listing.yml"><strong>更正已有目录</strong><p>指出哪条记录是错的，以及更正的证据。</p></a>
+        </div>
+      </section>
+    </div>
+
+    <section class="shell section" id="directory-method">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">世界地图如何填上</p>
+          <h2>每日快照，不是浏览器里的实时登录。</h2>
+        </div>
+        <p id="directory-note"></p>
+      </div>
+      <p>api.fablabs.io 上旧的公开接口已经移除。当前开发者指南要求有人注册一个应用并完成一次 OAuth。本页只读取 <a href="data/directory-labs.json">directory-labs.json</a>。令牌存为 secret 之后，GitHub Action 可以刷新这个文件。人必须做的事和 Action 能做的事写在 <a href="FABLABS_DIRECTORY.md">FABLABS_DIRECTORY.md</a>。</p>
+      <p class="directory-links"><a href="https://www.fablabs.io/">FabLabs.io 名录</a> · <a href="https://fabfoundation.org/">Fab Foundation</a></p>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-inner">
+        <div>
+          <strong>Fab Lab 售货</strong>
+          <p>由矽递科技发起、面向 Fab Lab 的开源参考项目。</p>
+        </div>
+        <div class="footer-links">
+          <a href="index.html">愿景</a>
+          <a href="journey.html">旅程</a>
+          <a href="network.html">网络</a>
+          <a href="exploded.html">参考机器</a>
+          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">源代码 ↗</a>
+          <a href="open-source.html">开源声明</a>
+          <a href="https://www.seeedstudio.com/blog/branding-kit/" target="_blank" rel="noopener noreferrer">矽递品牌</a>
+          <a href="SITE.md">站点说明</a>
+          <a href="#top">回到顶部</a>
+        </div>
+      </div>
+      <p class="footer-note">地图瓦片 © OpenStreetMap 贡献者。若包含 FabLabs.io 数据，署名写在目录快照中。名录中的实验室并不是一台售货机。参考硬件与软件发布在本仓库中。这里描述的项目支持在确认之前只是提议。这不是 Fab Foundation 的官方项目。</p>
+    </div>
+  </footer>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="assets/js/network.js"></script>
+</body>
+</html>

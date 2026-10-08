@@ -1,0 +1,57 @@
+name: Design a new product module
+description: Describe a product bay or local product the machine could carry.
+title: "[Product module]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A product the lab sells does not have to be open source. The machine geometry you contribute should name its license. This form does not create a stock listing.
+  - type: input
+    id: part-id
+    attributes:
+      label: Part id
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+    validations:
+      required: true
+  - type: input
+    id: source-cad
+    attributes:
+      label: Source CAD or dimension drawing
+    validations:
+      required: true
+  - type: textarea
+    id: purpose
+    attributes:
+      label: Purpose
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility assumptions
+    validations:
+      required: true
+  - type: textarea
+    id: test-evidence
+    attributes:
+      label: Test evidence
+      description: Say what was checked. "Not tested yet" is an acceptable answer if you mark it clearly.
+    validations:
+      required: true
+  - type: input
+    id: attribution
+    attributes:
+      label: Attribution
+    validations:
+      required: true
+  - type: input
+    id: license
+    attributes:
+      label: License of the CAD
+    validations:
+      required: true

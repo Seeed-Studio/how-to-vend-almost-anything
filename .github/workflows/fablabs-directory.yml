@@ -1,0 +1,44 @@
+name: Refresh FabLabs directory
+
+on:
+  schedule:
+    - cron: "15 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fablabs-directory
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fetch directory snapshot
+        env:
+          FABLABS_ACCESS_TOKEN: ${{ secrets.FABLABS_ACCESS_TOKEN }}
+          FABLABS_API_BASE: ${{ secrets.FABLABS_API_BASE }}
+        run: node scripts/fetch-fablabs-directory.mjs
+
+      - name: Validate site data
+        run: node scripts/validate-site-data.mjs
+
+      - name: Commit snapshot when the directory changed
+        run: |
+          git add websites/en/data/directory-labs.json websites/ch/data/directory-labs.json
+          if git diff --cached --quiet; then
+            echo "No directory changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update FabLabs.io directory snapshot"
+          git push

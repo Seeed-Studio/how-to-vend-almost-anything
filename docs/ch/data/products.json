@@ -1,0 +1,5 @@
+{
+  "updated_at": "2026-10-08",
+  "note": "在存在已审核的机器之前，不列出产品。availability_status 为 confirmed 时必须有 availability_updated_at。不要编造库存或价格。",
+  "products": []
+}

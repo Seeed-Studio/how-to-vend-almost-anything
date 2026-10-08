@@ -1,0 +1,9 @@
+{
+  "source": "https://www.fablabs.io/",
+  "attribution": "When this file contains labs, names and coordinates come from the FabLabs.io API. A directory listing is not participation in this vending program and is not an endorsement by the Fab Foundation.",
+  "api_base": null,
+  "fetched_at": null,
+  "status": "awaiting_token",
+  "note": "No FabLabs.io access token is configured for the daily GitHub Action. GitHub Pages cannot log in. See FABLABS_DIRECTORY.md.",
+  "labs": []
+}

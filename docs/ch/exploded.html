@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>爆炸图 · 如何售出几乎一切</title>
+  <meta name="description" content="把这台售货机看成一套分版本的爆炸系统。查看当前开源模型，并顺着每一次替换看设计如何演进。" />
+  <meta name="theme-color" content="#003a4a" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/pages.css" />
+  <link rel="stylesheet" href="exploded.css" />
+  <link rel="stylesheet" href="assets/css/section-nav.css" />
+</head>
+<body>
+  <a class="skip-link" href="#explorer">跳到模型</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="identity" href="index.html" aria-label="Fab Lab 售货首页">
+        <span class="identity-symbol" aria-hidden="true">+</span>
+        <span class="identity-label"><strong>Fab Lab 售货</strong><small>开源硬件计划</small></span>
+      </a>
+      <nav class="nav" aria-label="主要页面">
+        <a href="index.html">01 / 愿景</a>
+        <a href="journey.html">02 / 旅程</a>
+        <a href="network.html">03 / 网络</a>
+        <a class="nav-github" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a class="nav-lang" href="../en/exploded.html" hreflang="en" lang="en">EN</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="explorer-shell" id="explorer">
+      <aside class="group-rail" aria-label="系统分组">
+        <div class="rail-title">系统模块</div>
+        <button class="group-button active" data-group="all"><span>00</span><strong>整机</strong><small>全部已建模零件</small></button>
+        <div id="group-buttons"></div>
+        <div class="rail-note">每个零件使用同一 CAD 比例，所以小脚垫在外壳旁边仍然很小。位置是为了看清楚而排布的，不是装配坐标。</div>
+      </aside>
+
+      <div class="viewport-panel">
+        <div class="viewport-topbar">
+          <div>
+            <span class="view-label">交互模型图</span>
+            <span class="load-state" id="load-state">正在加载 V0 展示模型…</span>
+            <span class="selection-line" id="selection-line"></span>
+          </div>
+          <div class="view-actions">
+            <button type="button" id="reset-view">重置视角</button>
+            <button type="button" id="fit-view">适配全部</button>
+          </div>
+        </div>
+
+        <div class="viewport" id="viewport">
+          <div class="reference-ghost" aria-hidden="true">
+            <img src="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-assemble-steps/assets/10-assemble-final-look-design.png" alt="" />
+          </div>
+          <div class="fallback-map" id="fallback-map" aria-hidden="true">
+            <div class="fallback-layer layer-shell">外壳</div>
+            <div class="fallback-layer layer-frame">框架</div>
+            <div class="fallback-layer layer-dispense">出货</div>
+            <div class="fallback-layer layer-interface">界面</div>
+            <div class="fallback-layer layer-foundation">脚垫</div>
+          </div>
+          <canvas id="model-canvas" aria-label="交互式爆炸三维视图"></canvas>
+          <div class="group-labels" aria-hidden="true">
+            <span>外壳</span><span>框架</span><span>出货</span><span>界面</span><span>基座</span>
+          </div>
+          <div class="viewport-help">拖动旋转 · 滚动缩放 · 点击零件查看</div>
+        </div>
+
+        <div class="explode-control">
+          <div class="explode-copy">
+            <span>收拢</span>
+            <strong>拉开各系统</strong>
+            <span>分离</span>
+          </div>
+          <input id="explode-range" type="range" min="0" max="100" value="74" aria-label="爆炸展开程度" />
+        </div>
+      </div>
+
+      <aside class="inspector" aria-live="polite">
+        <div class="inspector-kicker">选中的零件</div>
+        <div id="inspector-content">
+          <div class="part-index">09 / V0</div>
+          <h2>出货机构主体</h2>
+          <p class="part-role">适配参考产品外形的通用出货机构主体。</p>
+          <div class="part-facts">
+            <div><span>分组</span><strong>出货</strong></div>
+            <div><span>数量</span><strong>×4</strong></div>
+            <div><span>格式</span><strong>STL</strong></div>
+          </div>
+          <a class="source-link" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noreferrer">打开源模型 ↗</a>
+        </div>
+      </aside>
+    </section>
+
+    <section class="intro">
+      <div class="intro-kicker"><span class="pulse"></span> 产品系统 / 实时源模型</div>
+      <h1>拆开它。<br><em>替换它。</em><br>改进它。</h1>
+      <div class="intro-copy">
+        <p>
+          这台机器不是一个固定物件。它是一叠可替换的零件。本页把当前 V0 CAD 变成看得见的产品系统，并让每一个新替换件都挂在它取代的零件上。
+        </p>
+        <div class="intro-meta">
+          <span><strong id="part-count">18</strong> 个已建模零件</span>
+          <span><strong>5</strong> 个系统分组</span>
+          <span><strong>V0</strong> 参考基线</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="replacement-principle" id="evolution">
+      <div class="section-id">01 / 产品演进</div>
+      <div class="replacement-grid">
+        <h2>不要抹掉 V0。<br>把下一个零件叠加上去。</h2>
+        <div>
+          <p>每个实体零件有稳定的身份。新模型作为该身份的修订加入，而不是无法解释的覆盖。</p>
+          <div class="revision-flow" aria-label="替换流程">
+            <span>V0<br><small>参考</small></span><i>→</i><span>V0.1<br><small>替换</small></span><i>→</i><span>V0.2<br><small>下一步</small></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-to-update" id="replacement-format">
+      <div class="section-id">02 / 增加一个替换件</div>
+      <div class="update-grid">
+        <div class="update-copy">
+          <h2>一个新零件。<br>一条新记录。</h2>
+          <p>不要改 V0 基线。把新的 CAD 文件加进仓库，再往 <code>replacements.js</code> 追加一个对象。页面会自动把最后一次修订标为当前，并保留上一个模型以便比较。</p>
+        </div>
+        <pre><code>{
+  partId: "dispenser",
+  version: "V0.1",
+  title: "宽体出货机构",
+  source: "replacements/v0.1/wide-dispenser.stl",
+  format: "stl",
+  date: "2026-10-20",
+  note: "改了什么，以及为什么。"
+}</code></pre>
+      </div>
+    </section>
+
+    <section class="display-standard" id="display-standard">
+      <div class="section-id">03 / 三维显示标准</div>
+      <div class="standard-heading">
+        <h2>让模型像一件产品，<br>而不是一个 CAD 视口。</h2>
+        <p>页面应保住工程上的真实，同时用一套一致的视觉语言呈现机器。这些规则适用于 V0 以及之后的每一次替换。</p>
+      </div>
+      <div class="standard-grid">
+        <article>
+          <span class="standard-no">01</span>
+          <h3>相机</h3>
+          <p>以略微抬高的四分之三视角打开。让机器第一眼就能看懂。不要永久自动旋转；运动只跟随使用者的意图。</p>
+        </article>
+        <article>
+          <span class="standard-no">02</span>
+          <h3>材质</h3>
+          <p>使用哑光、低金属度的 CAD 材质。系统颜色用来区分分组，颜色不是装饰。除非真实表面本身重要，否则避免照片级贴图。</p>
+        </article>
+        <article>
+          <span class="standard-no">03</span>
+          <h3>焦点</h3>
+          <p>选中或当前零件变为青柠色。未选中的几何体退到后面。选中内部零件时，外壳可以变虚，而不是消失。</p>
+        </article>
+        <article>
+          <span class="standard-no">04</span>
+          <h3>爆炸</h3>
+          <p>零件沿稳定的系统方向移动，并保持空间关系。默认是便于阅读的编辑式爆炸，0% 始终回到收拢状态。</p>
+        </article>
+        <article>
+          <span class="standard-no">05</span>
+          <h3>标签</h3>
+          <p>显示稳定的零件编号、名称、分组、数量和修订。标签尽量放在几何体之外，绝不用一段文字挡住物体。</p>
+        </article>
+        <article>
+          <span class="standard-no">06</span>
+          <h3>运动</h3>
+          <p>焦点、筛选和替换变化使用短促的缓出过渡。尊重减少动态的设置，并且不能必须靠动画才能看懂状态。</p>
+        </article>
+      </div>
+      <div class="model-states" aria-label="模型状态显示规则">
+        <div><i class="state-swatch current"></i><span>当前</span><strong>实心 + 青柠色焦点</strong></div>
+        <div><i class="state-swatch baseline"></i><span>V0 基线</span><strong>中性的工程材质</strong></div>
+        <div><i class="state-swatch previous"></i><span>先前</span><strong>虚化 / 更低不透明度</strong></div>
+        <div><i class="state-swatch proposed"></i><span>提议</span><strong>轮廓或虚线，不能被看成已发布</strong></div>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div>
+        <span>开放的产品 / 持续修订</span>
+        <h2>人能看懂的机器，才是人能改进的机器。</h2>
+      </div>
+      <div class="cta-actions">
+        <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files" target="_blank" rel="noreferrer">浏览 CAD 源文件 ↗</a>
+        <a href="journey.html#evolution">回到旅程 →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-inner">
+        <div>
+          <strong>Fab Lab 售货</strong>
+          <p>Version Zero 参考机的分版本爆炸图。位置用于说明，不是装配坐标。</p>
+        </div>
+        <div class="footer-links">
+          <a href="index.html">愿景</a>
+          <a href="journey.html">旅程</a>
+          <a href="network.html">网络</a>
+          <a href="exploded.html">参考机器</a>
+          <a href="open-source.html">开源声明</a>
+          <a href="https://www.seeedstudio.com/blog/branding-kit/" target="_blank" rel="noopener noreferrer">矽递品牌</a>
+          <a href="SITE.md">站点说明</a>
+        </div>
+      </div>
+      <p class="footer-note">本查看器从 CDN 加载 Three.js 和 occt-import-js。源 CAD 仍在仓库中。许可见开源声明。</p>
+    </div>
+  </footer>
+
+  <nav class="section-nav" aria-label="页面章节">
+    <ol id="section-nav-list">
+      <li><a href="#explorer"><span class="section-nav-index">01</span><span class="section-nav-name">模型</span></a></li>
+      <li><a href="#evolution"><span class="section-nav-index">02</span><span class="section-nav-name">演进</span></a></li>
+      <li><a href="#replacement-format"><span class="section-nav-index">03</span><span class="section-nav-name">替换件</span></a></li>
+      <li><a href="#display-standard"><span class="section-nav-index">04</span><span class="section-nav-name">显示</span></a></li>
+    </ol>
+    <button class="section-nav-toggle" type="button" aria-expanded="false" aria-controls="section-nav-list">
+      <span data-section-current>01</span><span aria-hidden="true">/</span><span>04</span>
+    </button>
+  </nav>
+  <script src="assets/js/section-nav.js"></script>
+
+  <script src="parts-manifest.js"></script>
+  <script src="replacements.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/occt-import-js@0.0.24/dist/occt-import-js.js"></script>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="exploded.js?v=inspector"></script>
+</body>
+</html>

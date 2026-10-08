@@ -1,0 +1,58 @@
+name: Submit a confirmed installation
+description: Report a vending machine that is actually installed. It is published only after review.
+title: "[Installation]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not treat this issue as a public listing. A maintainer checks the evidence, then may add records to `websites/en/data/labs.json` and `websites/en/data/machines.json`, and the Chinese copies under `websites/ch/data`.
+  - type: input
+    id: lab-name
+    attributes:
+      label: Fab Lab name
+    validations:
+      required: true
+  - type: input
+    id: city
+    attributes:
+      label: City
+    validations:
+      required: true
+  - type: input
+    id: country
+    attributes:
+      label: Country
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Machine version
+      description: For example, the reference Version Zero or a named revision.
+    validations:
+      required: true
+  - type: input
+    id: photo
+    attributes:
+      label: Photograph URL
+      description: A public image URL a reviewer can open.
+  - type: input
+    id: source
+    attributes:
+      label: Verification source
+      description: A public URL that shows the installation, such as a lab page or repository note.
+    validations:
+      required: true
+  - type: input
+    id: observed
+    attributes:
+      label: Date observed
+      description: YYYY-MM-DD
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: What is installed
+    validations:
+      required: true

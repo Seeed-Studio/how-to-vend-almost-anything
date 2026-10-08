@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Journey · How to Vend Almost Anything</title>
+  <meta name="description" content="Where the open vending reference stands, what is only planned, and which parts need contributors." />
+  <meta name="theme-color" content="#003a4a" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/pages.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="identity" href="index.html" aria-label="Fab Lab Vending homepage">
+        <span class="identity-symbol" aria-hidden="true">+</span>
+        <span class="identity-label"><strong>Fab Lab Vending</strong><small>OPEN HARDWARE INITIATIVE</small></span>
+      </a>
+      <nav class="nav" aria-label="Main pages">
+        <a href="index.html">01 / Vision</a>
+        <a href="journey.html" aria-current="page">02 / Journey</a>
+        <a href="network.html">03 / Network</a>
+        <a class="nav-github" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a class="nav-lang" href="../ch/journey.html" hreflang="zh-Hans" lang="zh-Hans">中文</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <header class="shell page-hero" id="top">
+      <p class="eyebrow">The Journey</p>
+      <h1>From one open machine to a global standard.</h1>
+      <p class="lede">Follow the reference build, the improvements that still need people, and the work required before vending machines can be reproduced across Fab Labs. Completed items link to evidence. Planned items are not started.</p>
+    </header>
+
+    <section class="shell section" id="timeline">
+      <h2 class="visually-hidden">Timeline</h2>
+      <p id="data-error" class="empty-note" hidden></p>
+      <noscript><p>This roadmap is loaded from JSON. Enable JavaScript, or read <a href="data/roadmap.json">roadmap.json</a> directly.</p></noscript>
+      <div class="phases" id="phases"></div>
+    </section>
+
+    <div class="section-alt">
+      <section class="shell section" id="implementation">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Implementation</p>
+            <h2>Nine systems, each with a status.</h2>
+          </div>
+          <p>Done means the reference repository already contains it. In progress means the public submission path exists and the network does not. Needs contributors is an open problem. Planned is not built.</p>
+        </div>
+        <form class="filters" id="filters">
+          <label>System
+            <select id="filter-system">
+              <option value="all">All systems</option>
+            </select>
+          </label>
+          <label>Status
+            <select id="filter-status">
+              <option value="all">All statuses</option>
+              <option value="done">Done</option>
+              <option value="in_progress">In progress</option>
+              <option value="needs_contributors">Needs contributors</option>
+              <option value="planned">Planned</option>
+            </select>
+          </label>
+          <label>Opportunity
+            <select id="filter-opportunity">
+              <option value="any">All modules</option>
+              <option value="open">Open contributions</option>
+            </select>
+          </label>
+        </form>
+        <div class="module-grid" id="modules"></div>
+      </section>
+    </div>
+
+    <section class="shell section" id="evolution">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Product evolution</p>
+          <h2>Version Zero, kept intact.</h2>
+        </div>
+        <p>The interactive model is the exploded view. This list is the same parts, with source CAD. A replacement is appended. It does not erase the previous file. The product-specific dispenser is an alternative, not the next version of the common dispenser.</p>
+      </div>
+      <p><a class="btn btn-primary" href="exploded.html">Open the exploded view</a></p>
+      <p id="model-note" class="empty-note" style="margin: 16px 0"></p>
+      <div id="parts"></div>
+      <h3 style="margin: 28px 0 12px">Submitted replacements</h3>
+      <div class="part-grid" id="replacements"></div>
+    </section>
+
+    <div class="section-alt">
+      <section class="shell section" id="standards-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">From working prototype to shared standard</p>
+            <h2>From working prototype to shared standard.</h2>
+          </div>
+          <p>Maturity runs from Idea to Draft, Under review, and Accepted. Everything below is an idea. None of it is an approved industry standard.</p>
+        </div>
+        <div class="standard-grid" id="standards"></div>
+      </section>
+    </div>
+
+    <section class="shell section" id="contribute">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Contributions</p>
+          <h2>Problems with a place to start.</h2>
+        </div>
+        <p>Each card opens a GitHub issue form. A person still has to do the work. The form asks for the problem, the files involved, and what “done” means. A design replacement also asks for part id, CAD, version, compatibility, test evidence, attribution, and license.</p>
+      </div>
+      <div class="contrib-grid" id="contributions"></div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-inner">
+        <div>
+          <strong>Fab Lab Vending</strong>
+          <p>A Seeed Studio-led open reference for Fab Labs.</p>
+        </div>
+        <div class="footer-links">
+          <a href="index.html">Vision</a>
+          <a href="journey.html">Journey</a>
+          <a href="network.html">Network</a>
+          <a href="exploded.html">Reference machine</a>
+          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">Source code ↗</a>
+          <a href="open-source.html">Open-source notices</a>
+          <a href="https://www.seeedstudio.com/blog/branding-kit/" target="_blank" rel="noopener noreferrer">Seeed branding</a>
+          <a href="SITE.md">Site guide</a>
+          <a href="#top">Back to top</a>
+        </div>
+      </div>
+      <p class="footer-note">Reference hardware and software are published in this repository. Program support, XIAO supply, and Fab Lab partnerships described on this site are proposals until confirmed. This is not an official program of the Fab Foundation. The plus mark in the header is a project symbol, not the Seeed Studio logo. The official mark is in the <a href="https://www.seeedstudio.com/blog/branding-kit/">Seeed branding kit</a>.</p>
+    </div>
+  </footer>
+  <script src="replacements.js"></script>
+  <script src="assets/js/journey.js"></script>
+</body>
+</html>

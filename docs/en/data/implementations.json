@@ -1,0 +1,187 @@
+{
+  "updated_at": "2026-10-08",
+  "modules": [
+    {
+      "id": "mechanical",
+      "name": "Mechanical structure and enclosure",
+      "system": "mechanical",
+      "purpose": "The printable and editable body of the reference machine.",
+      "status": "done",
+      "existing": "STEP case files, STL structure, and a photographed assembly of the finished enclosure.",
+      "missing": "Shared mounting dimensions for lab-specific panels and product bays.",
+      "contribution": "Propose a mounting interface without replacing the Version Zero files in place.",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "A drafted interface note another lab can machine against."
+    },
+    {
+      "id": "dispensing",
+      "name": "Dispensing mechanisms",
+      "system": "dispensing",
+      "purpose": "Release a product after the backend authorizes the card.",
+      "status": "done",
+      "existing": "Four-column dispenser, servo-driven arms, and recorded direct and balance dispenses.",
+      "missing": "Tested mechanisms for product sizes the reference columns do not fit.",
+      "contribution": "Design a replacement dispenser with part id, CAD, compatibility, and a dispense test.",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/websites/en/assets/real-operation-order-dispense.mp4",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "One reviewed alternative dispenser that does not overwrite Version Zero."
+    },
+    {
+      "id": "electronics",
+      "name": "Electronics and control",
+      "system": "electronics",
+      "purpose": "Sense a card, drive the servos, and talk to the backend.",
+      "status": "done",
+      "existing": "Two Wio Terminals, Feetech ST3215 bus servos, and an RFID reader. XIAO is not the controller.",
+      "missing": "Any later control redesign, which would be a new version rather than a silent swap.",
+      "contribution": "Document a control change against the current wiring before proposing it as current.",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "A short electrical interface note for the reference build."
+    },
+    {
+      "id": "software",
+      "name": "Firmware and backend software",
+      "system": "software",
+      "purpose": "Authorize a card, plan the dispense, and record the result.",
+      "status": "done",
+      "existing": "Wio firmware, bring-up sketches, and a Node.js backend with Operate, Inventory, and Config.",
+      "missing": "A written software contract for a lab that changes the mechanism or the product map.",
+      "contribution": "Improve the operator software against a stated acceptance check.",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-full-code-system/backend-full",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-operator-software.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "A documented API note for card verify, checkout, and dispense complete."
+    },
+    {
+      "id": "operations",
+      "name": "Machine operation and inventory",
+      "system": "operations",
+      "purpose": "Let an operator see columns, refill them, and issue cards.",
+      "status": "done",
+      "existing": "Inventory counts, refill state, and card writing on the reference dashboard.",
+      "missing": "A restock routine and reliability log meant for more than one machine.",
+      "contribution": "Run repeated dispense trials and publish what failed.",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/websites/en/assets/2-inventory-manage.jpeg",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-reliability.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "A failure and refill note from a real operating stretch."
+    },
+    {
+      "id": "products",
+      "name": "Product compatibility and XIAO offering",
+      "system": "products",
+      "purpose": "Say what the machine can hold, and what a shared default product might be.",
+      "status": "planned",
+      "existing": "The reference columns exist. XIAO is named as the intended default product category, not as stock in a machine.",
+      "missing": "Product envelopes, a merchandising concept, and any confirmed supply.",
+      "contribution": "Define a product module with dimensions and a source model.",
+      "evidence_url": "",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-product-module.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "A dimension note for one real product the reference column can carry."
+    },
+    {
+      "id": "deployment",
+      "name": "Fab Lab deployment and support",
+      "system": "deployment",
+      "purpose": "Turn one build into something another lab can stand up and, later, apply to join.",
+      "status": "needs_contributors",
+      "existing": "A single-machine assembly guide, bill of materials, and backend start script.",
+      "missing": "Pilot criteria, a support model, and deployment notes that assume a different room and network.",
+      "contribution": "Write the steps a second lab still has to invent.",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/xiao-vending-machine-assemble-steps/README.md",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-deployment-docs.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "A deployment checklist reviewed against the reference build."
+    },
+    {
+      "id": "community",
+      "name": "Community infrastructure",
+      "system": "community",
+      "purpose": "Take lab submissions in public and publish only what a person has checked.",
+      "status": "in_progress",
+      "existing": "This site and GitHub Issue Forms. Pages cannot store a private submission by itself.",
+      "missing": "Reviewed lab records, machine photos, and any later backend that replaces the issue queue.",
+      "contribution": "Register interest, or maintain the JSON after a review.",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=register-interest.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "The first reviewed lab record, if a lab submits one."
+    },
+    {
+      "id": "standards",
+      "name": "Standards and verification",
+      "system": "standards",
+      "purpose": "Agree on identifiers, interfaces, and the checks required before a part or a listing is current.",
+      "status": "planned",
+      "existing": "Part ids in the Version Zero manifest, and a rule that replacements are appended.",
+      "missing": "Every proposed standard. None is accepted.",
+      "contribution": "Draft an interface or documentation rule and mark it as an idea.",
+      "evidence_url": "",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml",
+      "updated_at": "2026-10-08",
+      "next_milestone": "One written draft, still labeled idea or draft, not accepted."
+    }
+  ],
+  "contributions": [
+    {
+      "id": "improve-dispensing",
+      "title": "Improve the dispensing mechanism",
+      "problem": "The reference dispenser fits one product geometry. Other packages jam, rattle, or do not fit.",
+      "expected_output": "A versioned dispenser replacement: part id, source CAD, what it replaces, and a short dispense test.",
+      "source_files": "xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/dispenser.stl",
+      "acceptance": "Version Zero files stay unchanged. The note states compatibility and includes test evidence.",
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml"
+    },
+    {
+      "id": "product-module",
+      "title": "Design a new product module",
+      "problem": "Labs need a way to describe a local product the machine can hold, separate from open-sourcing that product.",
+      "expected_output": "Part id, source CAD or dimension drawing, version, purpose, and compatibility assumptions.",
+      "source_files": "websites/en/parts-manifest.js and websites/en/replacements.js",
+      "acceptance": "The submission distinguishes an alternative part from a new revision and names the license of the CAD.",
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-product-module.yml"
+    },
+    {
+      "id": "reliability",
+      "title": "Test machine reliability",
+      "problem": "The repository shows that dispensing works. It does not publish a repeated trial or a failure log.",
+      "expected_output": "A test note: cycle count, what failed, and what was changed.",
+      "source_files": "xiao-vending-machine-assemble-steps/README.md testing section",
+      "acceptance": "The note is tied to a machine version and does not claim a safety certification.",
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-reliability.yml"
+    },
+    {
+      "id": "operator-software",
+      "title": "Improve the operator software",
+      "problem": "A lab operator needs the dashboard to stay understandable when the catalog or the columns change.",
+      "expected_output": "A code change or a written defect with the page, the expected result, and how to reproduce it.",
+      "source_files": "xiao-vending-machine-full-code-system/backend-full",
+      "acceptance": "Operate, Inventory, and Config still run, and the change is described in the pull request.",
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-operator-software.yml"
+    },
+    {
+      "id": "deployment-docs",
+      "title": "Create deployment documentation",
+      "problem": "The assembly guide builds one machine. It does not yet brief a different lab on room, power, and handoff.",
+      "expected_output": "A checklist another lab can follow, with gaps marked instead of invented steps.",
+      "source_files": "xiao-vending-machine-assemble-steps/README.md and xiao-vending-machine-full-code-system/scripts/start_backend.sh",
+      "acceptance": "Every step points at a file in the repository or is labeled as local judgment.",
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-deployment-docs.yml"
+    },
+    {
+      "id": "common-interfaces",
+      "title": "Define common interfaces",
+      "problem": "Modules can be replaced in principle. The mounting, electrical, and software boundaries are not written down as a draft.",
+      "expected_output": "A draft, labeled as an idea, covering one interface: mechanical, electrical, or software.",
+      "source_files": "the Version Zero manifest",
+      "acceptance": "The text is not described as an approved or industry standard.",
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml"
+    }
+  ]
+}

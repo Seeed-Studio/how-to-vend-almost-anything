@@ -1,0 +1,82 @@
+{
+  "updated_at": "2026-10-08",
+  "standards": [
+    {
+      "id": "part-identifiers",
+      "title": "Part identifiers and versioning",
+      "summary": "Stable part ids, with Version Zero kept when a replacement is added.",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "mechanical-interfaces",
+      "title": "Mechanical interfaces and mounting dimensions",
+      "summary": "The holes, faces, and envelopes a replacement part must respect.",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "dispensing-modules",
+      "title": "Accepted dispensing-module definitions",
+      "summary": "What counts as a dispenser module, and which reference parts it may replace.",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "product-dimensions",
+      "title": "Compatible product dimensions",
+      "summary": "The package sizes a given column and dispenser pair can carry.",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "electrical-interfaces",
+      "title": "Electrical and communications interfaces",
+      "summary": "Power, servo bus, RFID, and the network link used by the reference build.",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "software-contracts",
+      "title": "Software integration contracts",
+      "summary": "The card, checkout, and dispense events a replacement controller would still honor.",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "safety-maintenance",
+      "title": "Machine safety and maintenance",
+      "summary": "Checks before a lab leaves a machine where other people can use it.",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "inventory-information",
+      "title": "Inventory information",
+      "summary": "How a listing differs from a recently confirmed count.",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "replacement-compatibility",
+      "title": "Replacement-part compatibility",
+      "summary": "What a new part assumes about the machine around it.",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "documentation-testing",
+      "title": "Documentation and testing requirements",
+      "summary": "The note and the evidence expected before a replacement is shown as current.",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "installation-verification",
+      "title": "Installation and listing verification",
+      "summary": "What a reviewer checks before a machine or a product appears on the public map.",
+      "maturity": "idea",
+      "updated_at": "2026-10-08"
+    }
+  ]
+}

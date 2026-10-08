@@ -1,0 +1,39 @@
+name: Update product availability
+description: Record a dated check of whether a listed product was available. Undated stock claims are not published.
+title: "[Availability]: "
+body:
+  - type: input
+    id: lab-name
+    attributes:
+      label: Fab Lab name
+    validations:
+      required: true
+  - type: input
+    id: product
+    attributes:
+      label: Product name
+    validations:
+      required: true
+  - type: dropdown
+    id: state
+    attributes:
+      label: What was checked
+      options:
+        - Listed only
+        - Availability confirmed on the date below
+    validations:
+      required: true
+  - type: input
+    id: observed
+    attributes:
+      label: Date checked
+      description: YYYY-MM-DD. Required before the site can say availability was recently confirmed.
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: What you observed
+      description: Do not include a price unless you are only leaving a note for the reviewer. The public site does not display prices.
+    validations:
+      required: true

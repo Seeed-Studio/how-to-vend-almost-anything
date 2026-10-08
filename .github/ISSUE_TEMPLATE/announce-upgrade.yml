@@ -1,0 +1,41 @@
+name: Announce a machine upgrade
+description: Describe a change to an installed machine. It is public only after review.
+title: "[Upgrade]: "
+body:
+  - type: input
+    id: lab-name
+    attributes:
+      label: Fab Lab name
+    validations:
+      required: true
+  - type: input
+    id: from-version
+    attributes:
+      label: Previous version
+    validations:
+      required: true
+  - type: input
+    id: to-version
+    attributes:
+      label: Installed version now
+    validations:
+      required: true
+  - type: input
+    id: observed
+    attributes:
+      label: Date
+      description: YYYY-MM-DD
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source URL
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: What changed
+    validations:
+      required: true

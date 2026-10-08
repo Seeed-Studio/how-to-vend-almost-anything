@@ -1,0 +1,320 @@
+{
+  "updated_at": "2026-10-08",
+  "phases": [
+    {
+      "id": "now",
+      "kicker": "阶段 01",
+      "label": "现在 / Version Zero",
+      "title": "一台能工作的参考机，以及一份公开的邀请。",
+      "summary": "装配说明、CAD、固件、操作员仪表盘和两段出货录像都在仓库里。开放的问题，是第二个实验室会先撞上的那些。",
+      "cta_label": "为 Version Zero 做贡献",
+      "cta_url": "#contribute"
+    },
+    {
+      "id": "next",
+      "kicker": "阶段 02",
+      "label": "下一步 / 实验室能复制的版本",
+      "title": "让参考机更容易重复搭建。",
+      "summary": "接口、可调整的出货、部署说明和试点标准都是提议。这一列里没有一套已经完成的实验室套件。",
+      "cta_label": "一起定义下一个版本",
+      "cta_url": "#contribute"
+    },
+    {
+      "id": "future",
+      "kicker": "阶段 03",
+      "label": "未来 / 公开网络上线",
+      "title": "等项目成为事实之后，才有名录。",
+      "summary": "标准、申请、写清楚的矽递支持方式，以及公开的机器目录，都要等试点证据之后。这个阶段还没有启动。",
+      "cta_label": "查看未来的网络",
+      "cta_url": "network.html"
+    }
+  ],
+  "items": [
+    {
+      "id": "assembly-docs",
+      "title": "装配文档",
+      "description": "参考机的物料清单、接线和按照片排列的搭建顺序。",
+      "phase": "now",
+      "system": "mechanical",
+      "status": "done",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/xiao-vending-machine-assemble-steps/README.md",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "source-cad",
+      "title": "源 CAD",
+      "description": "参考外壳、框架、出货机构和界面的 STEP 外壳文件与 STL 零件。",
+      "phase": "now",
+      "system": "mechanical",
+      "status": "done",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "wio-firmware",
+      "title": "Wio Terminal 固件",
+      "description": "顾客读卡固件和逐步点亮的草图。控制器是 Wio Terminal，不是 XIAO 板。",
+      "phase": "now",
+      "system": "electronics",
+      "status": "done",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "operator-dashboard",
+      "title": "后端和操作员仪表盘",
+      "description": "以 CSV 为数据的 Node.js 服务器，带运营、库存和配置页面。",
+      "phase": "now",
+      "system": "software",
+      "status": "done",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-full-code-system/backend-full",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "direct-dispense",
+      "title": "直接订单出货",
+      "description": "一段录像：直接订单卡上的每件产品都被放出。",
+      "phase": "now",
+      "system": "dispensing",
+      "status": "done",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/websites/en/assets/real-operation-order-dispense.mp4",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "balance-dispense",
+      "title": "余额卡出货",
+      "description": "一段录像：顾客在 Wio 屏幕上选择产品。",
+      "phase": "now",
+      "system": "dispensing",
+      "status": "done",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/websites/en/assets/real-operation-balance-dispense.mp4",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "exploded-viewer",
+      "title": "爆炸图查看器",
+      "description": "在浏览器里看 Version Zero 的零件。位置用于说明，不是装配坐标。",
+      "phase": "now",
+      "system": "mechanical",
+      "status": "done",
+      "evidence_url": "exploded.html",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "improve-dispenser",
+      "title": "出货改进",
+      "description": "四列机构适用于参考外形。其他产品尺寸仍需要设计并测试过的替换件。",
+      "phase": "now",
+      "system": "dispensing",
+      "status": "needs_contributors",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "common-interfaces",
+      "title": "标准化的机器接口",
+      "description": "共享的安装和连接位置，让实验室换一个模块时不必重画整台机器。",
+      "phase": "next",
+      "system": "mechanical",
+      "status": "needs_contributors",
+      "evidence_url": "",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "modifiable-dispensing",
+      "title": "可修改的出货机构",
+      "description": "一种写清楚的办法：在保留货道接口的同时增加另一种放出机构。",
+      "phase": "next",
+      "system": "dispensing",
+      "status": "needs_contributors",
+      "evidence_url": "",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "product-size",
+      "title": "产品尺寸适配",
+      "description": "写明参考货道能装和不能装的产品外形范围。",
+      "phase": "next",
+      "system": "products",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-product-module.yml",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "electronics-improvements",
+      "title": "电子与控制改进",
+      "description": "未来的控制器或接线改动。这不改变 Version Zero 使用 Wio Terminal 硬件这一事实。",
+      "phase": "next",
+      "system": "electronics",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "deployment-docs",
+      "title": "部署文档",
+      "description": "第二个实验室在单一参考搭建之外还需要的说明：摆放、电源、网络和交接。",
+      "phase": "next",
+      "system": "deployment",
+      "status": "needs_contributors",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/xiao-vending-machine-assemble-steps/README.md",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-deployment-docs.yml",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "reliability-testing",
+      "title": "可靠性与安全测试",
+      "description": "重复出货试验、故障记录和维护检查。目前还没有公布测试报告。",
+      "phase": "next",
+      "system": "operations",
+      "status": "needs_contributors",
+      "evidence_url": "",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-reliability.yml",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "xiao-merchandising",
+      "title": "XIAO 供应与陈列",
+      "description": "提议中的默认产品类别。供应条款、数量和价格都未确认。",
+      "phase": "next",
+      "system": "products",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "pilot-criteria",
+      "title": "试点实验室标准",
+      "description": "谁可以承办试点，以及什么样的证据算数。目前没有开放申请。",
+      "phase": "next",
+      "system": "deployment",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "restocking-workflow",
+      "title": "实验室运营与补货",
+      "description": "一套写下来的补货流程，而不只是参考仪表盘上的库存页。",
+      "phase": "next",
+      "system": "operations",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "machine-standards",
+      "title": "已发布的机器标准",
+      "description": "被接受的接口和文档规则。目前每一条提议都还是想法。",
+      "phase": "future",
+      "system": "standards",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "repeatable-deployment",
+      "title": "可重复的部署说明",
+      "description": "一套实验室可以照着做的材料，而不必从聊天记录和源码树里重新拼出参考机。",
+      "phase": "future",
+      "system": "deployment",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "application-process",
+      "title": "Fab Lab 申请流程",
+      "description": "实验室将来申请的方式。现在的路径是一份由人审核的 GitHub issue。",
+      "phase": "future",
+      "system": "community",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=register-interest.yml",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "seeed-support-model",
+      "title": "写清楚的矽递支持方式",
+      "description": "矽递科技实际会供应什么，以及按什么条款。还没写。",
+      "phase": "future",
+      "system": "deployment",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "lab-onboarding",
+      "title": "实验室核实与接入",
+      "description": "机器以已核实的身份出现在公开地图之前的审核。",
+      "phase": "future",
+      "system": "community",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "machine-directory",
+      "title": "全球机器名录",
+      "description": "地图页可以显示名录数据和已核实的机器。目前没有公布任何已核实的安装。",
+      "phase": "future",
+      "system": "community",
+      "status": "planned",
+      "evidence_url": "network.html",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "product-discovery",
+      "title": "产品发现",
+      "description": "一台机器上的公开产品列表，并区分“已列出”和“已确认可获得”。",
+      "phase": "future",
+      "system": "products",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "machine-announcements",
+      "title": "新机器公告",
+      "description": "已提交并获批准的安装信息流。在审核通过一条之前，信息流是空的。",
+      "phase": "future",
+      "system": "community",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "community-maintenance",
+      "title": "社群维护",
+      "description": "一种持续接受替换件、更正目录和撤下错误数据的办法。",
+      "phase": "future",
+      "system": "community",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    }
+  ]
+}

@@ -75,19 +75,19 @@ Once the backend is running and the boards are flashed, the operator dashboard s
 
 **1. Config — flash each Wio Terminal.** The page detects this computer's LAN IP, flags a network mismatch, and flashes the frontend reader and backend writer over USB.
 
-![Config page — flashing firmware](docs/assets/1-flashing-firmware.jpeg)
+![Config page — flashing firmware](websites/en/assets/1-flashing-firmware.jpeg)
 
 **2. Inventory — load the columns.** Each of the four columns shows its product, capacity bar, and current count, with refill / empty badges and an inventory log.
 
-![Inventory page — manage stock](docs/assets/2-inventory-manage.jpeg)
+![Inventory page — manage stock](websites/en/assets/2-inventory-manage.jpeg)
 
 **3. Operate — write cards and watch stock.** Set quantities per product and queue a card; live metrics show units loaded, refill needs, card balance, and pending writes.
 
-![Operate page — purchasing](docs/assets/3-operating-page-purchasing.jpeg)
+![Operate page — purchasing](websites/en/assets/3-operating-page-purchasing.jpeg)
 
 The last write job, recent orders, balance cards, and card-write queue are all logged below.
 
-![Operate page — write job and logs](docs/assets/3-operating-page-log.jpg)
+![Operate page — write job and logs](websites/en/assets/3-operating-page-log.jpg)
 
 ## Real operation (reference machine)
 
@@ -97,38 +97,38 @@ With the machine assembled and the software running, this is what end-to-end dis
 
 Tap an **Order** (direct) card; the machine releases every product on that card in one pass.
 
-[![Direct order dispense](docs/assets/real-operation-order-dispense.jpg)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/assets/real-operation-order-dispense.mp4)
+[![Direct order dispense](websites/en/assets/real-operation-order-dispense.jpg)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/websites/en/assets/real-operation-order-dispense.mp4)
 
-[Watch the recording (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/assets/real-operation-order-dispense.mp4)
+[Watch the recording (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/websites/en/assets/real-operation-order-dispense.mp4)
 
 ### Balance / selecting dispense
 
 Tap a **Balance** (selecting) card, pick products on the Wio screen, and collect from the bin.
 
-[![Balance dispense](docs/assets/real-operation-balance-dispense.jpg)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/assets/real-operation-balance-dispense.mp4)
+[![Balance dispense](websites/en/assets/real-operation-balance-dispense.jpg)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/websites/en/assets/real-operation-balance-dispense.mp4)
 
-[Watch the recording (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/assets/real-operation-balance-dispense.mp4)
+[Watch the recording (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/websites/en/assets/real-operation-balance-dispense.mp4)
 
 ## The framework, layer by layer
 
-| Layer | Statement | In one line |
-| --- | --- | --- |
-| 1 | [The Idea System](docs/01-idea-system.md) | Fabrication as local infrastructure — the premise and the guiding question. |
-| 2 | [The Reference System](docs/02-reference-system.md) | Where the idea comes to life — an open-source, modular machine anyone can source, assemble, and redesign. |
-| 3 | [System Design](docs/03-system-design.md) | Generalizing the machine into a portable, event-driven architecture. |
-| 4 | [Deployment Framework](docs/04-deployment-framework.md) | Turning the system into a kit any lab can reproduce. |
-| 5 | [Real World Value](docs/05-real-world-value.md) | From a single machine to a distributed local economy. |
+The project is still read as five layers. The public site in [`websites/`](websites) carries that story in English ([`websites/en`](websites/en)) and Chinese ([`websites/ch`](websites/ch)): Vision, Journey, and Network.
 
-Start with the [framework index](docs/README.md), or read the layers in order.
+| Layer | In one line |
+| --- | --- |
+| 1 | Fabrication as local infrastructure — the premise and the guiding question. |
+| 2 | An open-source, modular machine anyone can source, assemble, and redesign. |
+| 3 | A portable, event-driven architecture generalized from that machine. |
+| 4 | A kit any lab can reproduce. |
+| 5 | A path from one machine toward a distributed local economy. |
 
 ## Repository map
 
-The narrative lives in [`docs/`](docs); the machine that makes it real lives in the two `xiao-vending-machine-*` folders — one for the code, one for the build.
+The public site lives in [`websites/`](websites); the machine that makes it real lives in the two `xiao-vending-machine-*` folders — one for the code, one for the build.
 
 ```text
 how-to-vend-almost-anything/
 ├── README.md                              You are here — the framework in brief.
-├── docs/                                  The five-layer narrative, one statement per layer.
+├── websites/                              Public site. en/ is English, ch/ is Chinese.
 ├── xiao-vending-machine-full-code-system/ The open-source software: backend, dashboard, firmware.
 │   ├── backend-full/                          CSV-backed Node.js backend + operator dashboard.
 │   ├── frontend-vending-machine/              Wio Terminal firmware + step-by-step bring-up sketches.

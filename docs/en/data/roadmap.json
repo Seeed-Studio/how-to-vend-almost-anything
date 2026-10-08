@@ -1,0 +1,320 @@
+{
+  "updated_at": "2026-10-08",
+  "phases": [
+    {
+      "id": "now",
+      "kicker": "Stage 01",
+      "label": "Now / Version Zero",
+      "title": "A working reference, and an open call.",
+      "summary": "Assembly notes, CAD, firmware, the operator dashboard, and both dispense recordings are in the repository. The open problems are the ones a second lab would hit first.",
+      "cta_label": "Contribute to Version Zero",
+      "cta_url": "#contribute"
+    },
+    {
+      "id": "next",
+      "kicker": "Stage 02",
+      "label": "Next / Lab-ready version",
+      "title": "Make the reference easier to repeat.",
+      "summary": "Interfaces, adaptable dispensing, deployment notes, and pilot criteria are proposals. Nothing in this column is a finished lab kit.",
+      "cta_label": "Help define the next version",
+      "cta_url": "#contribute"
+    },
+    {
+      "id": "future",
+      "kicker": "Stage 03",
+      "label": "Future / Public network launch",
+      "title": "A directory only after the program is real.",
+      "summary": "Standards, applications, a defined Seeed support model, and public machine listings come after pilot evidence. This stage is not launched.",
+      "cta_label": "Explore the future network",
+      "cta_url": "network.html"
+    }
+  ],
+  "items": [
+    {
+      "id": "assembly-docs",
+      "title": "Assembly documentation",
+      "description": "Bill of materials, wiring, and a photographed build sequence for the reference machine.",
+      "phase": "now",
+      "system": "mechanical",
+      "status": "done",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/xiao-vending-machine-assemble-steps/README.md",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "source-cad",
+      "title": "Source CAD",
+      "description": "STEP case files and STL parts for the reference enclosure, frame, dispenser, and interface.",
+      "phase": "now",
+      "system": "mechanical",
+      "status": "done",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "wio-firmware",
+      "title": "Wio Terminal firmware",
+      "description": "Customer reader firmware plus bring-up sketches. The controller is a Wio Terminal, not a XIAO board.",
+      "phase": "now",
+      "system": "electronics",
+      "status": "done",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "operator-dashboard",
+      "title": "Backend and operator dashboard",
+      "description": "CSV-backed Node.js server with Operate, Inventory, and Config pages.",
+      "phase": "now",
+      "system": "software",
+      "status": "done",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-full-code-system/backend-full",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "direct-dispense",
+      "title": "Direct-order dispensing",
+      "description": "A recorded pass that releases every product on a direct-order card.",
+      "phase": "now",
+      "system": "dispensing",
+      "status": "done",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/websites/en/assets/real-operation-order-dispense.mp4",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "balance-dispense",
+      "title": "Balance-card dispensing",
+      "description": "A recorded pass that lets the customer select products on the Wio screen.",
+      "phase": "now",
+      "system": "dispensing",
+      "status": "done",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/websites/en/assets/real-operation-balance-dispense.mp4",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "exploded-viewer",
+      "title": "Exploded machine viewer",
+      "description": "Browser view of the Version Zero parts. Positions are for explanation, not assembly coordinates.",
+      "phase": "now",
+      "system": "mechanical",
+      "status": "done",
+      "evidence_url": "exploded.html",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "improve-dispenser",
+      "title": "Dispensing improvements",
+      "description": "The four-column mechanism works for the reference geometry. Other product sizes still need designed, tested replacements.",
+      "phase": "now",
+      "system": "dispensing",
+      "status": "needs_contributors",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "common-interfaces",
+      "title": "Standardized machine interfaces",
+      "description": "Shared mounting and connection points so a lab can swap a module without redrawing the whole machine.",
+      "phase": "next",
+      "system": "mechanical",
+      "status": "needs_contributors",
+      "evidence_url": "",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "modifiable-dispensing",
+      "title": "Modifiable dispensing mechanisms",
+      "description": "A defined way to add another release mechanism while keeping the column interface.",
+      "phase": "next",
+      "system": "dispensing",
+      "status": "needs_contributors",
+      "evidence_url": "",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "product-size",
+      "title": "Product size adaptability",
+      "description": "Documented envelopes for products the reference columns can and cannot carry.",
+      "phase": "next",
+      "system": "products",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-product-module.yml",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "electronics-improvements",
+      "title": "Electronics and control improvements",
+      "description": "Future controller or wiring changes. This does not change the fact that Version Zero uses Wio Terminal hardware.",
+      "phase": "next",
+      "system": "electronics",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "deployment-docs",
+      "title": "Deployment documentation",
+      "description": "Notes a second lab would need beyond the single reference build: placement, power, network, and handoff.",
+      "phase": "next",
+      "system": "deployment",
+      "status": "needs_contributors",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/xiao-vending-machine-assemble-steps/README.md",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-deployment-docs.yml",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "reliability-testing",
+      "title": "Reliability and safety testing",
+      "description": "Repeated dispense trials, failure notes, and maintenance checks. No test report is published yet.",
+      "phase": "next",
+      "system": "operations",
+      "status": "needs_contributors",
+      "evidence_url": "",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-reliability.yml",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "xiao-merchandising",
+      "title": "XIAO supply and merchandising",
+      "description": "A proposed default product category. Supply terms, quantities, and pricing are not confirmed.",
+      "phase": "next",
+      "system": "products",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "pilot-criteria",
+      "title": "Pilot-lab criteria",
+      "description": "Who could host a pilot, and what evidence would count. No application is open.",
+      "phase": "next",
+      "system": "deployment",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "restocking-workflow",
+      "title": "Lab operation and restocking",
+      "description": "A written restock routine for more than the reference dashboard's inventory page.",
+      "phase": "next",
+      "system": "operations",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "machine-standards",
+      "title": "Published machine standards",
+      "description": "Accepted interface and documentation rules. Every current proposal is still an idea.",
+      "phase": "future",
+      "system": "standards",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "repeatable-deployment",
+      "title": "Repeatable deployment instructions",
+      "description": "A kit a lab can follow without reconstructing the reference from chat and source trees.",
+      "phase": "future",
+      "system": "deployment",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "application-process",
+      "title": "Fab Lab application process",
+      "description": "A future way for a lab to apply. The current path is a GitHub issue, reviewed by a person.",
+      "phase": "future",
+      "system": "community",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=register-interest.yml",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "seeed-support-model",
+      "title": "Defined Seeed support model",
+      "description": "What Seeed Studio would actually supply, and on what terms. Not written.",
+      "phase": "future",
+      "system": "deployment",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "lab-onboarding",
+      "title": "Lab verification and onboarding",
+      "description": "A review before a machine appears on the public map as verified.",
+      "phase": "future",
+      "system": "community",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "machine-directory",
+      "title": "Worldwide machine directory",
+      "description": "The map page can show directory data and verified machines. No verified installation is published.",
+      "phase": "future",
+      "system": "community",
+      "status": "planned",
+      "evidence_url": "network.html",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "product-discovery",
+      "title": "Product discovery",
+      "description": "A public list of products at a machine, with a difference between a listing and confirmed availability.",
+      "phase": "future",
+      "system": "products",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "machine-announcements",
+      "title": "New machine announcements",
+      "description": "A feed of submitted and approved installations. The feed is empty until a review approves one.",
+      "phase": "future",
+      "system": "community",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    },
+    {
+      "id": "community-maintenance",
+      "title": "Community maintenance",
+      "description": "An ongoing way to accept replacements, correct listings, and retire bad data.",
+      "phase": "future",
+      "system": "community",
+      "status": "planned",
+      "evidence_url": "",
+      "contribution_url": "",
+      "updated_at": "2026-10-08"
+    }
+  ]
+}

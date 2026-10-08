@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Open-source notices · How to Vend Almost Anything</title>
+  <meta name="theme-color" content="#003a4a" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/pages.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="identity" href="index.html" aria-label="Fab Lab Vending homepage">
+        <span class="identity-symbol" aria-hidden="true">+</span>
+        <span class="identity-label"><strong>Fab Lab Vending</strong><small>OPEN HARDWARE INITIATIVE</small></span>
+      </a>
+      <nav class="nav" aria-label="Main pages">
+        <a href="index.html">01 / Vision</a>
+        <a href="journey.html">02 / Journey</a>
+        <a href="network.html">03 / Network</a>
+        <a class="nav-github" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a class="nav-lang" href="../ch/open-source.html" hreflang="zh-Hans" lang="zh-Hans">中文</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <header class="shell page-hero">
+      <p class="eyebrow">Open product / open toolchain</p>
+      <h1>Built with tools people can inspect.</h1>
+      <p class="lede">The public viewer uses open web and CAD tooling. Source CAD remains in the repository. Browser libraries should stay traceable to their upstream projects and licenses.</p>
+    </header>
+    <div class="notice-stack">
+      <div class="notice-item"><h2><a href="https://threejs.org/">Three.js</a></h2><p>WebGL renderer for the exploded scene, orbit controls, STL and glTF display, and part selection.</p><small>MIT</small></div>
+      <div class="notice-item"><h2><a href="https://github.com/kovacsv/occt-import-js">occt-import-js</a></h2><p>Open CASCADE / WebAssembly import used to triangulate STEP files in the browser when a display GLB is not available.</p><small>LGPL-2.1</small></div>
+      <div class="notice-item"><h2><a href="https://leafletjs.com/">Leaflet</a></h2><p>Interactive map on the Network page. Tiles come from OpenStreetMap and require their copyright notice.</p><small>BSD-2-Clause</small></div>
+      <div class="notice-item"><h2><a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></h2><p>Map tiles. © OpenStreetMap contributors.</p><small>ODbL</small></div>
+      <div class="notice-item"><h2><a href="https://www.fablabs.io/">FabLabs.io</a></h2><p>Source for a future directory snapshot. A listing is not participation in this vending program. See FABLABS_DIRECTORY.md.</p><small>Their terms</small></div>
+      <div class="notice-item"><h2><a href="https://github.com/kovacsv/Online3DViewer">Online 3D Viewer</a></h2><p>Useful reference for converting STEP and STL toward glTF. Not required at runtime.</p><small>MIT</small></div>
+      <div class="notice-item"><h2><a href="https://gltf-transform.dev/">glTF Transform</a></h2><p>Recommended build-stage tool for checking and optimizing GLB derivatives.</p><small>MIT</small></div>
+      <div class="notice-item"><h2><a href="https://github.com/zeux/meshoptimizer">meshoptimizer</a></h2><p>Recommended mesh optimization when the number of parts grows.</p><small>MIT</small></div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-inner">
+        <div>
+          <strong>Fab Lab Vending</strong>
+          <p>Notices for software loaded by the public site.</p>
+        </div>
+        <div class="footer-links">
+          <a href="index.html">Vision</a>
+          <a href="journey.html">Journey</a>
+          <a href="network.html">Network</a>
+          <a href="exploded.html">Reference machine</a>
+          <a href="THIRD_PARTY_NOTICES.md">Engineering inventory</a>
+          <a href="SITE.md">Site guide</a>
+        </div>
+      </div>
+      <p class="footer-note">These pages load Three.js, occt-import-js, and Leaflet from CDNs. If those files are later copied into the repository, keep the upstream license text with them. This page is an engineering inventory, not legal advice.</p>
+    </div>
+  </footer>
+</body>
+</html>

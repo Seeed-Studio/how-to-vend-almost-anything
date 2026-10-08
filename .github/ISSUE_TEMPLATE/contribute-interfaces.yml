@@ -1,0 +1,32 @@
+name: Define common interfaces
+description: Draft one mechanical, electrical, or software boundary. Label it as an idea, not an approved standard.
+title: "[Interface draft]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Accepted standards are not in force. A useful draft is still an idea until someone reviews it.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Interface
+      options:
+        - Mechanical mounting
+        - Dispensing module
+        - Electrical and communications
+        - Software contract
+        - Documentation and testing
+    validations:
+      required: true
+  - type: textarea
+    id: draft
+    attributes:
+      label: Draft
+    validations:
+      required: true
+  - type: textarea
+    id: assumptions
+    attributes:
+      label: What this draft assumes about Version Zero
+    validations:
+      required: true
