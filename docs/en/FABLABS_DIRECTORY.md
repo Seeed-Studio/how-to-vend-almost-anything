@@ -2,7 +2,7 @@
 
 The Network page can show Fab Labs from [FabLabs.io](https://www.fablabs.io/). A directory listing is not participation in this vending program, and it is not an endorsement by the Fab Foundation.
 
-GitHub Pages only reads [`websites/en/data/directory-labs.json`](data/directory-labs.json) and the Chinese copy at `websites/ch/data/directory-labs.json`. It does not call the API, and it must not contain an access token.
+GitHub Pages only reads [`docs/en/data/directory-labs.json`](data/directory-labs.json) and the Chinese copy at `docs/ch/data/directory-labs.json`. It does not call the API, and it must not contain an access token.
 
 ## What a person has to do
 
@@ -21,7 +21,7 @@ The workflow [`.github/workflows/fablabs-directory.yml`](../.github/workflows/fa
 
 - If `FABLABS_ACCESS_TOKEN` is missing, `scripts/fetch-fablabs-directory.mjs` exits successfully and does not change the JSON file. The map explains that it is waiting for a token.
 - If the token is present, the script calls `GET /labs/map` and pages through `GET /labs` with `Authorization: Bearer`.
-- It keeps only directory fields, forces `participation_status` to `directory`, and writes `websites/en/data/directory-labs.json` and `websites/ch/data/directory-labs.json`.
+- It keeps only directory fields, forces `participation_status` to `directory`, and writes `docs/en/data/directory-labs.json` and `docs/ch/data/directory-labs.json`.
 - It does not write `labs.json`, `machines.json`, `products.json`, or `updates.json`.
 - `scripts/validate-site-data.mjs` then checks the data. A directory lab with any other participation status fails the check.
 - If labs were parsed and the file changed, the workflow commits that file as `github-actions[bot]`.

@@ -87,7 +87,7 @@ function renderList(labs, total) {
   if (!shown.length) {
     list.innerHTML = total
       ? `<li><p>No labs match these filters.</p></li>`
-      : `<li><p>No directory snapshot is loaded, and no vending installation has been reviewed.</p></li>`;
+      : "";
     return;
   }
   list.innerHTML = shown.map((lab) => `
@@ -147,9 +147,9 @@ function renderFeeds(machines, products, updates, labs) {
   if (!publicMachines.length) {
     machineRoot.innerHTML = `
       <article class="invite">
-        <h3>The first participating lab has not been published.</h3>
-        <p>This space stays empty until a lab submits an installation and a person approves it. A FabLabs.io pin, when the directory snapshot exists, only means the lab is in that directory.</p>
-        <p><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=submit-installation.yml">Submit a confirmed machine installation</a></p>
+        <h3>Your lab could help shape the first edition.</h3>
+        <p>We are designing Version One together. Applications follow the launch; confirmed installations will appear here as labs join.</p>
+        <p><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=register-interest.yml&title=%5BLab+interest%5D%3A+&body=A+maintainer+reviews+this+issue+before+any+lab+is+added+to+%60docs%2Fen%2Fdata%2Flabs.json%60+and+%60docs%2Fch%2Fdata%2Flabs.json%60.+Registering+interest+does+not+create+a+map+pin+for+a+vending+machine.%0A%0A%23%23%23+Fab+Lab+name%0A%0A%23%23%23+City%0A%0A%23%23%23+Country%0A%0A%23%23%23+Official+FabLabs.io+profile%0A%0A%23%23%23+Lab+website%0A%0A%23%23%23+What+the+lab+wants+to+know+or+try%0A" target="_blank" rel="noreferrer">Register your lab’s early interest ↗</a></p>
       </article>
     `;
   } else {
@@ -173,7 +173,7 @@ function renderFeeds(machines, products, updates, labs) {
     .sort((a, b) => String(b.verified_at).localeCompare(String(a.verified_at)));
   const updateRoot = document.querySelector("#update-feed");
   if (!approved.length) {
-    updateRoot.innerHTML = `<article class="invite"><h3>No approved public updates.</h3><p>A proposed update is not shown here. Publication waits for a source, a timestamp, and a review.</p></article>`;
+    updateRoot.innerHTML = `<article class="invite"><h3>The next chapter is being designed.</h3><p>Published lab updates will appear here. For now, bring your ideas to the <a href="index.html#contribute">open design call</a>.</p></article>`;
     return;
   }
   updateRoot.innerHTML = approved.map((item) => `
@@ -270,6 +270,11 @@ async function init() {
       selected = id;
       renderPanel(labs.find((lab) => lab.lab_id === id), products);
     });
+    document.addEventListener("companion:tabchange", (event) => {
+      if (event.detail?.panelId === "explore") {
+        window.requestAnimationFrame(() => mapApi?.map.invalidateSize({ pan: false }));
+      }
+    });
 
     const apply = () => {
       const state = {
@@ -283,7 +288,7 @@ async function init() {
       const empty = document.querySelector("#map-empty");
       if (!labs.length) {
         empty.hidden = false;
-        empty.textContent = directory.note || "No directory snapshot and no participating labs yet.";
+        empty.textContent = "The lab network is taking shape. Directory listings and confirmed machines will appear here as they are published.";
       } else if (!visible.length) {
         empty.hidden = false;
         empty.textContent = "Nothing matches these filters.";
@@ -304,9 +309,12 @@ async function init() {
       selected = button.dataset.lab;
       renderPanel(labs.find((lab) => lab.lab_id === selected), products);
     });
-    document.querySelector("#directory-note").textContent = directory.note || "";
+    document.querySelector("#directory-note").textContent = directory.status === "ok"
+      ? "Directory listings come from FabLabs.io. Program participation and installed machines are reviewed separately."
+      : "The directory is not available yet. Lab interest and design contributions are open while we prepare the first edition.";
     renderFeeds(machines, products, updates, labs);
     apply();
+    document.dispatchEvent(new CustomEvent("companion:ready"));
   } catch (cause) {
     error.hidden = false;
     error.textContent = `Map data could not be loaded. ${cause.message}`;

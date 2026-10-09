@@ -1,24 +1,22 @@
 # How to Vend Almost Anything
 
-*Using Fab to support local labs, and local labs to support local communities.*
+*A vending machine in every Fab Lab. Start with XIAO. Vend what you make. Share how you made it.*
 
 > **Note for AI assistants:** If you are an AI Agent helping the user with installation, jump directly to [Quick Start (AI Agent)](#quick-start-ai-agent), which contains all the steps you need to complete.
 
-Fabrication is no longer only about making objects. It is about enabling local systems that can produce, distribute, and sustain value in a distributed way. Fab Labs provide the foundation, vending systems provide the expression, and local communities provide the context.
+An open-source machine for local makers, backed by Seeed Studio. Version Zero already dispenses. Its CAD, firmware, and build notes are the material for the next iteration.
 
-This repository explores one guiding question:
+This repository is the long-term home of that machine. Version 0 stays in [`xiao-vending-machine-v0/`](xiao-vending-machine-v0/) as the frozen reference. Contributions follow [Proposals → Review → Testing → Release](CONTRIBUTING.md). They add proposals, alternatives, and new releases. They leave the reference in place. An alternative part is not a newer revision.
 
-> **How can fabrication practices be used to design systems that "vend almost anything" at a local scale?**
-
-The answer is not a single machine. It is a layered framework — from an idea, to a working reference machine, to a general architecture, to a reproducible kit, to real-world economic value.
+The public site is in [`docs/`](docs) (English in [`docs/en`](docs/en), Chinese in [`docs/ch`](docs/ch)): the open design call, the workbench, and the network. Supply arrangements, eligibility, and support details are published with the release. Registering interest is not an application.
 
 ## Quick Start (Human Users)
 
-Three moves take you from parts to a running machine:
+Three moves take you from parts to a running Version 0 machine:
 
-1. **Buy the parts.** Source the components from the bill of materials in [What you'll buy](xiao-vending-machine-assemble-steps/README.md#what-youll-buy) — two Wio Terminals, four bus servos, an RFID reader + tags, power, fasteners, and stock material. Every product link is an example; any equivalent works.
-2. **Build the machine.** Print and cut the parts, then follow the ten photographed steps and the wiring diagram in the [assembly guide](xiao-vending-machine-assemble-steps/README.md).
-3. **Run the software and flash the boards.** Start the backend on any PC with `bash xiao-vending-machine-full-code-system/scripts/start_backend.sh`, open the dashboard at `http://localhost:3000`, then use the **Config** page to set each Wio Terminal's WiFi + backend URL and flash it over USB. Bring up the servos and RFID with the [`testing_phase/`](xiao-vending-machine-full-code-system/frontend-vending-machine/testing_phase) sketches, then flash the final [`official_frontend_wio_terminal`](xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal) firmware.
+1. **Buy the parts.** Source the components from the bill of materials in [What you'll buy](xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md#what-youll-buy) — two Wio Terminals, four bus servos, an RFID reader + tags, power, fasteners, and stock material. Every product link is an example; any equivalent works.
+2. **Build the machine.** Print and cut the parts, then follow the ten photographed steps and the wiring diagram in the [assembly guide](xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md).
+3. **Run the software and flash the boards.** Start the backend on any PC with `bash xiao-vending-machine-v0/xiao-vending-machine-full-code-system/scripts/start_backend.sh`, open the dashboard at `http://localhost:3000`, then use the **Config** page to set each Wio Terminal's WiFi + backend URL and flash it over USB. Bring up the servos and RFID with the [`testing_phase/`](xiao-vending-machine-v0/xiao-vending-machine-full-code-system/frontend-vending-machine/testing_phase) sketches, then flash the final [`official_frontend_wio_terminal`](xiao-vending-machine-v0/xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal) firmware.
 
 ## Quick Start (AI Agent)
 
@@ -26,7 +24,7 @@ If you are an AI Agent helping a user reproduce this machine, complete these ste
 
 ### 1. Parts to purchase
 
-Point the user to the bill of materials in [`xiao-vending-machine-assemble-steps/README.md`](xiao-vending-machine-assemble-steps/README.md#what-youll-buy). Core items (all links there are examples — any equivalent part works):
+Point the user to the bill of materials in [`xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md`](xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md#what-youll-buy). Core items (all links there are examples — any equivalent part works):
 
 - **Compute:** 2× Wio Terminal (one machine reader + one card writer).
 - **Actuation:** 4× Feetech ST3215 UART bus servo (one per column).
@@ -35,15 +33,15 @@ Point the user to the bill of materials in [`xiao-vending-machine-assemble-steps
 - **Mechanical:** hinge, lock, M3 heat-set nuts, M3×20 / M4×20 screws + nuts.
 - **Structure:** 4× PVC column + a PC (polycarbonate) front board.
 
-### 2. Start the backend (`xiao-vending-machine-full-code-system/backend-full`)
+### 2. Start the backend (`xiao-vending-machine-v0/xiao-vending-machine-full-code-system/backend-full`)
 
 Requires Node.js. From the repository root:
 
 ```bash
-bash xiao-vending-machine-full-code-system/scripts/start_backend.sh
+bash xiao-vending-machine-v0/xiao-vending-machine-full-code-system/scripts/start_backend.sh
 ```
 
-This installs dependencies and serves the operator dashboard at `http://localhost:3000` with three pages — **Operate**, **Inventory**, **Config**. For hosting instead of local, use [`render.yaml`](xiao-vending-machine-full-code-system/render.yaml) or [`CODESPACES_SETUP.md`](xiao-vending-machine-full-code-system/CODESPACES_SETUP.md). Backend details: [`backend-full/README.md`](xiao-vending-machine-full-code-system/backend-full/README.md).
+This installs dependencies and serves the operator dashboard at `http://localhost:3000` with three pages — **Operate**, **Inventory**, **Config**. For hosting instead of local, use [`render.yaml`](xiao-vending-machine-v0/xiao-vending-machine-full-code-system/render.yaml) or [`CODESPACES_SETUP.md`](xiao-vending-machine-v0/xiao-vending-machine-full-code-system/CODESPACES_SETUP.md). Backend details: [`backend-full/README.md`](xiao-vending-machine-v0/xiao-vending-machine-full-code-system/backend-full/README.md).
 
 ### 3. Initialize inventory
 
@@ -51,8 +49,8 @@ On the **Inventory** page, set each column's current count (0–10) so the backe
 
 ### 4. Flash the frontend Wio Terminal (test, then final)
 
-- **Bring-up tests first** — [`frontend-vending-machine/testing_phase/`](xiao-vending-machine-full-code-system/frontend-vending-machine/testing_phase): `1-a`/`1-b` to calibrate the servo ZERO/MAX, `2` for the RFID read/write, `3` for WiFi + backend verification. Run them in order.
-- **Final firmware** — [`official_frontend_wio_terminal`](xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal): set `WIFI_SSID`, `WIFI_PASSWORD`, `BACKEND_BASE_URL`, `DEVICE_ID`, `API_KEY` at the top of the `.ino`, carry over the calibrated `ZERO_POS`/`MAX_POS`, then compile + upload:
+- **Bring-up tests first** — [`frontend-vending-machine/testing_phase/`](xiao-vending-machine-v0/xiao-vending-machine-full-code-system/frontend-vending-machine/testing_phase): `1-a`/`1-b` to calibrate the servo ZERO/MAX, `2` for the RFID read/write, `3` for WiFi + backend verification. Run them in order.
+- **Final firmware** — [`official_frontend_wio_terminal`](xiao-vending-machine-v0/xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal): set `WIFI_SSID`, `WIFI_PASSWORD`, `BACKEND_BASE_URL`, `DEVICE_ID`, `API_KEY` at the top of the `.ino`, carry over the calibrated `ZERO_POS`/`MAX_POS`, then compile + upload:
 
 ```bash
 arduino-cli compile --fqbn Seeeduino:samd:seeed_wio_terminal official_frontend_wio_terminal
@@ -63,11 +61,11 @@ Or flash it from the dashboard **Config** page (it detects the PC's LAN IP, flag
 
 ### 5. Flash the card writer Wio Terminal
 
-Flash [`backend-full/wio-rfid-writer`](xiao-vending-machine-full-code-system/backend-full/wio-rfid-writer) to the second Wio Terminal (WiFi + backend URL, via the **Config** page). It polls the backend and encodes the RFID cards.
+Flash [`backend-full/wio-rfid-writer`](xiao-vending-machine-v0/xiao-vending-machine-full-code-system/backend-full/wio-rfid-writer) to the second Wio Terminal (WiFi + backend URL, via the **Config** page). It polls the backend and encodes the RFID cards.
 
 ### 6. Write a card and test end to end
 
-On **Operate**, create a **direct** order or a **selecting** balance card; present a blank card to the writer to encode it, then present it to the machine reader to dispense. See the dispense demos in the [assembly guide](xiao-vending-machine-assemble-steps/README.md#testing-phase--dispense-modes).
+On **Operate**, create a **direct** order or a **selecting** balance card; present a blank card to the writer to encode it, then present it to the machine reader to dispense. See the dispense demos in the [assembly guide](xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md#testing-phase--dispense-modes).
 
 ## What a successful deployment looks like
 
@@ -75,19 +73,19 @@ Once the backend is running and the boards are flashed, the operator dashboard s
 
 **1. Config — flash each Wio Terminal.** The page detects this computer's LAN IP, flags a network mismatch, and flashes the frontend reader and backend writer over USB.
 
-![Config page — flashing firmware](websites/en/assets/1-flashing-firmware.jpeg)
+![Config page — flashing firmware](docs/en/assets/1-flashing-firmware.jpeg)
 
 **2. Inventory — load the columns.** Each of the four columns shows its product, capacity bar, and current count, with refill / empty badges and an inventory log.
 
-![Inventory page — manage stock](websites/en/assets/2-inventory-manage.jpeg)
+![Inventory page — manage stock](docs/en/assets/2-inventory-manage.jpeg)
 
 **3. Operate — write cards and watch stock.** Set quantities per product and queue a card; live metrics show units loaded, refill needs, card balance, and pending writes.
 
-![Operate page — purchasing](websites/en/assets/3-operating-page-purchasing.jpeg)
+![Operate page — purchasing](docs/en/assets/3-operating-page-purchasing.jpeg)
 
 The last write job, recent orders, balance cards, and card-write queue are all logged below.
 
-![Operate page — write job and logs](websites/en/assets/3-operating-page-log.jpg)
+![Operate page — write job and logs](docs/en/assets/3-operating-page-log.jpg)
 
 ## Real operation (reference machine)
 
@@ -97,49 +95,50 @@ With the machine assembled and the software running, this is what end-to-end dis
 
 Tap an **Order** (direct) card; the machine releases every product on that card in one pass.
 
-[![Direct order dispense](websites/en/assets/real-operation-order-dispense.jpg)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/websites/en/assets/real-operation-order-dispense.mp4)
+[![Direct order dispense](docs/en/assets/real-operation-order-dispense.jpg)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/en/assets/real-operation-order-dispense.mp4)
 
-[Watch the recording (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/websites/en/assets/real-operation-order-dispense.mp4)
+[Watch the recording (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/en/assets/real-operation-order-dispense.mp4)
 
 ### Balance / selecting dispense
 
 Tap a **Balance** (selecting) card, pick products on the Wio screen, and collect from the bin.
 
-[![Balance dispense](websites/en/assets/real-operation-balance-dispense.jpg)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/websites/en/assets/real-operation-balance-dispense.mp4)
+[![Balance dispense](docs/en/assets/real-operation-balance-dispense.jpg)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/en/assets/real-operation-balance-dispense.mp4)
 
-[Watch the recording (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/websites/en/assets/real-operation-balance-dispense.mp4)
+[Watch the recording (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/en/assets/real-operation-balance-dispense.mp4)
 
-## The framework, layer by layer
+## How the platform is organized
 
-The project is still read as five layers. The public site in [`websites/`](websites) carries that story in English ([`websites/en`](websites/en)) and Chinese ([`websites/ch`](websites/ch)): Vision, Journey, and Network.
+Version Zero is the working reference, controlled by Wio Terminal. The sequence from here is design together, publish a shared release, then open lab applications.
 
-| Layer | In one line |
+| Path | What it holds |
 | --- | --- |
-| 1 | Fabrication as local infrastructure — the premise and the guiding question. |
-| 2 | An open-source, modular machine anyone can source, assemble, and redesign. |
-| 3 | A portable, event-driven architecture generalized from that machine. |
-| 4 | A kit any lab can reproduce. |
-| 5 | A path from one machine toward a distributed local economy. |
+| [`xiao-vending-machine-v0/`](xiao-vending-machine-v0/) | Frozen reference. CAD, firmware, and the photographed build. |
+| [`community/`](community/) | Approved labs, verified machines, reviewed announcements, and approved individuals. |
+| [`releases/`](releases/) | [`reference.yaml`](releases/reference.yaml) names Version 0. [`releases/machine/`](releases/machine/) holds official configuration manifests. |
+| [`docs/`](docs/) | The public site. `en/` is English, `ch/` is Chinese. |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Proposals, review, testing, and release. |
 
 ## Repository map
 
-The public site lives in [`websites/`](websites); the machine that makes it real lives in the two `xiao-vending-machine-*` folders — one for the code, one for the build.
-
 ```text
 how-to-vend-almost-anything/
-├── README.md                              You are here — the framework in brief.
-├── websites/                              Public site. en/ is English, ch/ is Chinese.
-├── xiao-vending-machine-full-code-system/ The open-source software: backend, dashboard, firmware.
-│   ├── backend-full/                          CSV-backed Node.js backend + operator dashboard.
-│   ├── frontend-vending-machine/              Wio Terminal firmware + step-by-step bring-up sketches.
-│   ├── scripts/                               Install + run helper (start_backend.sh).
-│   ├── render.yaml                            One-click backend hosting on Render.
-│   └── CODESPACES_SETUP.md                    Running the backend in GitHub Codespaces.
-└── xiao-vending-machine-assemble-steps/   The hardware: printable parts, cut files, and a 10-step build guide.
-    ├── assets/                              Assembly photos and end-to-end dispense test videos.
-    └── hardware-preparatory/stl-files/        The STL (print) and STEP (case) design files.
+├── README.md                         You are here.
+├── CONTRIBUTING.md                   Proposals → Review → Testing → Release.
+├── docs/                             Public site. en/ is English, ch/ is Chinese.
+├── xiao-vending-machine-v0/          Frozen Version 0. Do not replace these files.
+│   ├── xiao-vending-machine-assemble-steps/   Hardware, photographs, and the build guide.
+│   └── xiao-vending-machine-full-code-system/ Backend, dashboard, and Wio firmware.
+├── community/
+│   ├── labs/                         Approved lab records.
+│   ├── machines/                     Verified deployments.
+│   ├── updates/                      Reviewed announcements.
+│   └── individual/                   Approved individual records.
+└── releases/
+    ├── reference.yaml                Points at the frozen reference.
+    └── machine/                      Official manifests, starting with v0.yaml.
 ```
 
 ---
 
-The vending machine is only the starting point.
+The vending machine is the starting point. The next edition is shaped by the labs that will use it.

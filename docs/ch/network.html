@@ -1,191 +1,97 @@
 <!doctype html>
 <html lang="zh-Hans">
 <head>
+  <script src="../analytics.js" defer></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>网络 · 如何售出几乎一切</title>
-  <meta name="description" content="查找 Fab Lab；在机器经过审核之后，查看该实验室在售什么。名录里的实验室并不是本项目的成员。" />
+  <title>实验室网络 · How to Vend Almost Anything</title>
+  <meta name="description" content="一起共建未来的 Fab Lab 售货网络。现在登记参与意向，第一版发布之后开放实验室申请。" />
   <meta name="theme-color" content="#003a4a" />
-  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20261008-2" />
   <link rel="stylesheet" href="assets/css/pages.css" />
+  <link rel="stylesheet" href="assets/css/companions.css?v=20261008-5" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </head>
-<body>
+<body class="companion compact-page network-page">
   <a class="skip-link" href="#main">跳到正文</a>
   <header class="site-header">
     <div class="shell header-inner">
-      <a class="identity" href="index.html" aria-label="Fab Lab 售货首页">
+      <a class="identity" href="index.html" aria-label="Fab Lab Vending 首页">
         <span class="identity-symbol" aria-hidden="true">+</span>
-        <span class="identity-label"><strong>Fab Lab 售货</strong><small>开源硬件计划</small></span>
+        <span class="identity-label"><strong>Fab Lab Vending</strong><small>由实验室共建，为实验室而造。</small></span>
       </a>
-      <nav class="nav" aria-label="主要页面">
-        <a href="index.html">01 / 愿景</a>
-        <a href="journey.html">02 / 旅程</a>
-        <a href="network.html" aria-current="page">03 / 网络</a>
-        <a class="nav-github" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" data-menu-toggle><span data-menu-label data-open="菜单" data-close="关闭">菜单</span><span aria-hidden="true">+</span></button>
+      <nav class="nav" id="primary-nav" aria-label="主导航" data-menu>
+        <a href="index.html">愿景</a>
+        <a href="journey.html">共建工作台</a>
+        <a href="network.html" aria-current="page">实验室网络</a>
         <a class="nav-lang" href="../en/network.html" hreflang="en" lang="en">EN</a>
+        <a class="nav-github" href="index.html#contribute">参与共建 ↗</a>
       </nav>
     </div>
   </header>
   <main id="main">
-    <header class="shell page-hero" id="top">
-      <p class="eyebrow">网络</p>
-      <h1>找到实验室。看看它在做什么。</h1>
-      <p class="lede">查看世界各地的 Fab Lab，发现参与中的售货机，并在实验室真正公布之后，找到本地能拿到的 XIAO 板和创客产品。地图从 FabLabs.io 名录开始。那里的一个点不是售货机，也不是 Fab Foundation 的背书。</p>
+    <header class="shell page-hero compact-hero" id="top">
+      <div><p class="eyebrow">实验室网络 / 开放意向登记</p><h1>本地的产品，<br>共同的可能。</h1><p class="lede">每个 Fab Lab，一台售货机。从 XIAO 开始，扩展本地产品，把有用的改进分享给下一个实验室。</p></div>
+      <aside class="hero-action"><a class="btn btn-dark" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=register-interest.yml&amp;title=%5BLab+interest%5D%3A+&amp;body=A+maintainer+reviews+this+issue+before+any+lab+is+added+to+%60docs%2Fen%2Fdata%2Flabs.json%60+and+%60docs%2Fch%2Fdata%2Flabs.json%60.+Registering+interest+does+not+create+a+map+pin+for+a+vending+machine.%0A%0A%23%23%23+Fab+Lab+name%0A%0A%23%23%23+City%0A%0A%23%23%23+Country%0A%0A%23%23%23+Official+FabLabs.io+profile%0A%0A%23%23%23+Lab+website%0A%0A%23%23%23+What+the+lab+wants+to+know+or+try%0A" target="_blank" rel="noreferrer"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>登记参与意向 ↗</a><a class="text-link" href="journey.html#contribute">参与第一版设计 →</a><small>实验室申请将在第一版发布后开放。</small></aside>
     </header>
-
-    <div class="shell map-tools">
-      <form id="map-filters" class="filters">
-        <label>搜索
-          <input id="filter-search" type="search" placeholder="国家、城市或实验室" autocomplete="off" />
-        </label>
-        <label>参与
-          <select id="filter-status">
-            <option value="all">全部标记</option>
-            <option value="directory">名录条目</option>
-            <option value="interested">有兴趣</option>
-            <option value="pilot">试点</option>
-            <option value="verified">已核实的机器</option>
-            <option value="recent_update">新动态</option>
-          </select>
-        </label>
-        <label>机器
-          <select id="filter-machine">
-            <option value="any">不限</option>
-            <option value="with">有已审核的机器</option>
-            <option value="without">没有已审核的机器</option>
-          </select>
-        </label>
-        <label>产品类别
-          <select id="filter-category">
-            <option value="all">不限</option>
-          </select>
-        </label>
-        <label>最近
-          <span><input id="filter-recent" type="checkbox" /> 仅已核实的更新</span>
-        </label>
-      </form>
-      <ul class="legend">
-        <li><i class="swatch swatch-directory" aria-hidden="true"></i> 名录条目</li>
-        <li><i class="swatch swatch-interested" aria-hidden="true"></i> 有兴趣</li>
-        <li><i class="swatch swatch-pilot" aria-hidden="true"></i> 试点</li>
-        <li><i class="swatch swatch-verified" aria-hidden="true"></i> 已核实的机器</li>
-        <li><i class="swatch swatch-recent_update" aria-hidden="true"></i> 新动态</li>
-      </ul>
-      <p id="data-error" class="empty-note" hidden></p>
-    </div>
-
-    <div class="shell">
-      <div class="map-stage">
-        <div id="map" class="map-canvas" role="region" aria-label="Fab Lab 与已审核售货机的世界地图"></div>
-        <div class="map-side">
-          <p id="map-fallback" class="map-empty" hidden></p>
-          <div id="map-empty" class="map-empty" hidden></div>
-          <article id="lab-panel" class="lab-panel" hidden></article>
-          <h2 class="visually-hidden">实验室列表</h2>
-          <ul id="lab-list" class="lab-list"></ul>
+    <div class="shell"><ol class="compact-stages"><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3m6-3v3M9 18v3m6-3v3M3 9h3m-3 6h3m12-6h3m-3 6h3"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg><div><small>01 / 共同起点</small><strong>默认售卖 XIAO</strong></div></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 3 9 5v9l-9 5-9-5V8l9-5Zm0 9 9-4M3 8l9 4v10"/></svg><div><small>02 / 你的实验室</small><strong>本地产品目录</strong></div></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><path d="M9 6h6M7.5 8.5l3 6.5m6-6.5-3 6.5"/></svg><div><small>03 / 传递价值</small><strong>共享开源改进</strong></div></li></ol></div>
+    <div class="shell" data-tabs>
+      <nav class="tab-nav" aria-label="探索实验室网络" data-tablist><a class="tab-link" href="#join" aria-controls="join" data-tab><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15 4 5 5M4 20l5-1L21 7a2 2 0 0 0-5-5L4 14v6Z"/></svg>参与共创</a><a class="tab-link" href="#explore" aria-controls="explore" data-tab><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>探索实验室</a><a class="tab-link" href="#activity" aria-controls="activity" data-tab><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>社区动态</a></nav>
+      <section class="tab-panel" id="join" data-tab-panel>
+        <div class="panel-heading"><h2>由你的实验室，赋予本地特色。</h2><p>共同的基础让每个实验室都能发挥自己的特色，每次改进又成为所有人的新起点。</p></div>
+        <div class="participation-layout">
+          <div><ul class="participation-list"><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3m6-3v3M9 18v3m6-3v3M3 9h3m-3 6h3m12-6h3m-3 6h3"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg><div><h3>从 XIAO 开始。</h3><p>熟悉的开发板系列让创意有一个容易获得的起点。每个实验室自行确认产品供应情况。</p></div></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 3 9 5v9l-9 5-9-5V8l9-5Zm0 9 9-4M3 8l9 4v10"/></svg><div><h3>售卖社区需要的东西。</h3><p>选择元件、学习套件和自己的作品。产品尺寸与兼容的出货机构，决定机器能容纳什么。</p></div></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><path d="M9 6h6M7.5 8.5l3 6.5m6-6.5-3 6.5"/></svg><div><h3>分享让它变好的方法。</h3><p>公开可复用的机器设计、改进、源文件和经验。明确版本与兼容性，让其他实验室接着你的工作前进。</p></div></li></ul><div class="product-tags" id="find"><span>XIAO</span><span>电子元件</span><span>学习套件</span><span>本地创作</span><span>配件</span><span>更多</span></div></div>
+          <aside class="join-card"><h3>带来你的<br>实验室视角。</h3><ol><li>介绍实验室的位置与需求。</li><li>分享你想售卖的产品。</li><li>为第一版贡献想法、测试或改进。</li></ol><a class="text-link" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?title=Version+One+idea&amp;body=Share+a+sketch%2C+a+test%2C+or+a+suggestion+for+Version+One.%0A%0A%23%23%23+What+would+you+change%3F%0A%0A%23%23%23+What+did+you+try%3F%0A" target="_blank" rel="noreferrer"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15 4 5 5M4 20l5-1L21 7a2 2 0 0 0-5-5L4 14v6Z"/></svg>分享草图或建议 ↗</a><p>通过 GitHub 提交，需要 GitHub 账号。意向登记不等于申请或名额分配。</p></aside>
         </div>
-      </div>
-    </div>
-
-    <section class="shell section" id="find">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">来访者能找到什么</p>
-          <h2>一条目录不是库存数量。</h2>
-        </div>
-        <p>对已审核的实验室，产品可以出现在下面的类别里。“已列出的产品”只表示实验室写了它的名字。“最近确认可获得”需要一个日期。本站不编造实时库存或价格。</p>
-      </div>
-      <div class="category-grid">
-        <article><h3>Seeed Studio XIAO</h3><p>提议中的默认类别。本站没有确认任何库存。</p></article>
-        <article><h3>电子与元件</h3><p>实验室选择备着的板卡、传感器和零件。</p></article>
-        <article><h3>本地制作的物品</h3><p>实验室自己做的东西。它们不必开源。</p></article>
-        <article><h3>教育套件</h3><p>为课程或开放之夜准备的套装。</p></article>
-        <article><h3>工具与配件</h3><p>和电子产品放在一起的小工具。</p></article>
-        <article><h3>其他支持的产品</h3><p>已审核的机器被设置来放出的其他东西。</p></article>
-      </div>
-    </section>
-
-    <div class="section-alt">
-      <section class="shell section" id="new-machines">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">安装</p>
-            <h2>新的机器。新的创客。新的地方。</h2>
+        <details class="fold"><summary><span class="fold-title"><strong>Seeed Studio 将如何支持？</strong><span>项目支持与后续参与</span></span></summary><div class="fold-body"><p>Seeed Studio 支持这一项目，并提供可运行的开源参考。供货安排、申请资格和支持条款，将在实验室申请开放前公布。</p><p>现在，实验室可以参与设计并登记意向。先发布第一版，再开放实验室申请。</p></div></details>
+        <details class="fold" id="submit"><summary><span class="fold-title"><strong>发布或更新实验室记录</strong><span>七种已有的提交方式</span></span></summary><div class="fold-body"><p>让网络信息有用：提供可核实的来源，注明机器或产品；确认供应情况时附上日期。记录经审核后公开。</p><ul class="record-actions"><li><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=register-interest.yml&amp;title=%5BLab+interest%5D%3A+&amp;body=A+maintainer+reviews+this+issue+before+any+lab+is+added+to+%60docs%2Fen%2Fdata%2Flabs.json%60+and+%60docs%2Fch%2Fdata%2Flabs.json%60.+Registering+interest+does+not+create+a+map+pin+for+a+vending+machine.%0A%0A%23%23%23+Fab+Lab+name%0A%0A%23%23%23+City%0A%0A%23%23%23+Country%0A%0A%23%23%23+Official+FabLabs.io+profile%0A%0A%23%23%23+Lab+website%0A%0A%23%23%23+What+the+lab+wants+to+know+or+try%0A" target="_blank" rel="noreferrer">登记参与意向</a></li><li><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=submit-installation.yml&amp;title=%5BInstallation%5D%3A+&amp;body=Do+not+treat+this+issue+as+a+public+listing.+A+maintainer+checks+the+evidence%2C+then+may+add+records+to+%60docs%2Fen%2Fdata%2Flabs.json%60+and+%60docs%2Fen%2Fdata%2Fmachines.json%60%2C+and+the+Chinese+copies+under+%60docs%2Fch%2Fdata%60.%0A%0A%23%23%23+Fab+Lab+name%0A%0A%23%23%23+City%0A%0A%23%23%23+Country%0A%0A%23%23%23+Machine+version%0A%0A%23%23%23+Photograph+URL%0A%0A%23%23%23+Verification+source%0A%0A%23%23%23+Date+observed%0A%0A%23%23%23+What+is+installed%0A" target="_blank" rel="noreferrer">提交机器安装</a></li><li><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=update-product.yml&amp;title=%5BProduct+listing%5D%3A+&amp;body=Stock+and+prices+are+not+collected+here.+Use+the+availability+form+for+a+dated+confirmation.%0A%0A%23%23%23+Fab+Lab+name%0A%0A%23%23%23+Machine%0A%0A%23%23%23+Product+name%0A%0A%23%23%23+Category%0A%0AChoose+one%3A+Seeed+Studio+XIAO%2C+Electronics+and+components%2C+Locally+fabricated+items%2C+Educational+kits%2C+Tools+and+accessories%2C+Other+supported+products%0A%0A%23%23%23+Product+URL%0A%0A%23%23%23+Notes%0A" target="_blank" rel="noreferrer">添加或更新产品</a></li><li><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=update-availability.yml&amp;title=%5BAvailability%5D%3A+&amp;body=%23%23%23+Fab+Lab+name%0A%0A%23%23%23+Product+name%0A%0A%23%23%23+What+was+checked%0A%0AChoose+one%3A+Listed+only%2C+Availability+confirmed+on+the+date+below%0A%0A%23%23%23+Date+checked%0A%0A%23%23%23+What+you+observed%0A" target="_blank" rel="noreferrer">确认产品供应情况</a></li><li><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=announce-upgrade.yml&amp;title=%5BUpgrade%5D%3A+&amp;body=%23%23%23+Fab+Lab+name%0A%0A%23%23%23+Previous+version%0A%0A%23%23%23+Installed+version+now%0A%0A%23%23%23+Date%0A%0A%23%23%23+Source+URL%0A%0A%23%23%23+What+changed%0A" target="_blank" rel="noreferrer">公布机器升级</a></li><li><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=submit-improvement.yml&amp;title=%5BImprovement%5D%3A+&amp;body=A+replacement+is+appended.+It+does+not+overwrite+the+Version+Zero+CAD.+An+alternative+part+is+not+automatically+a+newer+revision.%0A%0A%23%23%23+Part+id%0A%0A%23%23%23+Version%0A%0A%23%23%23+Source+CAD+path+or+URL%0A%0A%23%23%23+Purpose%0A%0A%23%23%23+Replaces%0A%0A%23%23%23+Compatibility+assumptions%0A%0A%23%23%23+Test+evidence%0A%0A%23%23%23+Attribution%0A%0A%23%23%23+License%0A" target="_blank" rel="noreferrer">分享开源改进</a></li><li><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=correct-listing.yml&amp;title=%5BCorrection%5D%3A+&amp;body=%23%23%23+Record%0A%0A%23%23%23+What+is+wrong%0A%0A%23%23%23+What+it+should+say%0A%0A%23%23%23+Evidence+URL%0A" target="_blank" rel="noreferrer">更正已有记录</a></li></ul></div></details>
+      </section>
+      <section class="tab-panel" id="explore" data-tab-panel>
+        <div class="panel-heading"><h2>发现身边的创作。</h2><p>名录展示实验室，经过审核的机器记录展示安装。产品目录说明售卖内容，带日期的确认说明供应情况。</p></div>
+        <form id="map-filters">
+          <div class="explorer-search"><label>搜索实验室<input id="filter-search" type="search" placeholder="国家、城市或实验室" autocomplete="off"></label>
+            <details class="fold advanced-filters"><summary><span class="fold-title"><strong>细化搜索</strong><span>参与状态、机器、产品</span></span></summary><div class="fold-body"><div class="filters">
+              <label>参与状态<select id="filter-status"><option value="all">全部标记</option><option value="directory">名录条目</option><option value="interested">有意向</option><option value="pilot">试点</option><option value="verified">已核实的机器</option><option value="recent_update">新动态</option></select></label>
+              <label>机器<select id="filter-machine"><option value="any">全部</option><option value="with">有已审核的机器</option><option value="without">没有已审核的机器</option></select></label>
+              <label>产品类别<select id="filter-category"><option value="all">全部</option></select></label>
+              <label>近期<span><input id="filter-recent" type="checkbox">仅已核实的更新</span></label>
+            </div></div></details>
           </div>
-          <p>这里只出现已提交并获批准的安装。</p>
-        </div>
-        <div class="feed" id="machine-feed"></div>
+        </form>
+        <ul class="legend"><li><i class="swatch swatch-directory" aria-hidden="true"></i>名录条目</li><li><i class="swatch swatch-interested" aria-hidden="true"></i>有意向</li><li><i class="swatch swatch-pilot" aria-hidden="true"></i>试点</li><li><i class="swatch swatch-verified" aria-hidden="true"></i>已核实的机器</li><li><i class="swatch swatch-recent_update" aria-hidden="true"></i>新动态</li></ul><p id="data-error" class="empty-note" hidden role="status"></p>
+        <div class="map-stage"><div id="map" class="map-canvas" role="region" aria-label="Fab Lab 与已审核售货机的世界地图"></div><div class="map-side"><p id="map-fallback" class="map-empty" hidden></p><div id="map-empty" class="map-empty" hidden role="status"></div><article id="lab-panel" class="lab-panel" hidden></article><h3 class="visually-hidden">实验室列表</h3><ul id="lab-list" class="lab-list"></ul></div></div>
+        <noscript><p class="compact-note">探索页通过 JavaScript 加载公开记录，你也可以直接阅读实验室名录和项目记录。 <a href="data/directory-labs.json">FabLabs.io</a> · <a href="data/labs.json">Labs</a> · <a href="data/machines.json">Machines</a></p></noscript>
+        <details class="fold" id="directory-method"><summary><span class="fold-title"><strong>记录来自哪里？</strong><span>来源、审核与名录设置</span></span></summary><div class="fold-body"><p>实验室名称与位置来自 FabLabs.io 名录快照。机器、产品及供应情况来自已审核的社区提交。名录成员不代表参与本项目。</p><p id="directory-note"></p><div class="inline-links"><a href="FABLABS_DIRECTORY.md">名录设置指南 ↗</a><a href="https://www.fablabs.io/">FabLabs.io 名录 ↗</a><a href="https://fabfoundation.org/">Fab Foundation ↗</a></div></div></details>
+      </section>
+      <section class="tab-panel" id="activity" data-tab-panel>
+        <div class="panel-heading"><h2>值得继续传递的改进。</h2><p>已确认的机器安装和经过审核的更新，将在这里展示。第一版正在共同设计，尚未公布参与项目的机器。</p></div>
+        <div class="activity-grid"><section id="new-machines"><h3>公开的机器安装</h3><div class="feed" id="machine-feed"></div></section><section id="updates"><h3>社区动态</h3><div class="feed" id="update-feed"></div></section></div>
+        <p class="compact-note">每条公开记录都有核实来源。机器安装和更新提案，经审核后才会公开。</p><a class="text-link" href="journey.html#contribute"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><path d="M9 6h6M7.5 8.5l3 6.5m6-6.5-3 6.5"/></svg>带一个改进想法到共建工作台 ↗</a>
       </section>
     </div>
-
-    <section class="shell section" id="updates">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">社群动态</p>
-          <h2>带审核状态的公开信息流。</h2>
-        </div>
-        <p>安装、升级、新产品、可获得性变化、开源修改和运营笔记。每一条公开内容都需要来源、时间和已通过的审核。一份提议不是一条目录。</p>
-      </div>
-      <div class="feed" id="update-feed"></div>
-    </section>
-
-    <div class="section-alt">
-      <section class="shell section" id="submit">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">登记或更新你的实验室</p>
-            <h2>先经审核，再通过 GitHub issue 公开。</h2>
-          </div>
-          <p>GitHub Pages 自己不能保存表单。这些链接打开仓库里的 issue 表单。维护者审核 issue，然后编辑 JSON。以后的后端可以替换这个队列，而不必改这页的数据文件。</p>
-        </div>
-        <div class="submit-grid">
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=register-interest.yml"><strong>登记兴趣</strong><p>告诉我们实验室想关注这个项目。这不会安装一台机器。</p></a>
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=submit-installation.yml"><strong>提交已确认的安装</strong><p>机器版本、照片，以及审核者可以核对的来源。</p></a>
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=update-product.yml"><strong>添加或更新产品目录</strong><p>名称和类别。一条目录不是声称它有库存。</p></a>
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=update-availability.yml"><strong>更新产品可获得性</strong><p>在显示为最近确认之前，必须有一个日期。</p></a>
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=announce-upgrade.yml"><strong>公布机器升级</strong><p>改了什么，以及现在安装的是哪个版本。</p></a>
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=submit-improvement.yml"><strong>提交开源改进</strong><p>零件编号、CAD、版本、兼容性、测试证据、署名和许可。</p></a>
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=correct-listing.yml"><strong>更正已有目录</strong><p>指出哪条记录是错的，以及更正的证据。</p></a>
-        </div>
-      </section>
-    </div>
-
-    <section class="shell section" id="directory-method">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">世界地图如何填上</p>
-          <h2>每日快照，不是浏览器里的实时登录。</h2>
-        </div>
-        <p id="directory-note"></p>
-      </div>
-      <p>api.fablabs.io 上旧的公开接口已经移除。当前开发者指南要求有人注册一个应用并完成一次 OAuth。本页只读取 <a href="data/directory-labs.json">directory-labs.json</a>。令牌存为 secret 之后，GitHub Action 可以刷新这个文件。人必须做的事和 Action 能做的事写在 <a href="FABLABS_DIRECTORY.md">FABLABS_DIRECTORY.md</a>。</p>
-      <p class="directory-links"><a href="https://www.fablabs.io/">FabLabs.io 名录</a> · <a href="https://fabfoundation.org/">Fab Foundation</a></p>
-    </section>
   </main>
   <footer class="site-footer">
     <div class="shell">
       <div class="footer-inner">
         <div>
-          <strong>Fab Lab 售货</strong>
-          <p>由矽递科技发起、面向 Fab Lab 的开源参考项目。</p>
+          <strong>How to Vend Almost Anything</strong>
+          <p>由 Seeed Studio 支持的开源项目。</p>
         </div>
         <div class="footer-links">
-          <a href="index.html">愿景</a>
-          <a href="journey.html">旅程</a>
-          <a href="network.html">网络</a>
-          <a href="exploded.html">参考机器</a>
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">源代码 ↗</a>
+          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything">GitHub ↗</a>
+          <a href="journey.html">共建工作台</a>
+          <a href="network.html">实验室网络</a>
           <a href="open-source.html">开源声明</a>
-          <a href="https://www.seeedstudio.com/blog/branding-kit/" target="_blank" rel="noopener noreferrer">矽递品牌</a>
-          <a href="SITE.md">站点说明</a>
-          <a href="#top">回到顶部</a>
+          <a href="#top">返回顶部 ↑</a>
         </div>
       </div>
-      <p class="footer-note">地图瓦片 © OpenStreetMap 贡献者。若包含 FabLabs.io 数据，署名写在目录快照中。名录中的实验室并不是一台售货机。参考硬件与软件发布在本仓库中。这里描述的项目支持在确认之前只是提议。这不是 Fab Foundation 的官方项目。</p>
+      <p class="footer-note">地图瓦片 © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap 贡献者</a>。FabLabs.io 数据署名保留在目录快照中。名录条目不代表售货机安装或项目参与。本项目并非 Fab Foundation 官方项目。</p>
     </div>
   </footer>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="assets/js/network.js"></script>
+  <script src="assets/js/network.js?v=20261008-3"></script>
+  <script src="assets/js/compact-tabs.js?v=20261008-3" defer></script>
+  <script src="assets/js/initiative.js?v=20261008-2" defer></script>
 </body>
 </html>

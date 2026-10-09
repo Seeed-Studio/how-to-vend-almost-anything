@@ -10,8 +10,8 @@
       "existing": "STEP case files, STL structure, and a photographed assembly of the finished enclosure.",
       "missing": "Shared mounting dimensions for lab-specific panels and product bays.",
       "contribution": "Propose a mounting interface without replacing the Version Zero files in place.",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files",
-      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml&title=%5BInterface+draft%5D%3A+&body=Accepted+standards+are+not+in+force.+A+useful+draft+is+still+an+idea+until+someone+reviews+it.%0A%0A%23%23%23+Interface%0A%0AChoose+one%3A+Mechanical+mounting%2C+Dispensing+module%2C+Electrical+and+communications%2C+Software+contract%2C+Documentation+and+testing%0A%0A%23%23%23+Draft%0A%0A%23%23%23+What+this+draft+assumes+about+Version+Zero%0A",
       "updated_at": "2026-10-08",
       "next_milestone": "A drafted interface note another lab can machine against."
     },
@@ -24,8 +24,8 @@
       "existing": "Four-column dispenser, servo-driven arms, and recorded direct and balance dispenses.",
       "missing": "Tested mechanisms for product sizes the reference columns do not fit.",
       "contribution": "Design a replacement dispenser with part id, CAD, compatibility, and a dispense test.",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/websites/en/assets/real-operation-order-dispense.mp4",
-      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/docs/en/assets/real-operation-order-dispense.mp4",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml&title=%5BDispensing%5D%3A+&body=The+reference+dispenser+is+in+%60xiao-vending-machine-v0%2Fxiao-vending-machine-assemble-steps%2Fhardware-preparatory%2Fstl-files%2Fparts%2Fdispenser.stl%60.+Leave+Version+Zero+in+place+and+add+a+replacement.%0A%0A%23%23%23+Problem%0A%0A%23%23%23+Part+id%0A%0A%23%23%23+Version%0A%0A%23%23%23+Source+CAD%0A%0A%23%23%23+Purpose%0A%0A%23%23%23+Compatibility+assumptions%0A%0A%23%23%23+Test+evidence%0A%0A%23%23%23+Attribution%0A%0A%23%23%23+License%0A",
       "updated_at": "2026-10-08",
       "next_milestone": "One reviewed alternative dispenser that does not overwrite Version Zero."
     },
@@ -38,8 +38,8 @@
       "existing": "Two Wio Terminals, Feetech ST3215 bus servos, and an RFID reader. XIAO is not the controller.",
       "missing": "Any later control redesign, which would be a new version rather than a silent swap.",
       "contribution": "Document a control change against the current wiring before proposing it as current.",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal",
-      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-v0/xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml&title=%5BInterface+draft%5D%3A+&body=Accepted+standards+are+not+in+force.+A+useful+draft+is+still+an+idea+until+someone+reviews+it.%0A%0A%23%23%23+Interface%0A%0AChoose+one%3A+Mechanical+mounting%2C+Dispensing+module%2C+Electrical+and+communications%2C+Software+contract%2C+Documentation+and+testing%0A%0A%23%23%23+Draft%0A%0A%23%23%23+What+this+draft+assumes+about+Version+Zero%0A",
       "updated_at": "2026-10-08",
       "next_milestone": "A short electrical interface note for the reference build."
     },
@@ -52,8 +52,8 @@
       "existing": "Wio firmware, bring-up sketches, and a Node.js backend with Operate, Inventory, and Config.",
       "missing": "A written software contract for a lab that changes the mechanism or the product map.",
       "contribution": "Improve the operator software against a stated acceptance check.",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-full-code-system/backend-full",
-      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-operator-software.yml",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-v0/xiao-vending-machine-full-code-system/backend-full",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-operator-software.yml&title=%5BOperator+software%5D%3A+&body=Source+lives+in+%60xiao-vending-machine-v0%2Fxiao-vending-machine-full-code-system%2Fbackend-full%60.%0A%0A%23%23%23+Problem%0A%0A%23%23%23+Expected+result%0A%0A%23%23%23+How+to+reproduce+it%0A%0A%23%23%23+Relevant+source+files%0A",
       "updated_at": "2026-10-08",
       "next_milestone": "A documented API note for card verify, checkout, and dispense complete."
     },
@@ -66,8 +66,8 @@
       "existing": "Inventory counts, refill state, and card writing on the reference dashboard.",
       "missing": "A restock routine and reliability log meant for more than one machine.",
       "contribution": "Run repeated dispense trials and publish what failed.",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/websites/en/assets/2-inventory-manage.jpeg",
-      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-reliability.yml",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/docs/en/assets/2-inventory-manage.jpeg",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-reliability.yml&title=%5BReliability%5D%3A+&body=%23%23%23+Machine+version+tested%0A%0A%23%23%23+What+you+repeated%0A%0A%23%23%23+What+failed+or+held%0A%0A%23%23%23+Where+the+notes+and+any+recording+live%0A",
       "updated_at": "2026-10-08",
       "next_milestone": "A failure and refill note from a real operating stretch."
     },
@@ -81,7 +81,7 @@
       "missing": "Product envelopes, a merchandising concept, and any confirmed supply.",
       "contribution": "Define a product module with dimensions and a source model.",
       "evidence_url": "",
-      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-product-module.yml",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-product-module.yml&title=%5BProduct+module%5D%3A+&body=A+product+the+lab+sells+does+not+have+to+be+open+source.+The+machine+geometry+you+contribute+should+name+its+license.+This+form+does+not+create+a+stock+listing.%0A%0A%23%23%23+Part+id%0A%0A%23%23%23+Version%0A%0A%23%23%23+Source+CAD+or+dimension+drawing%0A%0A%23%23%23+Purpose%0A%0A%23%23%23+Compatibility+assumptions%0A%0A%23%23%23+Test+evidence%0A%0A%23%23%23+Attribution%0A%0A%23%23%23+License+of+the+CAD%0A",
       "updated_at": "2026-10-08",
       "next_milestone": "A dimension note for one real product the reference column can carry."
     },
@@ -94,8 +94,8 @@
       "existing": "A single-machine assembly guide, bill of materials, and backend start script.",
       "missing": "Pilot criteria, a support model, and deployment notes that assume a different room and network.",
       "contribution": "Write the steps a second lab still has to invent.",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/xiao-vending-machine-assemble-steps/README.md",
-      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-deployment-docs.yml",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-deployment-docs.yml&title=%5BDeployment+docs%5D%3A+&body=Start+from+%60xiao-vending-machine-v0%2Fxiao-vending-machine-assemble-steps%2FREADME.md%60+and+%60xiao-vending-machine-v0%2Fxiao-vending-machine-full-code-system%2Fscripts%2Fstart_backend.sh%60.%0A%0A%23%23%23+What+a+second+lab+still+has+to+figure+out%0A%0A%23%23%23+Proposed+checklist%0A%0A%23%23%23+Repository+files+each+step+relies+on%0A",
       "updated_at": "2026-10-08",
       "next_milestone": "A deployment checklist reviewed against the reference build."
     },
@@ -109,7 +109,7 @@
       "missing": "Reviewed lab records, machine photos, and any later backend that replaces the issue queue.",
       "contribution": "Register interest, or maintain the JSON after a review.",
       "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything",
-      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=register-interest.yml",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=register-interest.yml&title=%5BLab+interest%5D%3A+&body=A+maintainer+reviews+this+issue+before+any+lab+is+added+to+%60docs%2Fen%2Fdata%2Flabs.json%60+and+%60docs%2Fch%2Fdata%2Flabs.json%60.+Registering+interest+does+not+create+a+map+pin+for+a+vending+machine.%0A%0A%23%23%23+Fab+Lab+name%0A%0A%23%23%23+City%0A%0A%23%23%23+Country%0A%0A%23%23%23+Official+FabLabs.io+profile%0A%0A%23%23%23+Lab+website%0A%0A%23%23%23+What+the+lab+wants+to+know+or+try%0A",
       "updated_at": "2026-10-08",
       "next_milestone": "The first reviewed lab record, if a lab submits one."
     },
@@ -123,7 +123,7 @@
       "missing": "Every proposed standard. None is accepted.",
       "contribution": "Draft an interface or documentation rule and mark it as an idea.",
       "evidence_url": "",
-      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml",
+      "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml&title=%5BInterface+draft%5D%3A+&body=Accepted+standards+are+not+in+force.+A+useful+draft+is+still+an+idea+until+someone+reviews+it.%0A%0A%23%23%23+Interface%0A%0AChoose+one%3A+Mechanical+mounting%2C+Dispensing+module%2C+Electrical+and+communications%2C+Software+contract%2C+Documentation+and+testing%0A%0A%23%23%23+Draft%0A%0A%23%23%23+What+this+draft+assumes+about+Version+Zero%0A",
       "updated_at": "2026-10-08",
       "next_milestone": "One written draft, still labeled idea or draft, not accepted."
     }
@@ -134,45 +134,45 @@
       "title": "Improve the dispensing mechanism",
       "problem": "The reference dispenser fits one product geometry. Other packages jam, rattle, or do not fit.",
       "expected_output": "A versioned dispenser replacement: part id, source CAD, what it replaces, and a short dispense test.",
-      "source_files": "xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/dispenser.stl",
+      "source_files": "xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/dispenser.stl",
       "acceptance": "Version Zero files stay unchanged. The note states compatibility and includes test evidence.",
-      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml"
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml&title=%5BDispensing%5D%3A+&body=The+reference+dispenser+is+in+%60xiao-vending-machine-v0%2Fxiao-vending-machine-assemble-steps%2Fhardware-preparatory%2Fstl-files%2Fparts%2Fdispenser.stl%60.+Leave+Version+Zero+in+place+and+add+a+replacement.%0A%0A%23%23%23+Problem%0A%0A%23%23%23+Part+id%0A%0A%23%23%23+Version%0A%0A%23%23%23+Source+CAD%0A%0A%23%23%23+Purpose%0A%0A%23%23%23+Compatibility+assumptions%0A%0A%23%23%23+Test+evidence%0A%0A%23%23%23+Attribution%0A%0A%23%23%23+License%0A"
     },
     {
       "id": "product-module",
       "title": "Design a new product module",
       "problem": "Labs need a way to describe a local product the machine can hold, separate from open-sourcing that product.",
       "expected_output": "Part id, source CAD or dimension drawing, version, purpose, and compatibility assumptions.",
-      "source_files": "websites/en/parts-manifest.js and websites/en/replacements.js",
+      "source_files": "docs/en/parts-manifest.js and docs/en/replacements.js",
       "acceptance": "The submission distinguishes an alternative part from a new revision and names the license of the CAD.",
-      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-product-module.yml"
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-product-module.yml&title=%5BProduct+module%5D%3A+&body=A+product+the+lab+sells+does+not+have+to+be+open+source.+The+machine+geometry+you+contribute+should+name+its+license.+This+form+does+not+create+a+stock+listing.%0A%0A%23%23%23+Part+id%0A%0A%23%23%23+Version%0A%0A%23%23%23+Source+CAD+or+dimension+drawing%0A%0A%23%23%23+Purpose%0A%0A%23%23%23+Compatibility+assumptions%0A%0A%23%23%23+Test+evidence%0A%0A%23%23%23+Attribution%0A%0A%23%23%23+License+of+the+CAD%0A"
     },
     {
       "id": "reliability",
       "title": "Test machine reliability",
       "problem": "The repository shows that dispensing works. It does not publish a repeated trial or a failure log.",
       "expected_output": "A test note: cycle count, what failed, and what was changed.",
-      "source_files": "xiao-vending-machine-assemble-steps/README.md testing section",
+      "source_files": "xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md testing section",
       "acceptance": "The note is tied to a machine version and does not claim a safety certification.",
-      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-reliability.yml"
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-reliability.yml&title=%5BReliability%5D%3A+&body=%23%23%23+Machine+version+tested%0A%0A%23%23%23+What+you+repeated%0A%0A%23%23%23+What+failed+or+held%0A%0A%23%23%23+Where+the+notes+and+any+recording+live%0A"
     },
     {
       "id": "operator-software",
       "title": "Improve the operator software",
       "problem": "A lab operator needs the dashboard to stay understandable when the catalog or the columns change.",
       "expected_output": "A code change or a written defect with the page, the expected result, and how to reproduce it.",
-      "source_files": "xiao-vending-machine-full-code-system/backend-full",
+      "source_files": "xiao-vending-machine-v0/xiao-vending-machine-full-code-system/backend-full",
       "acceptance": "Operate, Inventory, and Config still run, and the change is described in the pull request.",
-      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-operator-software.yml"
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-operator-software.yml&title=%5BOperator+software%5D%3A+&body=Source+lives+in+%60xiao-vending-machine-v0%2Fxiao-vending-machine-full-code-system%2Fbackend-full%60.%0A%0A%23%23%23+Problem%0A%0A%23%23%23+Expected+result%0A%0A%23%23%23+How+to+reproduce+it%0A%0A%23%23%23+Relevant+source+files%0A"
     },
     {
       "id": "deployment-docs",
       "title": "Create deployment documentation",
       "problem": "The assembly guide builds one machine. It does not yet brief a different lab on room, power, and handoff.",
       "expected_output": "A checklist another lab can follow, with gaps marked instead of invented steps.",
-      "source_files": "xiao-vending-machine-assemble-steps/README.md and xiao-vending-machine-full-code-system/scripts/start_backend.sh",
+      "source_files": "xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md and xiao-vending-machine-v0/xiao-vending-machine-full-code-system/scripts/start_backend.sh",
       "acceptance": "Every step points at a file in the repository or is labeled as local judgment.",
-      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-deployment-docs.yml"
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-deployment-docs.yml&title=%5BDeployment+docs%5D%3A+&body=Start+from+%60xiao-vending-machine-v0%2Fxiao-vending-machine-assemble-steps%2FREADME.md%60+and+%60xiao-vending-machine-v0%2Fxiao-vending-machine-full-code-system%2Fscripts%2Fstart_backend.sh%60.%0A%0A%23%23%23+What+a+second+lab+still+has+to+figure+out%0A%0A%23%23%23+Proposed+checklist%0A%0A%23%23%23+Repository+files+each+step+relies+on%0A"
     },
     {
       "id": "common-interfaces",
@@ -181,7 +181,7 @@
       "expected_output": "A draft, labeled as an idea, covering one interface: mechanical, electrical, or software.",
       "source_files": "the Version Zero manifest",
       "acceptance": "The text is not described as an approved or industry standard.",
-      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml"
+      "url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml&title=%5BInterface+draft%5D%3A+&body=Accepted+standards+are+not+in+force.+A+useful+draft+is+still+an+idea+until+someone+reviews+it.%0A%0A%23%23%23+Interface%0A%0AChoose+one%3A+Mechanical+mounting%2C+Dispensing+module%2C+Electrical+and+communications%2C+Software+contract%2C+Documentation+and+testing%0A%0A%23%23%23+Draft%0A%0A%23%23%23+What+this+draft+assumes+about+Version+Zero%0A"
     }
   ]
 }

@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Do not treat this issue as a public listing. A maintainer checks the evidence, then may add records to `websites/en/data/labs.json` and `websites/en/data/machines.json`, and the Chinese copies under `websites/ch/data`.
+        Do not treat this issue as a public listing. A maintainer checks the evidence, then may add records to `docs/en/data/labs.json` and `docs/en/data/machines.json`, and the Chinese copies under `docs/ch/data`.
   - type: input
     id: lab-name
     attributes:

@@ -4,7 +4,7 @@ window.VENDING_PARTS = {
     name: "XIAO Vending Machine",
     referenceVersion: "V0",
     repository: "https://github.com/Seeed-Studio/how-to-vend-almost-anything",
-    sourceRoot: "xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files",
+    sourceRoot: "xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files",
     note: "The exploded layout is arranged for product understanding, not as an assembly-coordinate drawing."
   },
   groups: [

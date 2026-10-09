@@ -87,7 +87,7 @@ function renderList(labs, total) {
   if (!shown.length) {
     list.innerHTML = total
       ? `<li><p>没有实验室符合这些筛选。</p></li>`
-      : `<li><p>没有加载名录快照，也没有审核过的售货安装。</p></li>`;
+      : "";
     return;
   }
   list.innerHTML = shown.map((lab) => `
@@ -147,9 +147,9 @@ function renderFeeds(machines, products, updates, labs) {
   if (!publicMachines.length) {
     machineRoot.innerHTML = `
       <article class="invite">
-        <h3>第一个参与的实验室还没有公布。</h3>
-        <p>在实验室提交安装且有人批准之前，这里保持空白。若存在名录快照，FabLabs.io 上的一个点只表示该实验室在那个名录里。</p>
-        <p><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=submit-installation.yml">提交已确认的机器安装</a></p>
+        <h3>你的实验室可以参与塑造第一版。</h3>
+        <p>我们正在共同设计第一版。发布后开放申请，已确认的机器安装将随着实验室加入逐步展示。</p>
+        <p><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=register-interest.yml&title=%5BLab+interest%5D%3A+&body=A+maintainer+reviews+this+issue+before+any+lab+is+added+to+%60docs%2Fen%2Fdata%2Flabs.json%60+and+%60docs%2Fch%2Fdata%2Flabs.json%60.+Registering+interest+does+not+create+a+map+pin+for+a+vending+machine.%0A%0A%23%23%23+Fab+Lab+name%0A%0A%23%23%23+City%0A%0A%23%23%23+Country%0A%0A%23%23%23+Official+FabLabs.io+profile%0A%0A%23%23%23+Lab+website%0A%0A%23%23%23+What+the+lab+wants+to+know+or+try%0A" target="_blank" rel="noreferrer">登记实验室的参与意向 ↗</a></p>
       </article>
     `;
   } else {
@@ -173,7 +173,7 @@ function renderFeeds(machines, products, updates, labs) {
     .sort((a, b) => String(b.verified_at).localeCompare(String(a.verified_at)));
   const updateRoot = document.querySelector("#update-feed");
   if (!approved.length) {
-    updateRoot.innerHTML = `<article class="invite"><h3>没有已批准的公开动态。</h3><p>提议中的更新不显示在这里。公布需要来源、时间和一次审核。</p></article>`;
+    updateRoot.innerHTML = `<article class="invite"><h3>共同设计下一步。</h3><p>公开的实验室动态将在这里展示。现在，欢迎把你的想法带到<a href="index.html#contribute">开放设计征集</a>。</p></article>`;
     return;
   }
   updateRoot.innerHTML = approved.map((item) => `
@@ -270,6 +270,11 @@ async function init() {
       selected = id;
       renderPanel(labs.find((lab) => lab.lab_id === id), products);
     });
+    document.addEventListener("companion:tabchange", (event) => {
+      if (event.detail?.panelId === "explore") {
+        window.requestAnimationFrame(() => mapApi?.map.invalidateSize({ pan: false }));
+      }
+    });
 
     const apply = () => {
       const state = {
@@ -283,7 +288,7 @@ async function init() {
       const empty = document.querySelector("#map-empty");
       if (!labs.length) {
         empty.hidden = false;
-        empty.textContent = directory.note || "还没有名录快照，也没有参与的实验室。";
+        empty.textContent = "实验室网络正在形成。名录信息和已确认的机器将在公开后逐步展示。";
       } else if (!visible.length) {
         empty.hidden = false;
         empty.textContent = "没有符合这些筛选的结果。";
@@ -304,9 +309,12 @@ async function init() {
       selected = button.dataset.lab;
       renderPanel(labs.find((lab) => lab.lab_id === selected), products);
     });
-    document.querySelector("#directory-note").textContent = directory.note || "";
+    document.querySelector("#directory-note").textContent = directory.status === "ok"
+      ? "名录信息来自 FabLabs.io，项目参与状态和机器安装记录另行审核。"
+      : "名录尚未开放。在准备第一版的同时，欢迎登记实验室意向并贡献设计。";
     renderFeeds(machines, products, updates, labs);
     apply();
+    document.dispatchEvent(new CustomEvent("companion:ready"));
   } catch (cause) {
     error.hidden = false;
     error.textContent = `地图数据无法加载。 ${cause.message}`;

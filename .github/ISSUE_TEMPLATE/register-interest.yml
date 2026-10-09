@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        A maintainer reviews this issue before any lab is added to `websites/en/data/labs.json` and `websites/ch/data/labs.json`. Registering interest does not create a map pin for a vending machine.
+        A maintainer reviews this issue before any lab is added to `docs/en/data/labs.json` and `docs/ch/data/labs.json`. Registering interest does not create a map pin for a vending machine.
   - type: input
     id: lab-name
     attributes:

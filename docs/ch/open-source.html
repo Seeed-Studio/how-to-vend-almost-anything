@@ -1,42 +1,44 @@
 <!doctype html>
 <html lang="zh-Hans">
 <head>
+  <script src="../analytics.js" defer></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>开源声明 · How to Vend Almost Anything</title>
   <meta name="theme-color" content="#003a4a" />
-  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20261008-2" />
   <link rel="stylesheet" href="assets/css/pages.css" />
 </head>
-<body>
+<body class="companion">
   <a class="skip-link" href="#main">跳到正文</a>
   <header class="site-header">
     <div class="shell header-inner">
-      <a class="identity" href="index.html" aria-label="Fab Lab 售货首页">
+      <a class="identity" href="index.html" aria-label="Fab Lab Vending 首页">
         <span class="identity-symbol" aria-hidden="true">+</span>
-        <span class="identity-label"><strong>Fab Lab 售货</strong><small>开源硬件计划</small></span>
+        <span class="identity-label"><strong>Fab Lab Vending</strong><small>由实验室共建，为实验室而造。</small></span>
       </a>
-      <nav class="nav" aria-label="主要页面">
-        <a href="index.html">01 / 愿景</a>
-        <a href="journey.html">02 / 旅程</a>
-        <a href="network.html">03 / 网络</a>
-        <a class="nav-github" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" data-menu-toggle><span data-menu-label data-open="菜单" data-close="关闭">菜单</span><span aria-hidden="true">+</span></button>
+      <nav class="nav" id="primary-nav" aria-label="主导航" data-menu>
+        <a href="index.html">愿景</a>
+        <a href="journey.html">共建工作台</a>
+        <a href="network.html">实验室网络</a>
         <a class="nav-lang" href="../en/open-source.html" hreflang="en" lang="en">EN</a>
+        <a class="nav-github" href="index.html#contribute">参与共建 ↗</a>
       </nav>
     </div>
   </header>
   <main id="main">
-    <header class="shell page-hero">
+    <header class="shell page-hero" id="top">
       <p class="eyebrow">开放的产品 / 开放的工具链</p>
       <h1>用人们可以检查的工具搭建。</h1>
       <p class="lede">公开查看器使用开放的网页和 CAD 工具。源 CAD 仍在仓库中。浏览器里的库应能追溯到上游项目和许可。</p>
     </header>
     <div class="notice-stack">
-      <div class="notice-item"><h2><a href="https://threejs.org/">Three.js</a></h2><p>爆炸场景的 WebGL 渲染、轨道控制、STL 与 glTF 显示，以及零件选择。</p><small>MIT</small></div>
+      <div class="notice-item"><h2><a href="https://threejs.org/"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="M3 8v9l9 5 9-5V8M12 13v9"/></svg> Three.js</a></h2><p>爆炸场景的 WebGL 渲染、轨道控制、STL 与 glTF 显示，以及零件选择。</p><small>MIT</small></div>
       <div class="notice-item"><h2><a href="https://github.com/kovacsv/occt-import-js">occt-import-js</a></h2><p>当没有展示用 GLB 时，在浏览器里把 STEP 文件三角化的 Open CASCADE / WebAssembly 导入。</p><small>LGPL-2.1</small></div>
       <div class="notice-item"><h2><a href="https://leafletjs.com/">Leaflet</a></h2><p>网络页上的交互地图。瓦片来自 OpenStreetMap，需要保留其版权声明。</p><small>BSD-2-Clause</small></div>
       <div class="notice-item"><h2><a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></h2><p>地图瓦片。© OpenStreetMap 贡献者。</p><small>ODbL</small></div>
-      <div class="notice-item"><h2><a href="https://www.fablabs.io/">FabLabs.io</a></h2><p>未来目录快照的来源。一条名录不是参与这个售货项目。见 FABLABS_DIRECTORY.md。</p><small>按其条款</small></div>
+      <div class="notice-item"><h2><a href="https://www.fablabs.io/"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a16 16 0 0 1 0 18 16 16 0 0 1 0-18Z"/></svg> FabLabs.io</a></h2><p>未来目录快照的来源。一条名录不是参与这个售货项目。详见 <a href="FABLABS_DIRECTORY.md">名录更新指南</a>。</p><small>按其条款</small></div>
       <div class="notice-item"><h2><a href="https://github.com/kovacsv/Online3DViewer">Online 3D Viewer</a></h2><p>把 STEP 和 STL 转到 glTF 时有用的参考。运行时不需要。</p><small>MIT</small></div>
       <div class="notice-item"><h2><a href="https://gltf-transform.dev/">glTF Transform</a></h2><p>在构建阶段检查和优化 GLB 衍生文件的推荐工具。</p><small>MIT</small></div>
       <div class="notice-item"><h2><a href="https://github.com/zeux/meshoptimizer">meshoptimizer</a></h2><p>零件变多时推荐的网格优化。</p><small>MIT</small></div>
@@ -46,20 +48,20 @@
     <div class="shell">
       <div class="footer-inner">
         <div>
-          <strong>Fab Lab 售货</strong>
-          <p>本站所加载软件的声明。</p>
+          <strong>How to Vend Almost Anything</strong>
+          <p>由 Seeed Studio 支持的开源项目。</p>
         </div>
         <div class="footer-links">
-          <a href="index.html">愿景</a>
-          <a href="journey.html">旅程</a>
-          <a href="network.html">网络</a>
-          <a href="exploded.html">参考机器</a>
-          <a href="THIRD_PARTY_NOTICES.md">工程清单</a>
-          <a href="SITE.md">站点说明</a>
+          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything">GitHub ↗</a>
+          <a href="journey.html">共建工作台</a>
+          <a href="network.html">实验室网络</a>
+          <a href="THIRD_PARTY_NOTICES.md">许可清单</a>
+          <a href="#top">返回顶部 ↑</a>
         </div>
       </div>
-      <p class="footer-note">这些页面从 CDN 加载 Three.js、occt-import-js 和 Leaflet。若日后把这些文件复制进仓库，请一并保留上游许可文本。本页是工程清单，不是法律意见。</p>
+      <p class="footer-note">本站从 CDN 加载 Three.js、occt-import-js 与 Leaflet。若将这些文件复制进仓库，请一并保留上游许可文本。详见 <a href="THIRD_PARTY_NOTICES.md">许可清单</a>。</p>
     </div>
   </footer>
+  <script src="assets/js/initiative.js?v=20261008-2" defer></script>
 </body>
 </html>

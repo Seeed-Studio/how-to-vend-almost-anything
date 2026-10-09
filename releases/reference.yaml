@@ -1,0 +1,17 @@
+schema: how-to-vend/reference/v1
+status: frozen
+machine_id: reference-v0
+version: "0"
+name: Version Zero
+frozen: true
+note: >-
+  Permanent reference. Contributions create proposals and later releases.
+  They do not replace these files.
+paths:
+  root: xiao-vending-machine-v0
+  assembly: xiao-vending-machine-v0/xiao-vending-machine-assemble-steps
+  software: xiao-vending-machine-v0/xiao-vending-machine-full-code-system
+site:
+  viewer: docs/en/exploded.html
+  models: docs/en/data/models.json
+release_manifest: releases/machine/v0.yaml

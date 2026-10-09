@@ -1,114 +1,72 @@
 # Site guide
 
-The public site is [`websites/`](../). English is [`en/`](./). Chinese is [`ch/`](../ch/). Each language is a complete copy of the pages, styles, scripts, and JSON. A language link in the header switches between the same page in the other language.
+The site is an open design call for **Version One**: a vending machine in every Fab Lab, XIAO as the default vending product, a local catalog chosen by each lab, and reusable machine improvements shared openly. Seeed Studio backs the initiative. The sequence is **design together → publish Version One → open lab applications**. Supply arrangements, eligibility, and support details remain forthcoming.
 
-GitHub Pages publishes this branch’s `/docs` folder, which is the site root: the language page, `en/`, and `ch/`. [`docs/.nojekyll`](../.nojekyll) keeps Jekyll from rewriting the pages. The `websites` path in the repository is the same folder.
+Version Zero is the working reference, controlled by Wio Terminal. Its source files, photographs, and recordings provide evidence and material for the design call. Roadmap statuses describe the reference and the work ahead; they do not make Version One a released product.
 
-## Pages
+## Published pages
 
-| Page | File | Role |
+GitHub Pages publishes `/docs`. The root page introduces the project and offers English or Chinese. Each locale contains the same pages, and language links switch to the corresponding page.
+
+| Page | File | Purpose |
 | --- | --- | --- |
-| Vision | `index.html` | The idea, the reference machine, and what is only a proposal |
-| Journey | `journey.html` | Roadmap, implementation modules, parts, standards, contributions |
-| Network | `network.html` | Map, lab list, empty machine feed, GitHub issue submissions |
-| Exploded machine | `exploded.html` | Deep page. Not in the primary navigation |
-| Open-source notices | `open-source.html` | Runtime libraries and map data |
+| The idea | `index.html` | Open call, shared principles, design lanes, prototype, release path, questions |
+| The workbench | `journey.html` | Reference roadmap, implementation filters, parts, standards, contribution tasks |
+| The network | `network.html` | Early lab interest, future network, directory map, reviewed records |
+| Reference machine | `exploded.html` | Interactive Version Zero viewer and replacement guidance |
+| Open-source notices | `open-source.html` | Library licenses, map attribution, upstream references |
 
-Primary navigation is Vision, Journey, Network. The section navigator appears on Vision and on the exploded machine page.
+The header uses the same identity, page order, language switch, and contribution action across pages. Its plus mark is a project symbol, not the Seeed Studio logo.
 
-Shared chrome and color live in `assets/css/site.css` (Seeed Green `#8FC31F`, Seeed Blue `#003A4A`). Layouts that belong only to the live pages live in `assets/css/pages.css`. The exploded viewer keeps `exploded.css`, retokened to the same palette. The header plus mark is a project symbol, not the Seeed Studio logo.
+## Design and interaction files
 
-## Local preview
+The design direction is a classic workshop publication: warm paper, Seeed teal `#003A4A`, green `#8FC31F`, fine rules, real prototype imagery, and compact contribution cards. The working design notes are kept locally under `_archived/plans/` and are not part of the published site.
 
-From the `websites/` directory:
+- `assets/css/site.css`: shared typography, colors, header, footer, responsive navigation, and companion-page presentation.
+- `assets/css/initiative.css`: homepage editorial layouts and contribution components.
+- `assets/js/initiative.js`: menu disclosure, homepage section navigation, recording selection, and sharing.
+- `assets/css/pages.css`: data-driven workbench and network layouts.
+- `exploded.css` and `exploded.js`: the reference-machine viewer.
+- `assets/css/section-nav.css` and `assets/js/section-nav.js`: the viewer's section navigation.
+
+Hero photography is `assets/reference-machine.jpg`. The prototype player uses the existing `real-operation-order-dispense` and `real-operation-balance-dispense` posters and recordings. Do not present an unbuilt concept as a real machine. Videos use native controls and do not autoplay. Respect reduced-motion preferences.
+
+## Preview and validation
+
+From the repository root:
 
 ```bash
-python3 -m http.server 8000
+python3 -m http.server 8000 --directory docs
 ```
 
-Open `http://localhost:8000/` for the language choice, then `en/` and `ch/`. JSON fetch does not work from a `file://` URL.
+Open `http://localhost:8000/`, then the English or Chinese pages. Serve over HTTP so roadmap and map JSON can load.
 
-From the repository root, check the data files:
+Check the existing data rules with:
 
 ```bash
 node scripts/validate-site-data.mjs
 ```
 
-## Deployment
+Review desktop and mobile layouts in both languages. Check the menu, contribution links, prototype recordings, share results, workbench filters, map empty states, keyboard focus, and internal anchors.
 
-1. Push the `site/fab-vending-pages` branch.
-2. Pages is already set to that branch and the `/docs` folder.
-3. Use relative paths. The site is served from `/how-to-vend-almost-anything/`.
+## Content and submissions
 
-Do not put access tokens in `websites/`. The FabLabs.io token belongs in an Actions secret. See [FABLABS_DIRECTORY.md](FABLABS_DIRECTORY.md).
+Homepage narrative is in each locale's `index.html`. The workbench and network read each locale's `data/` files. Keep `done`, `in_progress`, `needs_contributors`, and `planned` statuses tied to evidence. Proposed standards remain ideas or drafts until reviewed.
 
-## Editing content
+Existing GitHub issue forms handle contributions and early lab interest. A GitHub account is required. Registering interest is not an application or an allocation. Review submissions before publishing lab, machine, product, or availability records; do not invent installations, stock, prices, or support terms.
 
-Narrative copy for the Vision page is in `index.html`. Journey and Network read:
+`replacements.js` appends versioned machine changes. Preserve the Version Zero baseline in `parts-manifest.js`, source CAD, and `data/models.json`. An alternative part is not automatically a newer revision.
 
-```text
-websites/en/data/roadmap.json
-websites/en/data/implementations.json
-websites/en/data/standards.json
-websites/en/data/models.json
-websites/en/data/labs.json
-websites/en/data/machines.json
-websites/en/data/products.json
-websites/en/data/updates.json
-websites/en/data/directory-labs.json
-websites/ch/data/
-```
+`directory-labs.json` is refreshed from FabLabs.io only when authentication is configured. Program participation is separate from directory membership. Empty records are deliberate until submissions are reviewed. See [the directory update guide](FABLABS_DIRECTORY.md).
 
-`directory-labs.json` is the only file the daily Action may rewrite. Program files change when a maintainer reviews a GitHub issue and edits them. `websites/en/replacements.js` is the exploded view’s replacement list. Append to it. Do not delete Version Zero entries from `websites/en/parts-manifest.js` or from `models.json`.
+## Publishing and attribution
 
-An alternative part, such as `dispenser-specific`, is not a newer revision of another part.
+Preserve the existing GitHub Pages configuration and relative URLs, including the `/how-to-vend-almost-anything/` project subpath. Do not put access tokens in the site; directory credentials belong in Actions secrets.
 
-Statuses are `done`, `in_progress`, `needs_contributors`, and `planned`. A `done` record needs an evidence URL. A standard may not be marked `accepted` without evidence. The validator enforces this.
+- Machine photographs, recordings, and CAD come from this repository.
+- Seeed Studio name and colors follow the [branding kit](https://www.seeedstudio.com/blog/branding-kit/).
+- The viewer uses Three.js and occt-import-js; the map uses Leaflet and OpenStreetMap tiles. Preserve upstream notices and © OpenStreetMap contributors.
+- FabLabs.io attribution is retained in the directory snapshot. This is not an official Fab Foundation program.
+- See [open-source notices](open-source.html) and [the license inventory](THIRD_PARTY_NOTICES.md) for details.
 
-## Submissions
-
-Issue forms live in `.github/ISSUE_TEMPLATE/`. They open on the repository’s default branch after this work is merged. The Network page links to them. There is no form on the static site that pretends to save data.
-
-## Attribution
-
-- Seeed Studio name and colors follow the [branding kit](https://www.seeedstudio.com/blog/branding-kit/). The header plus mark is a project symbol. This site does not redraw the logo.
-- Machine photographs, videos, and CAD are from this repository.
-- The exploded view loads Three.js and occt-import-js from a CDN. See [open-source.html](open-source.html) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-- The map uses Leaflet and OpenStreetMap tiles. © OpenStreetMap contributors.
-- FabLabs.io is the directory source, used only through the reviewed snapshot described above.
-
-## Checklist
-
-Complete in this site:
-
-- Three-page navigation, shared header and footer, and the Vision section navigator.
-- Vision narrative with the photographed reference machine, both dispense recordings, and the Wio Terminal called out as the controller.
-- Data-driven Journey timeline, filters, part list, standards at maturity Idea, and contribution cards.
-- Exploded viewer kept as a deep page.
-- Network map, list, filters, and an empty state for machines, products, and updates.
-- GitHub Issue Forms and a documented review path.
-- JSON schema check and a FabLabs.io Action that waits for a human token.
-
-Placeholders, deliberately empty:
-
-- `labs.json`, `machines.json`, `products.json`, and `updates.json`.
-- `directory-labs.json` until `FABLABS_ACCESS_TOKEN` is set and a fetch succeeds.
-- No XIAO stock, prices, pilot labs, or accepted standards.
-
-Needs a later operational step:
-
-- A person completes FabLabs.io OAuth and stores the token.
-- A maintainer reviews issues before publishing a lab, machine, photo, or stock date.
-- Seeed supply terms, eligibility, and any subsidy or marketing commitment, none of which are confirmed.
-- A real backend or CMS if submissions should stop going through GitHub issues.
-- Official Seeed logo files, if the branding kit is later added under `websites/en/assets/brand/` without redrawing the mark.
-
-Hardware, firmware, and the assembly guide were not changed.
-
-`_archived/` at the repository root is listed in `.gitignore` and is not part of the published site. It holds the local copies of:
-
-- the stylesheets this restyle replaced (`site-css-before-seeed-restyle/`)
-- the Seeed-styled template folder after its visual system was applied to `docs/`
-- the five framework notes (`01` through `05`, plus the old framework index)
-
-Those notes are no longer linked from the public pages or the repository README. Hardware, firmware, the assembly guide, the JSON data files, the issue forms, and the FabLabs directory workflow stay in the repository.
+The website update leaves hardware, firmware, assembly guides, issue templates, data schemas, and deployment configuration unchanged.

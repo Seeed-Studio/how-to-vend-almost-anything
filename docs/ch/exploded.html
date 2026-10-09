@@ -1,36 +1,38 @@
 <!doctype html>
 <html lang="zh-Hans">
 <head>
+  <script src="../analytics.js" defer></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>爆炸图 · 如何售出几乎一切</title>
   <meta name="description" content="把这台售货机看成一套分版本的爆炸系统。查看当前开源模型，并顺着每一次替换看设计如何演进。" />
   <meta name="theme-color" content="#003a4a" />
-  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20261008-2" />
   <link rel="stylesheet" href="assets/css/pages.css" />
   <link rel="stylesheet" href="exploded.css" />
   <link rel="stylesheet" href="assets/css/section-nav.css" />
 </head>
-<body>
+<body class="companion">
   <a class="skip-link" href="#explorer">跳到模型</a>
 
   <header class="site-header">
     <div class="shell header-inner">
-      <a class="identity" href="index.html" aria-label="Fab Lab 售货首页">
+      <a class="identity" href="index.html" aria-label="Fab Lab Vending 首页">
         <span class="identity-symbol" aria-hidden="true">+</span>
-        <span class="identity-label"><strong>Fab Lab 售货</strong><small>开源硬件计划</small></span>
+        <span class="identity-label"><strong>Fab Lab Vending</strong><small>由实验室共建，为实验室而造。</small></span>
       </a>
-      <nav class="nav" aria-label="主要页面">
-        <a href="index.html">01 / 愿景</a>
-        <a href="journey.html">02 / 旅程</a>
-        <a href="network.html">03 / 网络</a>
-        <a class="nav-github" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" data-menu-toggle><span data-menu-label data-open="菜单" data-close="关闭">菜单</span><span aria-hidden="true">+</span></button>
+      <nav class="nav" id="primary-nav" aria-label="主导航" data-menu>
+        <a href="index.html">愿景</a>
+        <a href="journey.html">共建工作台</a>
+        <a href="network.html">实验室网络</a>
         <a class="nav-lang" href="../en/exploded.html" hreflang="en" lang="en">EN</a>
+        <a class="nav-github" href="index.html#contribute">参与共建 ↗</a>
       </nav>
     </div>
   </header>
 
-  <main>
+  <main id="top">
     <section class="explorer-shell" id="explorer">
       <aside class="group-rail" aria-label="系统分组">
         <div class="rail-title">系统模块</div>
@@ -54,7 +56,7 @@
 
         <div class="viewport" id="viewport">
           <div class="reference-ghost" aria-hidden="true">
-            <img src="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-assemble-steps/assets/10-assemble-final-look-design.png" alt="" />
+            <img src="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/10-assemble-final-look-design.png" alt="" />
           </div>
           <div class="fallback-map" id="fallback-map" aria-hidden="true">
             <div class="fallback-layer layer-shell">外壳</div>
@@ -103,6 +105,8 @@
         <p>
           这台机器不是一个固定物件。它是一叠可替换的零件。本页把当前 V0 CAD 变成看得见的产品系统，并让每一个新替换件都挂在它取代的零件上。
         </p>
+        <p>当前展示的是可运行的零号版本。以它为基线，共同设计第一版，并保留每一次可复用的改进。</p>
+        <p><a class="text-link" href="index.html#contribute"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m16 3 5 5-13 13H3v-5L16 3Z"/><path d="m14 5 5 5"/></svg> 参与第一版设计 ↗</a></p>
         <div class="intro-meta">
           <span><strong id="part-count">18</strong> 个已建模零件</span>
           <span><strong>5</strong> 个系统分组</span>
@@ -195,8 +199,8 @@
         <h2>人能看懂的机器，才是人能改进的机器。</h2>
       </div>
       <div class="cta-actions">
-        <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files" target="_blank" rel="noreferrer">浏览 CAD 源文件 ↗</a>
-        <a href="journey.html#evolution">回到旅程 →</a>
+        <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files" target="_blank" rel="noreferrer"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="M3 8v9l9 5 9-5V8M12 13v9"/></svg> 浏览 CAD 源文件 ↗</a>
+        <a href="journey.html#evolution">回到共建工作台 →</a>
       </div>
     </section>
   </main>
@@ -205,20 +209,18 @@
     <div class="shell">
       <div class="footer-inner">
         <div>
-          <strong>Fab Lab 售货</strong>
-          <p>Version Zero 参考机的分版本爆炸图。位置用于说明，不是装配坐标。</p>
+          <strong>How to Vend Almost Anything</strong>
+          <p>由 Seeed Studio 支持的开源项目。</p>
         </div>
         <div class="footer-links">
-          <a href="index.html">愿景</a>
-          <a href="journey.html">旅程</a>
-          <a href="network.html">网络</a>
-          <a href="exploded.html">参考机器</a>
+          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything">GitHub ↗</a>
+          <a href="journey.html">共建工作台</a>
+          <a href="network.html">实验室网络</a>
           <a href="open-source.html">开源声明</a>
-          <a href="https://www.seeedstudio.com/blog/branding-kit/" target="_blank" rel="noopener noreferrer">矽递品牌</a>
-          <a href="SITE.md">站点说明</a>
+          <a href="#top">返回顶部 ↑</a>
         </div>
       </div>
-      <p class="footer-note">本查看器从 CDN 加载 Three.js 和 occt-import-js。源 CAD 仍在仓库中。许可见开源声明。</p>
+      <p class="footer-note">查看器使用 Three.js 与 occt-import-js。源 CAD 保留在仓库中，模型位置用于说明而非装配。库许可见 <a href="open-source.html">开源声明</a>。</p>
     </div>
   </footer>
 
@@ -247,5 +249,6 @@
   }
   </script>
   <script type="module" src="exploded.js?v=inspector"></script>
+  <script src="assets/js/initiative.js?v=20261008-2" defer></script>
 </body>
 </html>

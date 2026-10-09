@@ -33,7 +33,7 @@ jobs:
 
       - name: Commit snapshot when the directory changed
         run: |
-          git add websites/en/data/directory-labs.json websites/ch/data/directory-labs.json
+          git add docs/en/data/directory-labs.json docs/ch/data/directory-labs.json
           if git diff --cached --quiet; then
             echo "No directory changes to commit."
             exit 0

@@ -1,142 +1,185 @@
 <!doctype html>
 <html lang="zh-Hans">
 <head>
+  <script src="../analytics.js" defer></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>旅程 · 如何售出几乎一切</title>
-  <meta name="description" content="开源售货参考机现在到了哪一步，哪些只是计划，哪些部分还需要贡献者。" />
+  <title>共建工作台 · How to Vend Almost Anything</title>
+  <meta name="description" content="参与第一版设计，探索可运行参考原型、开放贡献任务，以及让 Fab Lab 售货机可复现的下一步。" />
   <meta name="theme-color" content="#003a4a" />
-  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20261008-2" />
   <link rel="stylesheet" href="assets/css/pages.css" />
+  <link rel="stylesheet" href="assets/css/companions.css?v=20261008-5" />
 </head>
-<body>
+<body class="companion compact-page workbench-page">
   <a class="skip-link" href="#main">跳到正文</a>
   <header class="site-header">
     <div class="shell header-inner">
-      <a class="identity" href="index.html" aria-label="Fab Lab 售货首页">
+      <a class="identity" href="index.html" aria-label="Fab Lab Vending 首页">
         <span class="identity-symbol" aria-hidden="true">+</span>
-        <span class="identity-label"><strong>Fab Lab 售货</strong><small>开源硬件计划</small></span>
+        <span class="identity-label"><strong>Fab Lab Vending</strong><small>由实验室共建，为实验室而造。</small></span>
       </a>
-      <nav class="nav" aria-label="主要页面">
-        <a href="index.html">01 / 愿景</a>
-        <a href="journey.html" aria-current="page">02 / 旅程</a>
-        <a href="network.html">03 / 网络</a>
-        <a class="nav-github" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" data-menu-toggle><span data-menu-label data-open="菜单" data-close="关闭">菜单</span><span aria-hidden="true">+</span></button>
+      <nav class="nav" id="primary-nav" aria-label="主导航" data-menu>
+        <a href="index.html">愿景</a>
+        <a href="journey.html" aria-current="page">共建工作台</a>
+        <a href="network.html">实验室网络</a>
         <a class="nav-lang" href="../en/journey.html" hreflang="en" lang="en">EN</a>
+        <a class="nav-github" href="index.html#contribute">参与共建 ↗</a>
       </nav>
     </div>
   </header>
   <main id="main">
     <header class="shell page-hero" id="top">
-      <p class="eyebrow">旅程</p>
-      <h1>从一台开放的机器，到一套全球都能沿用的做法。</h1>
-      <p class="lede">顺着参考样机、仍然需要人来做的改进，以及售货机能够在各个 Fab Lab 复制之前必须完成的工作往下看。已完成的条目链到证据。计划中的条目还没开始。</p>
+      <div class="compact-hero">
+        <div>
+          <p class="eyebrow">共建工作台 / 开放设计征集</p>
+          <h1>从一个原型，<br>走向每个实验室。</h1>
+          <p class="lede">适配产品，让运行可靠，把有用的方法分享出来。</p>
+          <p class="compact-note">由 Seeed Studio 支持，现在共同设计第一版。</p>
+        </div>
+        <aside class="hero-action" aria-label="参与设计征集">
+          <a class="btn btn-dark" href="#contribute"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m16 3 5 5-13 13H3v-5L16 3Z"/><path d="m14 5 5 5"/></svg> 参与第一版设计 →</a>
+          <a class="text-link" href="#evolution">查看可运行参考原型 ↓</a>
+          <small>实验室申请在发布后开放。</small>
+        </aside>
+      </div>
+      <ol class="compact-stages" aria-label="从参考原型到实验室应用">
+        <li><span class="stage-number">01</span><div><strong>可运行参考</strong><span>V0 · 已搭建并测试</span></div></li>
+        <li><span class="stage-number">02</span><div><strong>共创第一版</strong><span>开放设计征集</span></div></li>
+        <li><span class="stage-number">03</span><div><strong>实验室申请</strong><span>发布之后</span></div></li>
+      </ol>
     </header>
 
-    <section class="shell section" id="timeline">
-      <h2 class="visually-hidden">时间线</h2>
+    <div class="shell" data-tabs>
+      <nav class="tab-nav" data-tablist aria-label="探索共建工作台">
+        <a class="tab-link" href="#implementation" data-tab aria-controls="implementation"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="M3 8v9l9 5 9-5V8M12 13v9"/></svg> 系统设计</a>
+        <a class="tab-link" href="#evolution" data-tab aria-controls="evolution"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg> 制造与文件</a>
+        <a class="tab-link" href="#contribute" data-tab aria-controls="contribute"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m16 3 5 5-13 13H3v-5L16 3Z"/><path d="m14 5 5 5"/></svg> 参与贡献</a>
+      </nav>
       <p id="data-error" class="empty-note" hidden></p>
-      <noscript><p>这条路线从 JSON 加载。请启用 JavaScript，或直接阅读 <a href="data/roadmap.json">roadmap.json</a> directly.</p></noscript>
-      <div class="phases" id="phases"></div>
-    </section>
+      <noscript><p class="compact-note">概览和链接无需 JavaScript 也可使用。完整资料可直接阅读：<a href="data/implementations.json">系统笔记</a>、<a href="data/models.json">源零件</a>、<a href="data/roadmap.json">路线图</a>与<a href="data/standards.json">接口提案</a>。</p></noscript>
 
-    <div class="section-alt">
-      <section class="shell section" id="implementation">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">实现</p>
-            <h2>九个系统，各自有状态。</h2>
-          </div>
-          <p>已完成表示参考仓库里已经有它。进行中表示公开的提交路径存在，而网络还不存在。需要贡献者是一个开放问题。计划中表示还没做。</p>
+      <section id="implementation" data-tab-panel class="tab-panel">
+        <div class="panel-heading">
+          <div><p class="eyebrow">一个系统，三个部分</p><h2>造出来，运行好，分享开。</h2></div>
+          <p>让机器能适配、能可靠运行，也让每次改进都能传到下一家实验室。</p>
         </div>
-        <form class="filters" id="filters">
-          <label>系统
-            <select id="filter-system">
-              <option value="all">全部系统</option>
-            </select>
-          </label>
-          <label>状态
-            <select id="filter-status">
-              <option value="all">全部状态</option>
-              <option value="done">已完成</option>
-              <option value="in_progress">进行中</option>
-              <option value="needs_contributors">需要贡献者</option>
-              <option value="planned">计划中</option>
-            </select>
-          </label>
-          <label>机会
-            <select id="filter-opportunity">
-              <option value="any">全部模块</option>
-              <option value="open">开放的贡献</option>
-            </select>
-          </label>
-        </form>
-        <div class="module-grid" id="modules"></div>
+        <div class="pillar-grid">
+          <article class="pillar-card">
+            <svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="M3 8v9l9 5 9-5V8M12 13v9"/></svg>
+            <p class="pillar-caption">结构 · 出货机构 · 产品</p>
+            <h3>造出来</h3>
+            <p>一台开放机器，适配不同产品。</p>
+            <p><strong>已有。</strong> 可编辑 CAD 与能运行的四列出货机构。</p>
+            <p><strong>下一步。</strong> 产品尺寸与经过测试的可替换出货模块。</p>
+          </article>
+          <article class="pillar-card">
+            <svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5Z"/></svg>
+            <p class="pillar-caption">电子 · 软件 · 运营</p>
+            <h3>运行好</h3>
+            <p>验证卡片、可靠出货，让库存清晰可见。</p>
+            <p><strong>已有。</strong> Wio 控制、固件与操作管理界面。</p>
+            <p><strong>下一步。</strong> 明确接口、反复测试与方便补货。</p>
+          </article>
+          <article class="pillar-card">
+            <svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a16 16 0 0 1 0 18 16 16 0 0 1 0-18Z"/></svg>
+            <p class="pillar-caption">部署 · 社区 · 标准</p>
+            <h3>分享开</h3>
+            <p>让下一家实验室比第一家更容易搭建。</p>
+            <p><strong>已有。</strong> 装配笔记、版本化零件与公开提案。</p>
+            <p><strong>下一步。</strong> 可复现部署、兼容规则与经核实的证据。</p>
+          </article>
+        </div>
+        <ol class="system-loop" aria-label="一次出货如何完成">
+          <li><span class="step-number">01</span><div><strong>选择</strong><span>屏幕选产品，或使用直接订单卡。</span></div></li>
+          <li><span class="step-number">02</span><div><strong>验证</strong><span>后台检查卡片与订单。</span></div></li>
+          <li><span class="step-number">03</span><div><strong>出货</strong><span>控制器驱动释放机构。</span></div></li>
+          <li><span class="step-number">04</span><div><strong>记录</strong><span>结果与库存回到管理界面。</span></div></li>
+        </ol>
+        <p class="compact-note">XIAO 是计划中的默认销售产品。当前参考机器由 Wio Terminal 控制。</p>
+
+        <details class="fold" id="system-details">
+          <summary><span class="fold-title"><strong>查看全部九个系统</strong><span>已有实现、下一步与参与入口</span></span></summary>
+          <div class="fold-body">
+            <p class="compact-note">“已完成”表示参考原型已有实现，仍可改进。其他状态说明接下来的工作。</p>
+            <form class="filters" id="filters">
+              <label>系统<select id="filter-system"><option value="all">全部系统</option></select></label>
+              <label>状态<select id="filter-status"><option value="all">全部状态</option><option value="done">已完成</option><option value="in_progress">进行中</option><option value="needs_contributors">需要贡献者</option><option value="planned">计划中</option></select></label>
+              <label>机会<select id="filter-opportunity"><option value="any">全部模块</option><option value="open">开放的贡献</option></select></label>
+            </form>
+            <div id="modules"></div>
+          </div>
+        </details>
+        <details class="fold" id="standards-section">
+          <summary><span class="fold-title"><strong>共享接口与验证规则</strong><span>11 项提案 · 都还处于想法阶段</span></span></summary>
+          <div class="fold-body">
+            <p class="compact-note">共同约定零件如何连接、改动如何测试、记录何时可以核实。成熟度依次为想法 → 草稿 → 审核中 → 已接受；目前尚无已接受标准。</p>
+            <div id="standards" class="parts-list"></div>
+          </div>
+        </details>
+      </section>
+
+      <section id="evolution" data-tab-panel class="tab-panel">
+        <div class="panel-heading">
+          <div><p class="eyebrow">可运行参考原型</p><h2>从真实可用的起点出发。</h2></div>
+          <p>源文件、制造笔记与两种出货演示。添加新设计时，保留完整的零号版本。</p>
+        </div>
+        <div class="resource-grid">
+          <article class="resource-card"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg><h3>搭建参考原型</h3><p>物料清单、接线与带照片的装配过程。</p><p class="inline-links"><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md" target="_blank" rel="noreferrer">装配指南 ↗</a></p></article>
+          <article class="resource-card"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18"/></svg><h3>运行软件</h3><p>Wio 固件与操作、库存、配置管理界面。</p><p class="inline-links"><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-v0/xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal" target="_blank" rel="noreferrer">固件 ↗</a><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-v0/xiao-vending-machine-full-code-system/backend-full" target="_blank" rel="noreferrer">后台 ↗</a></p></article>
+          <article class="resource-card"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="M3 8v9l9 5 9-5V8M12 13v9"/></svg><h3>查看机器结构</h3><p>交互爆炸图，展示零号版本的各个部件。</p><p class="inline-links"><a href="exploded.html">打开 3D 查看器 →</a></p></article>
+          <article class="resource-card"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5Z"/></svg><h3>观看出货演示</h3><p>直接订单出货，以及余额卡选品出货。</p><p class="inline-links"><a href="assets/real-operation-order-dispense.mp4">直接订单 ↗</a><a href="assets/real-operation-balance-dispense.mp4">余额卡 ↗</a></p></article>
+        </div>
+        <div class="panel-heading"><div><h3>按用途组织的源零件。</h3></div><p>18 个参考部件 · 5 组 · 直接访问源 CAD</p></div>
+        <p class="compact-note">替换件追加在零号版本旁边。针对特定产品的出货机构是替代件，不是通用机构的更新修订。</p>
+        <div id="parts"></div>
+        <details class="fold" id="replacement-history">
+          <summary><span class="fold-title"><strong>替换历史与源文件说明</strong><span>版本化改动，让参考设计始终可用</span></span></summary>
+          <div class="fold-body"><p id="model-note" class="compact-note"></p><div id="replacements" class="parts-list"></div></div>
+        </details>
+        <details class="fold" id="timeline">
+          <summary><span class="fold-title"><strong>完整路线图与证据</strong><span>可运行参考 → 共创第一版 → 发布后开放申请</span></span></summary>
+          <div class="fold-body"><div class="phases" id="phases"></div></div>
+        </details>
+      </section>
+
+      <section id="contribute" data-tab-panel class="tab-panel">
+        <div class="panel-heading">
+          <div><p class="eyebrow">开放贡献任务</p><h2>带来一项实用改进。</h2></div>
+          <p>选择一个问题。说明你想改什么、其他实验室能复用什么，以及如何证明它有效。</p>
+        </div>
+        <div class="task-grid" id="contributions"></div>
+        <aside class="hero-action">
+          <h3>一个早期草图，也值得分享。</h3>
+          <p>还有不同的想法？说出需求，附上草图或参考，说明你希望带来的改变。</p>
+          <a class="text-link" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new" target="_blank" rel="noreferrer">发起设计讨论 ↗</a>
+        </aside>
+        <p class="compact-note">提案入口会打开 GitHub，需要账号。零件设计应附版本、兼容性、测试证据、署名与许可证。</p>
       </section>
     </div>
-
-    <section class="shell section" id="evolution">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">产品演进</p>
-          <h2>Version Zero 保持完整。</h2>
-        </div>
-        <p>交互模型就是爆炸图。这份清单是同一批零件，并附有源 CAD。替换件是追加的，不会抹掉上一个文件。针对特定产品的出货机构是替代件，不是通用出货机构的下一版。</p>
-      </div>
-      <p><a class="btn btn-primary" href="exploded.html">打开爆炸图</a></p>
-      <p id="model-note" class="empty-note" style="margin: 16px 0"></p>
-      <div id="parts"></div>
-      <h3 style="margin: 28px 0 12px">已提交的替换件</h3>
-      <div class="part-grid" id="replacements"></div>
-    </section>
-
-    <div class="section-alt">
-      <section class="shell section" id="standards-section">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">从能工作的原型到共享标准</p>
-            <h2>从能工作的原型到共享标准。</h2>
-          </div>
-          <p>成熟度从想法、草稿、审核中到已接受。下面每一条都还是想法。没有一条是已批准的行业标准。</p>
-        </div>
-        <div class="standard-grid" id="standards"></div>
-      </section>
-    </div>
-
-    <section class="shell section" id="contribute">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">贡献</p>
-          <h2>有着手处的问题。</h2>
-        </div>
-        <p>每张卡片打开一份 GitHub issue 表单。工作仍然要人来做。表单会问问题、涉及的文件，以及“完成”是什么意思。设计替换件还会要求零件编号、CAD、版本、兼容性、测试证据、署名和许可。</p>
-      </div>
-      <div class="contrib-grid" id="contributions"></div>
-    </section>
   </main>
   <footer class="site-footer">
     <div class="shell">
       <div class="footer-inner">
         <div>
-          <strong>Fab Lab 售货</strong>
-          <p>由矽递科技发起、面向 Fab Lab 的开源参考项目。</p>
+          <strong>How to Vend Almost Anything</strong>
+          <p>由 Seeed Studio 支持的开源项目。</p>
         </div>
         <div class="footer-links">
-          <a href="index.html">愿景</a>
-          <a href="journey.html">旅程</a>
-          <a href="network.html">网络</a>
-          <a href="exploded.html">参考机器</a>
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">源代码 ↗</a>
+          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything">GitHub ↗</a>
+          <a href="journey.html">共建工作台</a>
+          <a href="network.html">实验室网络</a>
           <a href="open-source.html">开源声明</a>
-          <a href="https://www.seeedstudio.com/blog/branding-kit/" target="_blank" rel="noopener noreferrer">矽递品牌</a>
-          <a href="SITE.md">站点说明</a>
-          <a href="#top">回到顶部</a>
+          <a href="#top">返回顶部 ↑</a>
         </div>
       </div>
-      <p class="footer-note">参考硬件与软件发布在本仓库中。本站描述的项目支持、XIAO 供应和 Fab Lab 合作在确认之前都只是提议。这不是 Fab Foundation 的官方项目。页眉里的加号是项目符号，不是矽递科技的标志。正式标志见 <a href="https://www.seeedstudio.com/blog/branding-kit/">矽递品牌规范</a>.</p>
+      <p class="footer-note">供货安排、申请资格及支持细节将在开放申请前公布。本项目并非 Fab Foundation 官方项目。页眉加号是项目符号；Seeed Studio 品牌资源见 <a href="https://www.seeedstudio.com/blog/branding-kit/">品牌规范</a>。</p>
     </div>
   </footer>
   <script src="replacements.js"></script>
-  <script src="assets/js/journey.js"></script>
+  <script src="assets/js/journey.js?v=20261008-3"></script>
+  <script src="assets/js/initiative.js?v=20261008-2" defer></script>
+  <script src="assets/js/compact-tabs.js?v=20261008-3" defer></script>
 </body>
 </html>

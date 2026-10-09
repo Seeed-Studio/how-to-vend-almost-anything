@@ -1,8 +1,8 @@
 # Xiao Vending Machine — Hardware & Assembly
 
-*Print it, cut it, build it — the open-source hardware behind the [reference machine](../websites/en/index.html#reference).*
+*Print it, cut it, build it — the open-source hardware behind the [reference machine](../../docs/en/index.html#reference).*
 
-This guide covers the physical build: the parts you fabricate, and ten photographed steps from a single dispenser to the finished machine. The software that brings it to life — backend, dashboard, and firmware — lives in [`xiao-vending-machine-full-code-system/`](../xiao-vending-machine-full-code-system). For where this fits in the bigger picture, see [Journey](../websites/en/journey.html).
+This guide covers the physical build: the parts you fabricate, and ten photographed steps from a single dispenser to the finished machine. The software that brings it to life — backend, dashboard, and firmware — lives in [`xiao-vending-machine-full-code-system/`](../xiao-vending-machine-full-code-system). For where this fits in the bigger picture, see [Journey](../../docs/en/journey.html).
 
 Photos, wiring diagram, and test videos live in [`assets/`](assets/).
 
@@ -193,7 +193,7 @@ A **direct-order card** carries a fixed product list. The customer taps the card
 
 ![Direct dispensing test](assets/direct-dispense-testing.gif)
 
-[Full recording with sound (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-assemble-steps/assets/direct-dispense-testing.mp4)
+[Full recording with sound (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/direct-dispense-testing.mp4)
 
 ### Balance dispensing
 
@@ -201,10 +201,10 @@ A **selecting balance card** stores a customer name and stored value. The custom
 
 ![Balance dispensing test](assets/balance-dispense-testing.gif)
 
-[Full recording with sound (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-assemble-steps/assets/balance-dispense-testing.mp4)
+[Full recording with sound (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/balance-dispense-testing.mp4)
 
 For the incremental bring-up path before this end-to-end test, see [`testing_phase/`](../xiao-vending-machine-full-code-system/frontend-vending-machine/testing_phase) in the code system.
 
 ## Next: bring it to life
 
-With the hardware assembled, install the software and flash the two Wio Terminals following [`xiao-vending-machine-full-code-system/`](../xiao-vending-machine-full-code-system) and [Journey](../websites/en/journey.html).
+With the hardware assembled, install the software and flash the two Wio Terminals following [`xiao-vending-machine-full-code-system/`](../xiao-vending-machine-full-code-system) and [Journey](../../docs/en/journey.html).

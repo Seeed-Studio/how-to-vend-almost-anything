@@ -204,7 +204,7 @@ if (updates) {
 
 const allErrors = [];
 for (const locale of ["en", "ch"]) {
-  dataDir = join(root, "websites", locale, "data");
+  dataDir = join(root, "docs", locale, "data");
   errors = [];
   run();
   allErrors.push(...errors.map((error) => `${locale}: ${error}`));

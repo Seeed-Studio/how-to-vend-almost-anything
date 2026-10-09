@@ -1,191 +1,97 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script src="../analytics.js" defer></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Network · How to Vend Almost Anything</title>
-  <meta name="description" content="Find Fab Labs and, when a machine has been reviewed, what that lab vends. Directory listings are not program members." />
+  <meta name="description" content="Help shape the future Fab Lab vending network. Register early interest now; lab applications follow the Version One release." />
   <meta name="theme-color" content="#003a4a" />
-  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20261008-2" />
   <link rel="stylesheet" href="assets/css/pages.css" />
+  <link rel="stylesheet" href="assets/css/companions.css?v=20261008-5" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </head>
-<body>
+<body class="companion compact-page network-page">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <div class="shell header-inner">
       <a class="identity" href="index.html" aria-label="Fab Lab Vending homepage">
         <span class="identity-symbol" aria-hidden="true">+</span>
-        <span class="identity-label"><strong>Fab Lab Vending</strong><small>OPEN HARDWARE INITIATIVE</small></span>
+        <span class="identity-label"><strong>Fab Lab Vending</strong><small>BY THE LABS. FOR THE LABS.</small></span>
       </a>
-      <nav class="nav" aria-label="Main pages">
-        <a href="index.html">01 / Vision</a>
-        <a href="journey.html">02 / Journey</a>
-        <a href="network.html" aria-current="page">03 / Network</a>
-        <a class="nav-github" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" data-menu-toggle><span data-menu-label data-open="Menu" data-close="Close">Menu</span><span aria-hidden="true">+</span></button>
+      <nav class="nav" id="primary-nav" aria-label="Main navigation" data-menu>
+        <a href="index.html">The idea</a>
+        <a href="journey.html">The workbench</a>
+        <a href="network.html" aria-current="page">The network</a>
         <a class="nav-lang" href="../ch/network.html" hreflang="zh-Hans" lang="zh-Hans">中文</a>
+        <a class="nav-github" href="index.html#contribute">Contribute ↗</a>
       </nav>
     </div>
   </header>
   <main id="main">
-    <header class="shell page-hero" id="top">
-      <p class="eyebrow">The Network</p>
-      <h1>Find a Lab. Discover What It Makes.</h1>
-      <p class="lede">Explore Fab Labs worldwide, discover participating vending machines, and find locally available XIAO boards and maker products when a lab has actually published them. The map starts from the FabLabs.io directory. A dot there is not a vending machine, and it is not an endorsement by the Fab Foundation.</p>
+    <header class="shell page-hero compact-hero" id="top">
+      <div><p class="eyebrow">THE NETWORK / OPEN LAB INTEREST</p><h1>Local shelves.<br>Shared possibilities.</h1><p class="lede">A machine in every Fab Lab. XIAO to start, local products to follow, and useful improvements shared with the next lab.</p></div>
+      <aside class="hero-action"><a class="btn btn-dark" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=register-interest.yml&amp;title=%5BLab+interest%5D%3A+&amp;body=A+maintainer+reviews+this+issue+before+any+lab+is+added+to+%60docs%2Fen%2Fdata%2Flabs.json%60+and+%60docs%2Fch%2Fdata%2Flabs.json%60.+Registering+interest+does+not+create+a+map+pin+for+a+vending+machine.%0A%0A%23%23%23+Fab+Lab+name%0A%0A%23%23%23+City%0A%0A%23%23%23+Country%0A%0A%23%23%23+Official+FabLabs.io+profile%0A%0A%23%23%23+Lab+website%0A%0A%23%23%23+What+the+lab+wants+to+know+or+try%0A" target="_blank" rel="noreferrer"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>Register early interest ↗</a><a class="text-link" href="journey.html#contribute">Help design Version One →</a><small>Applications follow the Version One release.</small></aside>
     </header>
-
-    <div class="shell map-tools">
-      <form id="map-filters" class="filters">
-        <label>Search
-          <input id="filter-search" type="search" placeholder="Country, city, or lab" autocomplete="off" />
-        </label>
-        <label>Participation
-          <select id="filter-status">
-            <option value="all">All markers</option>
-            <option value="directory">Directory listing</option>
-            <option value="interested">Interested</option>
-            <option value="pilot">Pilot</option>
-            <option value="verified">Verified machine</option>
-            <option value="recent_update">New update</option>
-          </select>
-        </label>
-        <label>Machine
-          <select id="filter-machine">
-            <option value="any">Any</option>
-            <option value="with">Has a reviewed machine</option>
-            <option value="without">No reviewed machine</option>
-          </select>
-        </label>
-        <label>Product category
-          <select id="filter-category">
-            <option value="all">Any</option>
-          </select>
-        </label>
-        <label>Recent
-          <span><input id="filter-recent" type="checkbox" /> Verified updates only</span>
-        </label>
-      </form>
-      <ul class="legend">
-        <li><i class="swatch swatch-directory" aria-hidden="true"></i> Directory listing</li>
-        <li><i class="swatch swatch-interested" aria-hidden="true"></i> Interested</li>
-        <li><i class="swatch swatch-pilot" aria-hidden="true"></i> Pilot</li>
-        <li><i class="swatch swatch-verified" aria-hidden="true"></i> Verified machine</li>
-        <li><i class="swatch swatch-recent_update" aria-hidden="true"></i> New update</li>
-      </ul>
-      <p id="data-error" class="empty-note" hidden></p>
-    </div>
-
-    <div class="shell">
-      <div class="map-stage">
-        <div id="map" class="map-canvas" role="region" aria-label="World map of Fab Labs and reviewed vending machines"></div>
-        <div class="map-side">
-          <p id="map-fallback" class="map-empty" hidden></p>
-          <div id="map-empty" class="map-empty" hidden></div>
-          <article id="lab-panel" class="lab-panel" hidden></article>
-          <h2 class="visually-hidden">Lab list</h2>
-          <ul id="lab-list" class="lab-list"></ul>
+    <div class="shell"><ol class="compact-stages"><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3m6-3v3M9 18v3m6-3v3M3 9h3m-3 6h3m12-6h3m-3 6h3"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg><div><small>01 / THE STARTING POINT</small><strong>XIAO by default</strong></div></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 3 9 5v9l-9 5-9-5V8l9-5Zm0 9 9-4M3 8l9 4v10"/></svg><div><small>02 / YOUR LAB</small><strong>A local catalog</strong></div></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><path d="M9 6h6M7.5 8.5l3 6.5m6-6.5-3 6.5"/></svg><div><small>03 / WHAT TRAVELS</small><strong>Open improvements</strong></div></li></ol></div>
+    <div class="shell" data-tabs>
+      <nav class="tab-nav" aria-label="Explore the lab network" data-tablist><a class="tab-link" href="#join" aria-controls="join" data-tab><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15 4 5 5M4 20l5-1L21 7a2 2 0 0 0-5-5L4 14v6Z"/></svg>Join the idea</a><a class="tab-link" href="#explore" aria-controls="explore" data-tab><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>Explore labs</a><a class="tab-link" href="#activity" aria-controls="activity" data-tab><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>Community activity</a></nav>
+      <section class="tab-panel" id="join" data-tab-panel>
+        <div class="panel-heading"><h2>Your lab makes it local.</h2><p>A shared foundation gives each lab room to make the machine its own. The improvements become a better starting point for everyone.</p></div>
+        <div class="participation-layout">
+          <div><ul class="participation-list"><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3m6-3v3M9 18v3m6-3v3M3 9h3m-3 6h3m12-6h3m-3 6h3"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg><div><h3>Start with XIAO.</h3><p>A common board family gives makers an accessible starting point. Each lab confirms its own product availability.</p></div></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 3 9 5v9l-9 5-9-5V8l9-5Zm0 9 9-4M3 8l9 4v10"/></svg><div><h3>Vend what fits your community.</h3><p>Choose components, learning kits, and things you make. Product dimensions and a compatible dispenser determine what the machine can carry.</p></div></li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><path d="M9 6h6M7.5 8.5l3 6.5m6-6.5-3 6.5"/></svg><div><h3>Share what makes it better.</h3><p>Publish reusable machine designs, changes, source files, and lessons. Keep versions and compatibility clear so another lab can build on your work.</p></div></li></ul><div class="product-tags" id="find"><span>XIAO</span><span>Components</span><span>Learning kits</span><span>Local creations</span><span>Accessories</span><span>More</span></div></div>
+          <aside class="join-card"><h3>Bring your lab’s<br>perspective.</h3><ol><li>Tell us where your lab is and what it needs.</li><li>Share what you would like to vend.</li><li>Offer an idea, test, or improvement for the first edition.</li></ol><a class="text-link" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?title=Version+One+idea&amp;body=Share+a+sketch%2C+a+test%2C+or+a+suggestion+for+Version+One.%0A%0A%23%23%23+What+would+you+change%3F%0A%0A%23%23%23+What+did+you+try%3F%0A" target="_blank" rel="noreferrer"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15 4 5 5M4 20l5-1L21 7a2 2 0 0 0-5-5L4 14v6Z"/></svg>Share a sketch or suggestion ↗</a><p>Opens a GitHub issue. A GitHub account is needed; early interest is not an application or an allocation.</p></aside>
         </div>
-      </div>
-    </div>
-
-    <section class="shell section" id="find">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">What visitors can find</p>
-          <h2>A listing is not a stock count.</h2>
-        </div>
-        <p>For a reviewed lab, products can appear in the categories below. “Listed product” means the lab named it. “Availability recently confirmed” needs a date. This site does not invent live inventory or prices.</p>
-      </div>
-      <div class="category-grid">
-        <article><h3>Seeed Studio XIAO</h3><p>The proposed default category. None is confirmed in stock on this site.</p></article>
-        <article><h3>Electronics and components</h3><p>Boards, sensors, and parts a lab chooses to carry.</p></article>
-        <article><h3>Locally fabricated items</h3><p>Objects the lab makes. They do not have to be open source.</p></article>
-        <article><h3>Educational kits</h3><p>Sets prepared for a class or an open night.</p></article>
-        <article><h3>Tools and accessories</h3><p>Small tools that belong with the electronics.</p></article>
-        <article><h3>Other supported products</h3><p>Anything else a reviewed machine is set up to release.</p></article>
-      </div>
-    </section>
-
-    <div class="section-alt">
-      <section class="shell section" id="new-machines">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Installations</p>
-            <h2>New machines. New makers. New places.</h2>
+        <details class="fold"><summary><span class="fold-title"><strong>What will Seeed Studio support?</strong><span>Backing and future participation</span></span></summary><div class="fold-body"><p>Seeed Studio backs the initiative and provides the working open reference. Supply arrangements, eligibility, and support terms will be published before lab applications open.</p><p>Today, labs can shape the design and register interest. The first edition comes before the application process.</p></div></details>
+        <details class="fold" id="submit"><summary><span class="fold-title"><strong>Publish or update a lab record</strong><span>Seven existing submission routes</span></span></summary><div class="fold-body"><p>Keep the network useful: submit source evidence, identify the machine or product, and include dates when confirming availability. Records are reviewed before publication.</p><ul class="record-actions"><li><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=register-interest.yml&amp;title=%5BLab+interest%5D%3A+&amp;body=A+maintainer+reviews+this+issue+before+any+lab+is+added+to+%60docs%2Fen%2Fdata%2Flabs.json%60+and+%60docs%2Fch%2Fdata%2Flabs.json%60.+Registering+interest+does+not+create+a+map+pin+for+a+vending+machine.%0A%0A%23%23%23+Fab+Lab+name%0A%0A%23%23%23+City%0A%0A%23%23%23+Country%0A%0A%23%23%23+Official+FabLabs.io+profile%0A%0A%23%23%23+Lab+website%0A%0A%23%23%23+What+the+lab+wants+to+know+or+try%0A" target="_blank" rel="noreferrer">Register early interest</a></li><li><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=submit-installation.yml&amp;title=%5BInstallation%5D%3A+&amp;body=Do+not+treat+this+issue+as+a+public+listing.+A+maintainer+checks+the+evidence%2C+then+may+add+records+to+%60docs%2Fen%2Fdata%2Flabs.json%60+and+%60docs%2Fen%2Fdata%2Fmachines.json%60%2C+and+the+Chinese+copies+under+%60docs%2Fch%2Fdata%60.%0A%0A%23%23%23+Fab+Lab+name%0A%0A%23%23%23+City%0A%0A%23%23%23+Country%0A%0A%23%23%23+Machine+version%0A%0A%23%23%23+Photograph+URL%0A%0A%23%23%23+Verification+source%0A%0A%23%23%23+Date+observed%0A%0A%23%23%23+What+is+installed%0A" target="_blank" rel="noreferrer">Submit an installation</a></li><li><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=update-product.yml&amp;title=%5BProduct+listing%5D%3A+&amp;body=Stock+and+prices+are+not+collected+here.+Use+the+availability+form+for+a+dated+confirmation.%0A%0A%23%23%23+Fab+Lab+name%0A%0A%23%23%23+Machine%0A%0A%23%23%23+Product+name%0A%0A%23%23%23+Category%0A%0AChoose+one%3A+Seeed+Studio+XIAO%2C+Electronics+and+components%2C+Locally+fabricated+items%2C+Educational+kits%2C+Tools+and+accessories%2C+Other+supported+products%0A%0A%23%23%23+Product+URL%0A%0A%23%23%23+Notes%0A" target="_blank" rel="noreferrer">Add or update a product</a></li><li><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=update-availability.yml&amp;title=%5BAvailability%5D%3A+&amp;body=%23%23%23+Fab+Lab+name%0A%0A%23%23%23+Product+name%0A%0A%23%23%23+What+was+checked%0A%0AChoose+one%3A+Listed+only%2C+Availability+confirmed+on+the+date+below%0A%0A%23%23%23+Date+checked%0A%0A%23%23%23+What+you+observed%0A" target="_blank" rel="noreferrer">Confirm product availability</a></li><li><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=announce-upgrade.yml&amp;title=%5BUpgrade%5D%3A+&amp;body=%23%23%23+Fab+Lab+name%0A%0A%23%23%23+Previous+version%0A%0A%23%23%23+Installed+version+now%0A%0A%23%23%23+Date%0A%0A%23%23%23+Source+URL%0A%0A%23%23%23+What+changed%0A" target="_blank" rel="noreferrer">Announce an upgrade</a></li><li><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=submit-improvement.yml&amp;title=%5BImprovement%5D%3A+&amp;body=A+replacement+is+appended.+It+does+not+overwrite+the+Version+Zero+CAD.+An+alternative+part+is+not+automatically+a+newer+revision.%0A%0A%23%23%23+Part+id%0A%0A%23%23%23+Version%0A%0A%23%23%23+Source+CAD+path+or+URL%0A%0A%23%23%23+Purpose%0A%0A%23%23%23+Replaces%0A%0A%23%23%23+Compatibility+assumptions%0A%0A%23%23%23+Test+evidence%0A%0A%23%23%23+Attribution%0A%0A%23%23%23+License%0A" target="_blank" rel="noreferrer">Share an open improvement</a></li><li><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=correct-listing.yml&amp;title=%5BCorrection%5D%3A+&amp;body=%23%23%23+Record%0A%0A%23%23%23+What+is+wrong%0A%0A%23%23%23+What+it+should+say%0A%0A%23%23%23+Evidence+URL%0A" target="_blank" rel="noreferrer">Correct a listing</a></li></ul></div></details>
+      </section>
+      <section class="tab-panel" id="explore" data-tab-panel>
+        <div class="panel-heading"><h2>Find the work near you.</h2><p>Directory entries show labs. Reviewed machine records show installations. Product listings describe a catalog; dated confirmation describes availability.</p></div>
+        <form id="map-filters">
+          <div class="explorer-search"><label>Search labs<input id="filter-search" type="search" placeholder="Country, city, or lab" autocomplete="off"></label>
+            <details class="fold advanced-filters"><summary><span class="fold-title"><strong>Refine the search</strong><span>Status, machine, products</span></span></summary><div class="fold-body"><div class="filters">
+              <label>Participation<select id="filter-status"><option value="all">All markers</option><option value="directory">Directory listing</option><option value="interested">Interested</option><option value="pilot">Pilot</option><option value="verified">Verified machine</option><option value="recent_update">New update</option></select></label>
+              <label>Machine<select id="filter-machine"><option value="any">Any</option><option value="with">Has a reviewed machine</option><option value="without">No reviewed machine</option></select></label>
+              <label>Product category<select id="filter-category"><option value="all">Any</option></select></label>
+              <label>Recent<span><input id="filter-recent" type="checkbox">Verified updates only</span></label>
+            </div></div></details>
           </div>
-          <p>Only submitted and approved installations appear here.</p>
-        </div>
-        <div class="feed" id="machine-feed"></div>
+        </form>
+        <ul class="legend"><li><i class="swatch swatch-directory" aria-hidden="true"></i>Directory listing</li><li><i class="swatch swatch-interested" aria-hidden="true"></i>Interested</li><li><i class="swatch swatch-pilot" aria-hidden="true"></i>Pilot</li><li><i class="swatch swatch-verified" aria-hidden="true"></i>Verified machine</li><li><i class="swatch swatch-recent_update" aria-hidden="true"></i>New update</li></ul><p id="data-error" class="empty-note" hidden role="status"></p>
+        <div class="map-stage"><div id="map" class="map-canvas" role="region" aria-label="World map of Fab Labs and reviewed vending machines"></div><div class="map-side"><p id="map-fallback" class="map-empty" hidden></p><div id="map-empty" class="map-empty" hidden role="status"></div><article id="lab-panel" class="lab-panel" hidden></article><h3 class="visually-hidden">Lab list</h3><ul id="lab-list" class="lab-list"></ul></div></div>
+        <noscript><p class="compact-note">The explorer loads public records with JavaScript. You can also read the lab directory and project records directly. <a href="data/directory-labs.json">FabLabs.io</a> · <a href="data/labs.json">Labs</a> · <a href="data/machines.json">Machines</a></p></noscript>
+        <details class="fold" id="directory-method"><summary><span class="fold-title"><strong>Where the records come from</strong><span>Sources, review, and directory setup</span></span></summary><div class="fold-body"><p>Lab names and locations come from a FabLabs.io directory snapshot. Machine, product, and availability records come from reviewed community submissions. Directory membership does not imply program participation.</p><p id="directory-note"></p><div class="inline-links"><a href="FABLABS_DIRECTORY.md">Directory setup guide ↗</a><a href="https://www.fablabs.io/">FabLabs.io directory ↗</a><a href="https://fabfoundation.org/">Fab Foundation ↗</a></div></div></details>
+      </section>
+      <section class="tab-panel" id="activity" data-tab-panel>
+        <div class="panel-heading"><h2>Improvements worth passing on.</h2><p>Confirmed installations and reviewed updates will appear here. The first edition is still being designed; no participating machines are published yet.</p></div>
+        <div class="activity-grid"><section id="new-machines"><h3>Published installations</h3><div class="feed" id="machine-feed"></div></section><section id="updates"><h3>Community updates</h3><div class="feed" id="update-feed"></div></section></div>
+        <p class="compact-note">Every public record links to evidence. A proposed installation or update becomes public after review.</p><a class="text-link" href="journey.html#contribute"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><path d="M9 6h6M7.5 8.5l3 6.5m6-6.5-3 6.5"/></svg>Bring an improvement to the workbench ↗</a>
       </section>
     </div>
-
-    <section class="shell section" id="updates">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Community updates</p>
-          <h2>A public stream with a review state.</h2>
-        </div>
-        <p>Installations, upgrades, new products, availability changes, open-source modifications, and operational notes. Each public item needs a source, a timestamp, and an approved review. A proposal is not a listing.</p>
-      </div>
-      <div class="feed" id="update-feed"></div>
-    </section>
-
-    <div class="section-alt">
-      <section class="shell section" id="submit">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Register or update your lab</p>
-            <h2>GitHub issues, reviewed before publication.</h2>
-          </div>
-          <p>GitHub Pages cannot save a form by itself. These links open issue forms in the repository. A maintainer reviews the issue, then edits the JSON. A later backend can replace this queue without changing the page’s data files.</p>
-        </div>
-        <div class="submit-grid">
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=register-interest.yml"><strong>Register interest</strong><p>Tell us the lab wants to follow the project. This does not install a machine.</p></a>
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=submit-installation.yml"><strong>Submit a confirmed installation</strong><p>Machine version, photograph, and a source a reviewer can check.</p></a>
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=update-product.yml"><strong>Add or update a product listing</strong><p>Name and category. A listing is not a claim that it is in stock.</p></a>
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=update-availability.yml"><strong>Update product availability</strong><p>A date is required before anything is shown as recently confirmed.</p></a>
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=announce-upgrade.yml"><strong>Announce a machine upgrade</strong><p>What changed, and which version is now installed.</p></a>
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=submit-improvement.yml"><strong>Submit an open-source improvement</strong><p>Part id, CAD, version, compatibility, test evidence, attribution, and license.</p></a>
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=correct-listing.yml"><strong>Correct an existing listing</strong><p>Point at the record that is wrong and the evidence for the correction.</p></a>
-        </div>
-      </section>
-    </div>
-
-    <section class="shell section" id="directory-method">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">How the world map is filled</p>
-          <h2>A daily snapshot, not a live login from the browser.</h2>
-        </div>
-        <p id="directory-note"></p>
-      </div>
-      <p>The legacy public endpoint at api.fablabs.io has been removed. The current developer guide requires a person to register an application and complete OAuth once. This page only reads <a href="data/directory-labs.json">directory-labs.json</a>. A GitHub Action can refresh that file after a token is stored as a secret. The steps, including what a person must do and what the Action can do, are in <a href="FABLABS_DIRECTORY.md">FABLABS_DIRECTORY.md</a>.</p>
-      <p class="directory-links"><a href="https://www.fablabs.io/">FabLabs.io directory</a> · <a href="https://fabfoundation.org/">Fab Foundation</a></p>
-    </section>
   </main>
   <footer class="site-footer">
     <div class="shell">
       <div class="footer-inner">
         <div>
-          <strong>Fab Lab Vending</strong>
-          <p>A Seeed Studio-led open reference for Fab Labs.</p>
+          <strong>How to Vend Almost Anything</strong>
+          <p>An open-source initiative backed by Seeed Studio.</p>
         </div>
         <div class="footer-links">
-          <a href="index.html">Vision</a>
-          <a href="journey.html">Journey</a>
-          <a href="network.html">Network</a>
-          <a href="exploded.html">Reference machine</a>
-          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">Source code ↗</a>
+          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything">GitHub ↗</a>
+          <a href="journey.html">The workbench</a>
+          <a href="network.html">The network</a>
           <a href="open-source.html">Open-source notices</a>
-          <a href="https://www.seeedstudio.com/blog/branding-kit/" target="_blank" rel="noopener noreferrer">Seeed branding</a>
-          <a href="SITE.md">Site guide</a>
-          <a href="#top">Back to top</a>
+          <a href="#top">Back to top ↑</a>
         </div>
       </div>
-      <p class="footer-note">Map tiles © OpenStreetMap contributors. FabLabs.io data, when present, is attributed in the directory snapshot. A directory listing is not a vending installation. Reference hardware and software are published in this repository. Program support described here is a proposal until confirmed. This is not an official program of the Fab Foundation.</p>
+      <p class="footer-note">Map tiles © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>. FabLabs.io attribution is retained in the directory snapshot. A directory entry does not indicate a vending installation or project participation. This is not an official Fab Foundation program.</p>
     </div>
   </footer>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="assets/js/network.js"></script>
+  <script src="assets/js/network.js?v=20261008-3"></script>
+  <script src="assets/js/compact-tabs.js?v=20261008-3" defer></script>
+  <script src="assets/js/initiative.js?v=20261008-2" defer></script>
 </body>
 </html>

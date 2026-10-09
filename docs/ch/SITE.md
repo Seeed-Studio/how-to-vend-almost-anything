@@ -1,114 +1,72 @@
 # 站点说明
 
-公开站点在 [`websites/`](../)。英文是 [`en/`](../en/)。中文是 [`ch/`](./)。两种语言各自有完整的页面、样式、脚本和 JSON。页眉里的语言链接会切到另一种语言的同一页。
+本站当前的任务是**第一版开放设计征集**：每个 Fab Lab 一台售货机，默认售卖 XIAO，由实验室选择本地产品，并公开可复用的机器改进。项目由 Seeed Studio 支持，推进顺序是**共同设计 → 发布第一版 → 开放实验室申请**。供货安排、申请资格与支持细节将在之后公布。
 
-GitHub Pages 发布本分支的 `/docs` 文件夹。那就是站点根目录：语言选择页、`en/` 和 `ch/`。仓库里的 `websites` 指向同一个文件夹。
+零号版本是由 Wio Terminal 控制的可运行参考原型。源文件、照片和运行录像，为设计征集提供真实的起点。路线图中的状态记录参考原型与后续工作的进展，不代表第一版已经发布。
 
-## Pages
+## 已发布页面
 
-| Page | File | Role |
+GitHub Pages 发布 `/docs`。入口页介绍项目并提供英文、中文入口。两种语言具有对应的页面，页眉中的语言链接切换到另一种语言的同一页。
+
+| 页面 | 文件 | 用途 |
 | --- | --- | --- |
-| Vision | `index.html` | The idea, the reference machine, and what is only a proposal |
-| Journey | `journey.html` | Roadmap, implementation modules, parts, standards, contributions |
-| Network | `network.html` | Map, lab list, empty machine feed, GitHub issue submissions |
-| Exploded machine | `exploded.html` | Deep page. Not in the primary navigation |
-| Open-source notices | `open-source.html` | Runtime libraries and map data |
+| 愿景 | `index.html` | 开放征集、共同理念、设计方向、原型、发布路线与常见问题 |
+| 共建工作台 | `journey.html` | 参考路线图、系统筛选、部件、标准草案与贡献任务 |
+| 实验室网络 | `network.html` | 参与意向、未来网络、目录地图与已审核记录 |
+| 参考机器 | `exploded.html` | 零号版本交互模型与替换件说明 |
+| 开源声明 | `open-source.html` | 库许可、地图署名与上游来源 |
 
-Primary navigation is Vision, Journey, Network. The section navigator appears on Vision and on the exploded machine page.
+各页保持一致的标识、导航顺序、语言切换和参与入口。页眉加号是项目符号，并非 Seeed Studio 标志。
 
-Shared chrome and color live in `assets/css/site.css` (Seeed Green `#8FC31F`, Seeed Blue `#003A4A`). Layouts that belong only to the live pages live in `assets/css/pages.css`. The exploded viewer keeps `exploded.css`, retokened to the same palette. The header plus mark is a project symbol, not the Seeed Studio logo.
+## 设计与交互文件
 
-## Local preview
+设计方向是一份简洁的工作坊刊物：温暖纸色、Seeed 深青色 `#003A4A`、绿色 `#8FC31F`、细分隔线、真实原型图片和紧凑的贡献卡片。设计笔记保存在本地 `_archived/plans/`，不属于已发布的站点。
 
-From the `websites/` directory:
+- `assets/css/site.css`：共用字体、颜色、页眉、页脚、响应式导航与配套页面样式。
+- `assets/css/initiative.css`：首页的版式和贡献组件。
+- `assets/js/initiative.js`：导航展开、首页章节导航、录像切换与分享。
+- `assets/css/pages.css`：数据驱动的工作台和网络页面布局。
+- `exploded.css` 与 `exploded.js`：参考机器查看器。
+- `assets/css/section-nav.css` 与 `assets/js/section-nav.js`：查看器的章节导航。
+
+首页照片使用 `assets/reference-machine.jpg`。原型播放器使用已有的 `real-operation-order-dispense` 和 `real-operation-balance-dispense` 封面及录像。未制造的概念不能展示为真实机器。录像使用原生控件，不自动播放，并尊重减少动态效果的设置。
+
+## 本地预览与检查
+
+在仓库根目录运行：
 
 ```bash
-python3 -m http.server 8000
+python3 -m http.server 8000 --directory docs
 ```
 
-Open `http://localhost:8000/`, `journey.html`, `network.html`, and `exploded.html`. JSON fetch does not work from a `file://` URL.
+打开 `http://localhost:8000/`，再进入英文或中文页面。通过 HTTP 预览，路线图与地图的 JSON 才能正常加载。
 
-From the repository root, check the data files:
+检查已有数据规则：
 
 ```bash
 node scripts/validate-site-data.mjs
 ```
 
-## Deployment
+检查两种语言的桌面与手机布局，以及导航展开、贡献链接、原型录像、分享结果、工作台筛选、地图空状态、键盘焦点与页面锚点。
 
-1. Push the branch that contains `websites/`.
-2. In GitHub, open Settings, then Pages.
-3. Deploy from a branch and select the `/docs` folder.
-4. Use relative paths. The site may be served from a project subpath such as `/how-to-vend-almost-anything/`.
+## 内容与提交
 
-Do not put access tokens in `websites/`. The FabLabs.io token belongs in an Actions secret. See [FABLABS_DIRECTORY.md](FABLABS_DIRECTORY.md).
+首页文案位于各语言的 `index.html`。工作台和网络页面读取各自的 `data/` 文件。`done`、`in_progress`、`needs_contributors` 和 `planned` 状态需要与证据相符。标准提案在审核前保持为想法或草稿。
 
-## Editing content
+贡献与实验室意向通过已有的 GitHub issue 表单提交，需要 GitHub 账号。意向登记不等于申请或名额分配。实验室、机器、产品和可获得性记录须经过审核后公开，不编造安装、库存、价格或支持条款。
 
-Narrative copy for the Vision page is in `index.html`. Journey and Network read:
+`replacements.js` 用于追加带版本的机器改进。保留 `parts-manifest.js`、源 CAD 和 `data/models.json` 中的零号版本基线。替代件不自动等于新修订版本。
 
-```text
-websites/ch/data/roadmap.json
-websites/ch/data/implementations.json
-websites/ch/data/standards.json
-websites/ch/data/models.json
-websites/ch/data/labs.json
-websites/ch/data/machines.json
-websites/ch/data/products.json
-websites/ch/data/updates.json
-websites/ch/data/directory-labs.json
-```
+配置认证后，`directory-labs.json` 才会从 FabLabs.io 刷新。名录成员与项目参与须分开理解。记录在提交审核前保持为空。详见[名录更新指南](FABLABS_DIRECTORY.md)。
 
-`directory-labs.json` is the only file the daily Action may rewrite. Program files change when a maintainer reviews a GitHub issue and edits them. `websites/en/replacements.js` is the exploded view’s replacement list. Append to it. Do not delete Version Zero entries from `websites/en/parts-manifest.js` or from `models.json`.
+## 发布与署名
 
-An alternative part, such as `dispenser-specific`, is not a newer revision of another part.
+保留现有 GitHub Pages 配置与相对路径，兼容 `/how-to-vend-almost-anything/` 项目子路径。不要把访问令牌放进站点；名录认证信息应保存在 Actions secret 中。
 
-Statuses are `done`, `in_progress`, `needs_contributors`, and `planned`. A `done` record needs an evidence URL. A standard may not be marked `accepted` without evidence. The validator enforces this.
+- 机器照片、录像和 CAD 来自本仓库。
+- Seeed Studio 名称与颜色遵循[品牌规范](https://www.seeedstudio.com/blog/branding-kit/)。
+- 查看器使用 Three.js 和 occt-import-js，地图使用 Leaflet 与 OpenStreetMap 瓦片。保留上游声明与 © OpenStreetMap 贡献者。
+- FabLabs.io 署名保留在目录快照中。本项目并非 Fab Foundation 官方项目。
+- 更多信息见[开源声明](open-source.html)和[许可清单](THIRD_PARTY_NOTICES.md)。
 
-## Submissions
-
-Issue forms live in `.github/ISSUE_TEMPLATE/`. They open on the repository’s default branch after this work is merged. 网络 page links to them. There is no form on the static site that pretends to save data.
-
-## Attribution
-
-- Seeed Studio name and colors follow the [branding kit](https://www.seeedstudio.com/blog/branding-kit/). The header plus mark is a project symbol. This site does not redraw the logo.
-- Machine photographs, videos, and CAD are from this repository.
-- The exploded view loads Three.js and occt-import-js from a CDN. See [open-source.html](open-source.html) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-- The map uses Leaflet and OpenStreet地图瓦片。© OpenStreetMap 贡献者。
-- FabLabs.io is the directory source, used only through the reviewed snapshot described above.
-
-## Checklist
-
-Complete in this site:
-
-- Three-page navigation, shared header and footer, and the Vision section navigator.
-- Vision narrative with the photographed reference machine, both dispense recordings, and the Wio Terminal called out as the controller.
-- Data-driven Journey timeline, filters, part list, standards at maturity Idea, and contribution cards.
-- Exploded viewer kept as a deep page.
-- Network map, list, filters, and an empty state for machines, products, and updates.
-- GitHub Issue Forms and a documented review path.
-- JSON schema check and a FabLabs.io Action that waits for a human token.
-
-Placeholders, deliberately empty:
-
-- `labs.json`, `machines.json`, `products.json`, and `updates.json`.
-- `directory-labs.json` until `FABLABS_ACCESS_TOKEN` is set and a fetch succeeds.
-- No XIAO stock, prices, pilot labs, or accepted standards.
-
-Needs a later operational step:
-
-- A person completes FabLabs.io OAuth and stores the token.
-- A maintainer reviews issues before publishing a lab, machine, photo, or stock date.
-- Seeed supply terms, eligibility, and any subsidy or marketing commitment, none of which are confirmed.
-- A real backend or CMS if submissions should stop going through GitHub issues.
-- Official Seeed logo files, if the branding kit is later added under `websites/en/assets/brand/` without redrawing the mark.
-
-Hardware, firmware, and the assembly guide were not changed.
-
-`_archived/` at the repository root is listed in `.gitignore` and is not part of the published site. It holds the local copies of:
-
-- the stylesheets this restyle replaced (`site-css-before-seeed-restyle/`)
-- the Seeed-styled template folder after its visual system was applied to `docs/`
-- the five framework notes (`01` through `05`, plus the old framework index)
-
-Those notes are no longer linked from the public pages or the repository README. Hardware, firmware, the assembly guide, the JSON data files, the issue forms, and the FabLabs directory workflow stay in the repository.
+本次网站更新不修改硬件、固件、装配指南、issue 模板、数据结构或部署配置。

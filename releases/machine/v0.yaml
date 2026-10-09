@@ -1,0 +1,12 @@
+schema: how-to-vend/machine/v1
+machine_id: reference-v0
+version: "0"
+name: Version Zero
+status: frozen
+frozen: true
+note: >-
+  Official configuration of the permanent reference machine. This manifest
+  points at the frozen tree. It does not copy CAD or firmware.
+assembly: xiao-vending-machine-v0/xiao-vending-machine-assemble-steps
+software: xiao-vending-machine-v0/xiao-vending-machine-full-code-system
+site_viewer: docs/en/exploded.html

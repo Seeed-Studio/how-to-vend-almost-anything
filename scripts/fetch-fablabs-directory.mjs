@@ -5,11 +5,11 @@ import { fileURLToPath } from "node:url";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const outputs = [
   {
-    path: join(root, "websites", "en", "data", "directory-labs.json"),
+    path: join(root, "docs", "en", "data", "directory-labs.json"),
     note: (count, day) => `Fetched ${count} FabLabs.io directory listings on ${day}. A directory listing is not participation in this vending program.`
   },
   {
-    path: join(root, "websites", "ch", "data", "directory-labs.json"),
+    path: join(root, "docs", "ch", "data", "directory-labs.json"),
     note: (count, day) => `已于 ${day} 抓取 ${count} 条 FabLabs.io 名录。名录条目不是参与这个售货项目。`
   }
 ];
@@ -19,8 +19,8 @@ const base = (process.env.FABLABS_API_BASE || "https://api.fablabs.io").replace(
 if (!token) {
   console.log("FABLABS_ACCESS_TOKEN is not set.");
   console.log("A person must register a FabLabs.io application and complete OAuth once.");
-  console.log("GitHub Pages cannot perform that login. See websites/en/FABLABS_DIRECTORY.md.");
-  console.log("Leaving websites/en/data/directory-labs.json and websites/ch/data/directory-labs.json unchanged.");
+  console.log("GitHub Pages cannot perform that login. See docs/en/FABLABS_DIRECTORY.md.");
+  console.log("Leaving docs/en/data/directory-labs.json and docs/ch/data/directory-labs.json unchanged.");
   process.exit(0);
 }
 

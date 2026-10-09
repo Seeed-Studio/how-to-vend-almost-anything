@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Start from `xiao-vending-machine-assemble-steps/README.md` and `xiao-vending-machine-full-code-system/scripts/start_backend.sh`.
+        Start from `xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md` and `xiao-vending-machine-v0/xiao-vending-machine-full-code-system/scripts/start_backend.sh`.
   - type: textarea
     id: gap
     attributes:

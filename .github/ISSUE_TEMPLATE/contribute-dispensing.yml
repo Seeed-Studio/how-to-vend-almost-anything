@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        The reference dispenser is in `xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/dispenser.stl`. Leave Version Zero in place and add a replacement.
+        The reference dispenser is in `xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/dispenser.stl`. Leave Version Zero in place and add a replacement.
   - type: textarea
     id: problem
     attributes:

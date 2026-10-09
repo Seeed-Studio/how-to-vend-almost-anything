@@ -1,36 +1,38 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script src="../analytics.js" defer></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Exploded Machine | How to Vend Almost Anything</title>
   <meta name="description" content="Explore the XIAO vending machine as a versioned exploded system. Inspect the current open-source models and follow each replacement as the design evolves." />
   <meta name="theme-color" content="#003a4a" />
-  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20261008-2" />
   <link rel="stylesheet" href="assets/css/pages.css" />
   <link rel="stylesheet" href="exploded.css" />
   <link rel="stylesheet" href="assets/css/section-nav.css" />
 </head>
-<body>
+<body class="companion">
   <a class="skip-link" href="#explorer">Skip to explorer</a>
 
   <header class="site-header">
     <div class="shell header-inner">
       <a class="identity" href="index.html" aria-label="Fab Lab Vending homepage">
         <span class="identity-symbol" aria-hidden="true">+</span>
-        <span class="identity-label"><strong>Fab Lab Vending</strong><small>OPEN HARDWARE INITIATIVE</small></span>
+        <span class="identity-label"><strong>Fab Lab Vending</strong><small>BY THE LABS. FOR THE LABS.</small></span>
       </a>
-      <nav class="nav" aria-label="Main pages">
-        <a href="index.html">01 / Vision</a>
-        <a href="journey.html">02 / Journey</a>
-        <a href="network.html">03 / Network</a>
-        <a class="nav-github" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" data-menu-toggle><span data-menu-label data-open="Menu" data-close="Close">Menu</span><span aria-hidden="true">+</span></button>
+      <nav class="nav" id="primary-nav" aria-label="Main navigation" data-menu>
+        <a href="index.html">The idea</a>
+        <a href="journey.html">The workbench</a>
+        <a href="network.html">The network</a>
         <a class="nav-lang" href="../ch/exploded.html" hreflang="zh-Hans" lang="zh-Hans">中文</a>
+        <a class="nav-github" href="index.html#contribute">Contribute ↗</a>
       </nav>
     </div>
   </header>
 
-  <main>
+  <main id="top">
     <section class="explorer-shell" id="explorer">
       <aside class="group-rail" aria-label="System groups">
         <div class="rail-title">SYSTEM BULKS</div>
@@ -54,7 +56,7 @@
 
         <div class="viewport" id="viewport">
           <div class="reference-ghost" aria-hidden="true">
-            <img src="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-assemble-steps/assets/10-assemble-final-look-design.png" alt="" />
+            <img src="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/10-assemble-final-look-design.png" alt="" />
           </div>
           <div class="fallback-map" id="fallback-map" aria-hidden="true">
             <div class="fallback-layer layer-shell">SHELL</div>
@@ -103,6 +105,8 @@
         <p>
           The machine is not a fixed object. It is a stack of replaceable parts. This page turns the current V0 CAD files into a visible product system, then keeps every new replacement attached to the part it supersedes.
         </p>
+        <p>This is the working Version Zero reference. Use it as a baseline for Version One, and keep each reusable improvement available to the next lab.</p>
+        <p><a class="text-link" href="index.html#contribute"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m16 3 5 5-13 13H3v-5L16 3Z"/><path d="m14 5 5 5"/></svg> Help design Version One ↗</a></p>
         <div class="intro-meta">
           <span><strong id="part-count">18</strong> modeled parts</span>
           <span><strong>5</strong> system groups</span>
@@ -195,8 +199,8 @@
         <h2>A machine people can understand is a machine people can improve.</h2>
       </div>
       <div class="cta-actions">
-        <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files" target="_blank" rel="noreferrer">Browse CAD source ↗</a>
-        <a href="journey.html#evolution">Back to the journey →</a>
+        <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files" target="_blank" rel="noreferrer"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="M3 8v9l9 5 9-5V8M12 13v9"/></svg> Browse CAD source ↗</a>
+        <a href="journey.html#evolution">Back to the workbench →</a>
       </div>
     </section>
   </main>
@@ -205,20 +209,18 @@
     <div class="shell">
       <div class="footer-inner">
         <div>
-          <strong>Fab Lab Vending</strong>
-          <p>Versioned exploded view of the Version Zero reference. Positions are for explanation, not assembly coordinates.</p>
+          <strong>How to Vend Almost Anything</strong>
+          <p>An open-source initiative backed by Seeed Studio.</p>
         </div>
         <div class="footer-links">
-          <a href="index.html">Vision</a>
-          <a href="journey.html">Journey</a>
-          <a href="network.html">Network</a>
-          <a href="exploded.html">Reference machine</a>
+          <a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything">GitHub ↗</a>
+          <a href="journey.html">The workbench</a>
+          <a href="network.html">The network</a>
           <a href="open-source.html">Open-source notices</a>
-          <a href="https://www.seeedstudio.com/blog/branding-kit/" target="_blank" rel="noopener noreferrer">Seeed branding</a>
-          <a href="SITE.md">Site guide</a>
+          <a href="#top">Back to top ↑</a>
         </div>
       </div>
-      <p class="footer-note">Three.js and occt-import-js load from a CDN for this viewer. Source CAD stays in the repository. See the open-source notices for licenses.</p>
+      <p class="footer-note">The viewer uses Three.js and occt-import-js. Source CAD remains in the repository; displayed positions explain the build rather than define assembly coordinates. Library licenses are in the <a href="open-source.html">open-source notices</a>.</p>
     </div>
   </footer>
 
@@ -247,5 +249,6 @@
   }
   </script>
   <script type="module" src="exploded.js?v=inspector"></script>
+  <script src="assets/js/initiative.js?v=20261008-2" defer></script>
 </body>
 </html>
