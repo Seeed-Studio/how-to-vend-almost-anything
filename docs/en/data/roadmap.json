@@ -37,7 +37,7 @@
       "phase": "now",
       "system": "mechanical",
       "status": "done",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md",
       "contribution_url": "",
       "updated_at": "2026-10-08"
     },
@@ -48,7 +48,7 @@
       "phase": "now",
       "system": "mechanical",
       "status": "done",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files",
       "contribution_url": "",
       "updated_at": "2026-10-08"
     },
@@ -59,7 +59,7 @@
       "phase": "now",
       "system": "electronics",
       "status": "done",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-v0/xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal",
       "contribution_url": "",
       "updated_at": "2026-10-08"
     },
@@ -70,7 +70,7 @@
       "phase": "now",
       "system": "software",
       "status": "done",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-v0/xiao-vending-machine-full-code-system/backend-full",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-full-code-system/backend-full",
       "contribution_url": "",
       "updated_at": "2026-10-08"
     },
@@ -81,7 +81,7 @@
       "phase": "now",
       "system": "dispensing",
       "status": "done",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/docs/en/assets/real-operation-order-dispense.mp4",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/site/fab-vending-pages/docs/en/assets/real-operation-order-dispense.mp4",
       "contribution_url": "",
       "updated_at": "2026-10-08"
     },
@@ -92,7 +92,7 @@
       "phase": "now",
       "system": "dispensing",
       "status": "done",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/docs/en/assets/real-operation-balance-dispense.mp4",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/site/fab-vending-pages/docs/en/assets/real-operation-balance-dispense.mp4",
       "contribution_url": "",
       "updated_at": "2026-10-08"
     },
@@ -114,7 +114,7 @@
       "phase": "now",
       "system": "dispensing",
       "status": "needs_contributors",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files",
       "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml&title=%5BDispensing%5D%3A+&body=The+reference+dispenser+is+in+%60xiao-vending-machine-v0%2Fxiao-vending-machine-assemble-steps%2Fhardware-preparatory%2Fstl-files%2Fparts%2Fdispenser.stl%60.+Leave+Version+Zero+in+place+and+add+a+replacement.%0A%0A%23%23%23+Problem%0A%0A%23%23%23+Part+id%0A%0A%23%23%23+Version%0A%0A%23%23%23+Source+CAD%0A%0A%23%23%23+Purpose%0A%0A%23%23%23+Compatibility+assumptions%0A%0A%23%23%23+Test+evidence%0A%0A%23%23%23+Attribution%0A%0A%23%23%23+License%0A",
       "updated_at": "2026-10-08"
     },
@@ -169,7 +169,7 @@
       "phase": "next",
       "system": "deployment",
       "status": "needs_contributors",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md",
       "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-deployment-docs.yml&title=%5BDeployment+docs%5D%3A+&body=Start+from+%60xiao-vending-machine-v0%2Fxiao-vending-machine-assemble-steps%2FREADME.md%60+and+%60xiao-vending-machine-v0%2Fxiao-vending-machine-full-code-system%2Fscripts%2Fstart_backend.sh%60.%0A%0A%23%23%23+What+a+second+lab+still+has+to+figure+out%0A%0A%23%23%23+Proposed+checklist%0A%0A%23%23%23+Repository+files+each+step+relies+on%0A",
       "updated_at": "2026-10-08"
     },

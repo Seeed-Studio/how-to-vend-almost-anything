@@ -193,7 +193,7 @@ A **direct-order card** carries a fixed product list. The customer taps the card
 
 ![Direct dispensing test](assets/direct-dispense-testing.gif)
 
-[Full recording with sound (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/direct-dispense-testing.mp4)
+[Full recording with sound (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/direct-dispense-testing.mp4)
 
 ### Balance dispensing
 
@@ -201,7 +201,7 @@ A **selecting balance card** stores a customer name and stored value. The custom
 
 ![Balance dispensing test](assets/balance-dispense-testing.gif)
 
-[Full recording with sound (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/balance-dispense-testing.mp4)
+[Full recording with sound (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/balance-dispense-testing.mp4)
 
 For the incremental bring-up path before this end-to-end test, see [`testing_phase/`](../xiao-vending-machine-full-code-system/frontend-vending-machine/testing_phase) in the code system.
 

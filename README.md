@@ -95,17 +95,17 @@ With the machine assembled and the software running, this is what end-to-end dis
 
 Tap an **Order** (direct) card; the machine releases every product on that card in one pass.
 
-[![Direct order dispense](docs/en/assets/real-operation-order-dispense.jpg)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/en/assets/real-operation-order-dispense.mp4)
+[![Direct order dispense](docs/en/assets/real-operation-order-dispense.jpg)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/site/fab-vending-pages/docs/en/assets/real-operation-order-dispense.mp4)
 
-[Watch the recording (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/en/assets/real-operation-order-dispense.mp4)
+[Watch the recording (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/site/fab-vending-pages/docs/en/assets/real-operation-order-dispense.mp4)
 
 ### Balance / selecting dispense
 
 Tap a **Balance** (selecting) card, pick products on the Wio screen, and collect from the bin.
 
-[![Balance dispense](docs/en/assets/real-operation-balance-dispense.jpg)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/en/assets/real-operation-balance-dispense.mp4)
+[![Balance dispense](docs/en/assets/real-operation-balance-dispense.jpg)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/site/fab-vending-pages/docs/en/assets/real-operation-balance-dispense.mp4)
 
-[Watch the recording (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/docs/en/assets/real-operation-balance-dispense.mp4)
+[Watch the recording (MP4)](https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/site/fab-vending-pages/docs/en/assets/real-operation-balance-dispense.mp4)
 
 ## How the platform is organized
 

@@ -1,5 +1,5 @@
 blank_issues_enabled: true
 contact_links:
   - name: FabLabs directory setup
-    url: https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/docs/en/FABLABS_DIRECTORY.md
+    url: https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/site/fab-vending-pages/docs/en/FABLABS_DIRECTORY.md
     about: How a person authorizes the FabLabs.io API and how the daily snapshot works.

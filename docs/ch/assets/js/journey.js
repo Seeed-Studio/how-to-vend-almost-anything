@@ -48,7 +48,7 @@ function safeHref(url) {
 
 function cadHref(source) {
   const encoded = String(source).split("/").map((part) => encodeURIComponent(part)).join("/");
-  return `https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/${encoded}`;
+  return `https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/site/fab-vending-pages/${encoded}`;
 }
 
 function statusPill(status) {

@@ -10,7 +10,7 @@
       "existing": "STEP 外壳文件、STL 结构，以及完成外壳的装配照片。",
       "missing": "供实验室专用面板和产品仓使用的共享安装尺寸。",
       "contribution": "提出一套安装接口，同时不要就地替换 Version Zero 的文件。",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files",
       "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml&title=%5BInterface+draft%5D%3A+&body=Accepted+standards+are+not+in+force.+A+useful+draft+is+still+an+idea+until+someone+reviews+it.%0A%0A%23%23%23+Interface%0A%0AChoose+one%3A+Mechanical+mounting%2C+Dispensing+module%2C+Electrical+and+communications%2C+Software+contract%2C+Documentation+and+testing%0A%0A%23%23%23+Draft%0A%0A%23%23%23+What+this+draft+assumes+about+Version+Zero%0A",
       "updated_at": "2026-10-08",
       "next_milestone": "一份别的实验室可以照着加工的接口草稿。"
@@ -24,7 +24,7 @@
       "existing": "四列出货机构、舵机驱动的摆臂，以及已录制的直接出货和余额出货。",
       "missing": "针对参考货道装不下的产品尺寸，经过测试的机构。",
       "contribution": "设计一个替换出货机构，附上零件编号、CAD、兼容性和一次出货测试。",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/docs/en/assets/real-operation-order-dispense.mp4",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/site/fab-vending-pages/docs/en/assets/real-operation-order-dispense.mp4",
       "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml&title=%5BDispensing%5D%3A+&body=The+reference+dispenser+is+in+%60xiao-vending-machine-v0%2Fxiao-vending-machine-assemble-steps%2Fhardware-preparatory%2Fstl-files%2Fparts%2Fdispenser.stl%60.+Leave+Version+Zero+in+place+and+add+a+replacement.%0A%0A%23%23%23+Problem%0A%0A%23%23%23+Part+id%0A%0A%23%23%23+Version%0A%0A%23%23%23+Source+CAD%0A%0A%23%23%23+Purpose%0A%0A%23%23%23+Compatibility+assumptions%0A%0A%23%23%23+Test+evidence%0A%0A%23%23%23+Attribution%0A%0A%23%23%23+License%0A",
       "updated_at": "2026-10-08",
       "next_milestone": "一个经过审核的替代出货机构，并且不覆盖 Version Zero。"
@@ -38,7 +38,7 @@
       "existing": "两台 Wio Terminal、飞特 ST3215 总线舵机和一只 RFID 读卡器。控制器不是 XIAO。",
       "missing": "以后的控制重新设计应成为新版本，而不是悄悄替换。",
       "contribution": "在提议为当前方案之前，对照现有接线记录控制改动。",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-v0/xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal",
       "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml&title=%5BInterface+draft%5D%3A+&body=Accepted+standards+are+not+in+force.+A+useful+draft+is+still+an+idea+until+someone+reviews+it.%0A%0A%23%23%23+Interface%0A%0AChoose+one%3A+Mechanical+mounting%2C+Dispensing+module%2C+Electrical+and+communications%2C+Software+contract%2C+Documentation+and+testing%0A%0A%23%23%23+Draft%0A%0A%23%23%23+What+this+draft+assumes+about+Version+Zero%0A",
       "updated_at": "2026-10-08",
       "next_milestone": "一份参考搭建的简短电气接口说明。"
@@ -52,7 +52,7 @@
       "existing": "Wio 固件、点亮草图，以及带运营、库存和配置的 Node.js 后端。",
       "missing": "给改变了机构或产品映射的实验室一份写下来的软件约定。",
       "contribution": "按写明的验收检查来改进操作员软件。",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/main/xiao-vending-machine-v0/xiao-vending-machine-full-code-system/backend-full",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-full-code-system/backend-full",
       "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-operator-software.yml&title=%5BOperator+software%5D%3A+&body=Source+lives+in+%60xiao-vending-machine-v0%2Fxiao-vending-machine-full-code-system%2Fbackend-full%60.%0A%0A%23%23%23+Problem%0A%0A%23%23%23+Expected+result%0A%0A%23%23%23+How+to+reproduce+it%0A%0A%23%23%23+Relevant+source+files%0A",
       "updated_at": "2026-10-08",
       "next_milestone": "一份写明验卡、结账和出货完成的 API 说明。"
@@ -66,7 +66,7 @@
       "existing": "参考仪表盘上的库存数量、补货状态和写卡。",
       "missing": "一套面向不止一台机器的补货流程和可靠性记录。",
       "contribution": "做重复出货试验，并公布失败了什么。",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/docs/en/assets/2-inventory-manage.jpeg",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/site/fab-vending-pages/docs/en/assets/2-inventory-manage.jpeg",
       "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-reliability.yml&title=%5BReliability%5D%3A+&body=%23%23%23+Machine+version+tested%0A%0A%23%23%23+What+you+repeated%0A%0A%23%23%23+What+failed+or+held%0A%0A%23%23%23+Where+the+notes+and+any+recording+live%0A",
       "updated_at": "2026-10-08",
       "next_milestone": "一段真实运营中的故障与补货记录。"
@@ -94,7 +94,7 @@
       "existing": "单机装配指南、物料清单和后端启动脚本。",
       "missing": "试点标准、支持方式，以及假设房间和网络都不同的部署说明。",
       "contribution": "写下第二个实验室现在还得自己发明的步骤。",
-      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md",
+      "evidence_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md",
       "contribution_url": "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-deployment-docs.yml&title=%5BDeployment+docs%5D%3A+&body=Start+from+%60xiao-vending-machine-v0%2Fxiao-vending-machine-assemble-steps%2FREADME.md%60+and+%60xiao-vending-machine-v0%2Fxiao-vending-machine-full-code-system%2Fscripts%2Fstart_backend.sh%60.%0A%0A%23%23%23+What+a+second+lab+still+has+to+figure+out%0A%0A%23%23%23+Proposed+checklist%0A%0A%23%23%23+Repository+files+each+step+relies+on%0A",
       "updated_at": "2026-10-08",
       "next_milestone": "一份对照参考搭建审核过的部署清单。"

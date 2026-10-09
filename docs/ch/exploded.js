@@ -5,8 +5,8 @@ import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 
 const manifest = window.VENDING_PARTS;
 const replacements = Array.isArray(window.VENDING_REPLACEMENTS) ? window.VENDING_REPLACEMENTS : [];
-const repoRaw = 'https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/main/';
-const repoBlob = 'https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/main/';
+const repoRaw = 'https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/site/fab-vending-pages/';
+const repoBlob = 'https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/site/fab-vending-pages/';
 const sourceRoot = `${manifest.machine.sourceRoot}/`;
 
 const replacementMap = new Map();
