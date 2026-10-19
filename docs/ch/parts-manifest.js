@@ -27,6 +27,12 @@ window.VENDING_PARTS = {
       accent: "#9fd21b"
     },
     {
+      id: "storage",
+      name: "货道",
+      description: "装在出货机构上的四根产品管，以及管里的 XIAO。",
+      accent: "#d7e7a8"
+    },
+    {
       id: "interface",
       name: "界面",
       description: "围绕 Wio Terminal、RFID 和状态灯的零件。",
@@ -145,7 +151,7 @@ window.VENDING_PARTS = {
       id: "spur-gear",
       name: "直齿轮 · 24 齿",
       group: "dispensing",
-      qty: 1,
+      qty: 4,
       source: "parts/Spur Gear 24 teeth.stl",
       format: "stl",
       display: "models/spur-gear__v0.glb",
@@ -220,6 +226,46 @@ window.VENDING_PARTS = {
       format: "stl",
       display: "models/small-feet__v0.glb",
       role: "四只脚垫收尾并支撑外壳。"
+    },
+    {
+      id: "product-column",
+      name: "产品管",
+      group: "storage",
+      qty: 4,
+      source: "parts/product-column.stl",
+      format: "stl",
+      display: "../models/product-column.stl",
+      role: "OpenSCAD 圆管，高 260 mm、外径 50 mm，坐在每个出货机构上。零号版本买的是 PVC，当时没有这个模型。"
+    },
+    {
+      id: "xiao-series",
+      name: "XIAO 系列",
+      group: "storage",
+      qty: 13,
+      source: "parts/xiao-series.stl",
+      format: "stl",
+      display: "../models/xiao-series.stl",
+      role: "货道要售出的 XIAO 系列外形。"
+    },
+    {
+      id: "xiao-esp32s3",
+      name: "XIAO ESP32-S3",
+      group: "storage",
+      qty: 10,
+      source: "parts/xiao-esp32s3-only.stl",
+      format: "stl",
+      display: "../models/xiao-esp32s3-only.stl",
+      role: "从产品管售出的 XIAO ESP32-S3 模型。"
+    },
+    {
+      id: "wio-terminal",
+      name: "Wio Terminal",
+      group: "interface",
+      qty: 1,
+      source: "parts/wio-terminal.stl",
+      format: "stl",
+      display: "../models/wio-terminal.stl",
+      role: "控制器。它属于控制与计算，放在滑槽支架旁边。"
     }
   ]
 };

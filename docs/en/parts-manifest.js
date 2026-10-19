@@ -27,6 +27,12 @@ window.VENDING_PARTS = {
       accent: "#9fd21b"
     },
     {
+      id: "storage",
+      name: "Storage",
+      description: "Four product columns that sit on the dispensers, and the XIAO boards they hold.",
+      accent: "#d7e7a8"
+    },
+    {
       id: "interface",
       name: "Interface",
       description: "Parts around the Wio Terminal, RFID and status light.",
@@ -145,7 +151,7 @@ window.VENDING_PARTS = {
       id: "spur-gear",
       name: "Spur gear · 24 teeth",
       group: "dispensing",
-      qty: 1,
+      qty: 4,
       source: "parts/Spur Gear 24 teeth.stl",
       format: "stl",
       display: "models/spur-gear__v0.glb",
@@ -220,6 +226,46 @@ window.VENDING_PARTS = {
       format: "stl",
       display: "models/small-feet__v0.glb",
       role: "Four feet finish and support the outer enclosure."
+    },
+    {
+      id: "product-column",
+      name: "Product column",
+      group: "storage",
+      qty: 4,
+      source: "parts/product-column.stl",
+      format: "stl",
+      display: "../models/product-column.stl",
+      role: "OpenSCAD tube, 260 mm tall and 50 mm across, sized to sit on each dispenser. Version Zero bought this as PVC and did not include a model."
+    },
+    {
+      id: "xiao-series",
+      name: "XIAO series",
+      group: "storage",
+      qty: 13,
+      source: "parts/xiao-series.stl",
+      format: "stl",
+      display: "../models/xiao-series.stl",
+      role: "The XIAO family outline that the columns are meant to vend."
+    },
+    {
+      id: "xiao-esp32s3",
+      name: "XIAO ESP32-S3",
+      group: "storage",
+      qty: 10,
+      source: "parts/xiao-esp32s3-only.stl",
+      format: "stl",
+      display: "../models/xiao-esp32s3-only.stl",
+      role: "The XIAO ESP32-S3 model vended from the product columns."
+    },
+    {
+      id: "wio-terminal",
+      name: "Wio Terminal",
+      group: "interface",
+      qty: 1,
+      source: "parts/wio-terminal.stl",
+      format: "stl",
+      display: "../models/wio-terminal.stl",
+      role: "The controller board. It belongs with control and computing, beside the slider holder."
     }
   ]
 };

@@ -1,44 +1,29 @@
-# FabLabs.io directory snapshot
+# FabLabs.io 名录与 FAB 行动
 
-网络 page can show Fab Labs from [FabLabs.io](https://www.fablabs.io/). A directory listing is not participation in this vending program, and it is not an endorsement by the Fab Foundation.
+已于 **2026-10-10** 核实：[公开接口 `GET https://www.fablabs.io/api/labs`](https://www.fablabs.io/api/labs) 无需账户、OAuth 或 token，返回完整 JSON 数组。本次包含 2,874 条名录、146 个国家/地区代码。它返回全部已批准的名录，没有分页或服务端筛选；已批准不代表目前营业或参与售货项目。
 
-GitHub Pages only reads [`docs/ch/data/directory-labs.json`](data/directory-labs.json). It does not call the API, and it must not contain an access token.
+旧版多资源 API 已在 [2026 年 1 月的官方变更](https://github.com/fablabbcn/fablabs.io/commit/9832b4ac13a08732ee35a60bf1d67ab17cd4bf00)中移除。旧 Swagger 不能用于证明项目、设备或写入接口仍有效。`https://api.fablabs.io/0/labs` 仍有兼容路由；优先使用公开 `/api/labs`。
 
-## What a person has to do
+## 刷新方法
 
-1. Create a FabLabs.io account.
-2. Open the [developer guide](https://docs.fablabs.io/) and register an application in the Developer Console. That console is available after you log in, from the account menu.
-3. Confirm the live API base URL. The guide still shows `https://api.fablabs.io`, and that host currently says the legacy API was removed. Put the confirmed base in the Actions secret `FABLABS_API_BASE` if it is not `https://api.fablabs.io`.
-4. Complete the OAuth authorization-code login once. The guide describes the application id, shared secret, redirect, authorization code, and access token. Optional refresh tokens are mentioned, but this repository does not guess a token URL.
-5. In the GitHub repository, add the access token as the Actions secret `FABLABS_ACCESS_TOKEN`. Never commit the token, the client secret, or a refresh token.
-6. Run the **Refresh FabLabs directory** workflow, or wait for the daily run.
-7. When the access token expires, repeat the login and replace the secret. A failing workflow means the snapshot was left unchanged.
-8. Review the snapshot before treating any lab as a vending participant. Program records belong in `labs.json`, `machines.json`, `products.json`, and `updates.json`, edited by a person after an issue review.
+从仓库根目录运行：
 
-## What the code does
+```bash
+node --test scripts/fetch-fablabs-directory.test.mjs scripts/network.test.mjs
+node scripts/fetch-fablabs-directory.mjs
+node scripts/validate-site-data.mjs
+```
 
-The workflow [`.github/workflows/fablabs-directory.yml`](../.github/workflows/fablabs-directory.yml) runs every day at 03:15 UTC and when someone starts it by hand.
+[刷新工作流](../../.github/workflows/fablabs-directory.yml)每天 03:15 UTC（北京时间 11:15）运行，也支持手动启动。现在不需要 Actions secrets，工作流不再读取旧 `FABLABS_ACCESS_TOKEN` 和 `FABLABS_API_BASE`。
 
-- If `FABLABS_ACCESS_TOKEN` is missing, `scripts/fetch-fablabs-directory.mjs` exits successfully and does not change the JSON file. The map explains that it is waiting for a token.
-- If the token is present, the script calls `GET /labs/map` and pages through `GET /labs` with `Authorization: Bearer`.
-- It keeps only directory fields, forces `participation_status` to `directory`, and writes `docs/ch/data/directory-labs.json`.
-- It does not write `labs.json`, `machines.json`, `products.json`, or `updates.json`.
-- `scripts/validate-site-data.mjs` then checks the data. A directory lab with any other participation status fails the check.
-- If labs were parsed and the file changed, the workflow commits that file as `github-actions[bot]`.
-- If the API answers but no labs can be read, or the token is rejected, the script exits with an error and leaves the previous file in place.
+同步保留名称、城市、国家、坐标、能力声明、活动状态和公开链接；不复制邮箱、电话和详细地址。导入记录始终是 `directory`，不是售货项目参与者。缺失坐标保留 `null`。请求失败、空数据、格式异常或重复 ID 不会替换上一次有效数据。未改变的目录内容不会生成仅日期变化的提交。
 
-## What GitHub Pages cannot do
+网站从 [`data/directory-labs.json`](data/directory-labs.json)读取快照，浏览器不会直接调用 FabLabs.io。网址由供应链接中优先选取非社交网站的链接，并保留其他安全链接；接口没有标明主网站。活动状态和制造能力需要向实验室确认，不能据此推断设备预约、库存或机器在线状态。
 
-Pages is a static host. It cannot complete an OAuth login, hide a client secret, or refresh the directory by itself. The browser map is a view of the last committed snapshot.
+## 可以推进的 FAB 行动
 
-## Marker meanings
+[英文网络页](../en/network.html#fab-actions)新增国家、能力与活动状态筛选，实验室网站链接，本地候选清单及 CSV 导出，以及预填实验室信息的 GitHub 提案入口。可用于寻找制作伙伴、规划工作坊、提交兴趣、报告真实安装或分享有测试证据的改进。草稿需要用户自行提交，公开项目记录仍需人工审核。
 
-| Marker | Meaning |
-| --- | --- |
-| Directory listing | Present in the FabLabs.io snapshot only |
-| Interested | A person reviewed a register-interest issue |
-| Pilot | A person reviewed a pilot installation |
-| Verified machine | A person reviewed an active installation |
-| New update | A verified lab with an approved public update |
+更详细的接口核实结果、统计、工作坊/共享制作/知识交流路线图和数据使用条件见[英文指南](../en/FABLABS_DIRECTORY.md)。[FabLabs.io 条款](https://www.fablabs.io/tos)第 7 节对批量数据使用、开放分析数据集和商业使用/招揽作出规定；商业活动或更广泛再分发前应与提供方确认。
 
-Do not copy directory labs into the program files just because they appear on the map.
+名录不是 Fab Foundation 的背书。`labs.json`、`machines.json`、`products.json`、`updates.json`始终独立维护，经审核后才能发布项目参与、机器、产品和更新记录。

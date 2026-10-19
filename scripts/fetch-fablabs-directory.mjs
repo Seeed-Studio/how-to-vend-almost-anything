@@ -1,172 +1,117 @@
-import { readFileSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { readFileSync, writeFileSync, renameSync, rmSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const outputs = [
-  {
-    path: join(root, "docs", "en", "data", "directory-labs.json"),
-    note: (count, day) => `Fetched ${count} FabLabs.io directory listings on ${day}. A directory listing is not participation in this vending program.`
-  },
-  {
-    path: join(root, "docs", "ch", "data", "directory-labs.json"),
-    note: (count, day) => `已于 ${day} 抓取 ${count} 条 FabLabs.io 名录。名录条目不是参与这个售货项目。`
-  }
-];
-const token = process.env.FABLABS_ACCESS_TOKEN || "";
-const base = (process.env.FABLABS_API_BASE || "https://api.fablabs.io").replace(/\/$/, "");
+export const DEFAULT_BASE = "https://www.fablabs.io/api";
+const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
+const socialDomains = ["facebook.com", "instagram.com", "twitter.com", "x.com", "linkedin.com", "youtube.com", "youtu.be", "fablabs.io", "flickr.com", "vimeo.com", "tiktok.com"];
 
-if (!token) {
-  console.log("FABLABS_ACCESS_TOKEN is not set.");
-  console.log("A person must register a FabLabs.io application and complete OAuth once.");
-  console.log("GitHub Pages cannot perform that login. See docs/en/FABLABS_DIRECTORY.md.");
-  console.log("Leaving docs/en/data/directory-labs.json and docs/ch/data/directory-labs.json unchanged.");
-  process.exit(0);
+export function httpUrl(value) {
+  if (typeof value !== "string") return "";
+  try {
+    const url = new URL(value.trim());
+    return ["http:", "https:"].includes(url.protocol) && !url.username && !url.password ? url.href : "";
+  } catch { return ""; }
 }
 
-function endpoint(path) {
-  return new URL(path.replace(/^\//, ""), `${base}/`);
-}
-
-async function getJson(url) {
-  const response = await fetch(url, {
-    headers: {
-      Accept: "application/vnd.api+json, application/json",
-      Authorization: `Bearer ${token}`,
-      "User-Agent": "how-to-vend-almost-anything-directory-sync"
-    }
-  });
-  if (!response.ok) {
-    const detail = await response.text();
-    throw new Error(`${response.status} ${url.pathname} ${detail.slice(0, 180)}`);
-  }
-  return response.json();
-}
-
-function asArray(payload) {
-  if (!payload) return [];
-  if (Array.isArray(payload)) return payload;
-  if (Array.isArray(payload.data)) return payload.data;
-  if (Array.isArray(payload.labs)) return payload.labs;
-  if (Array.isArray(payload.features)) return payload.features;
-  return [];
-}
-
-function dig(source, paths) {
-  for (const path of paths) {
-    let current = source;
-    let found = true;
-    for (const key of path) {
-      if (current && typeof current === "object" && key in current) current = current[key];
-      else {
-        found = false;
-        break;
-      }
-    }
-    if (found && current !== undefined && current !== null && current !== "") return current;
-  }
-  return null;
-}
-
-function httpUrl(value) {
-  return typeof value === "string" && /^https?:\/\//i.test(value) ? value : "";
-}
-
-function numberOrNull(value) {
+function coordinate(value, limit) {
+  if (!["number", "string"].includes(typeof value) || (typeof value === "string" && !value.trim())) return null;
   const number = typeof value === "number" ? value : Number(value);
-  return Number.isFinite(number) ? number : null;
+  return Number.isFinite(number) && Math.abs(number) <= limit ? number : null;
 }
 
-function normalize(record) {
-  const attributes = record.attributes || record.properties || {};
-  const source = { ...record, attributes };
-  const id = dig(source, [["id"], ["attributes", "id"], ["properties", "id"], ["slug"], ["attributes", "slug"]]);
-  const name = dig(source, [["attributes", "name"], ["name"], ["properties", "name"]]);
-  if (!id || !name) return null;
-  const slug = dig(source, [["attributes", "slug"], ["slug"], ["properties", "slug"]]);
-  const self = httpUrl(dig(source, [["links", "self"], ["attributes", "url"], ["properties", "url"]]));
-  const profile = slug
-    ? `https://www.fablabs.io/labs/${encodeURIComponent(slug)}`
-    : (self.includes("fablabs.io") && !self.includes("://api.") ? self : "https://www.fablabs.io/");
-  const latitude = numberOrNull(dig(source, [
-    ["attributes", "latitude"],
-    ["attributes", "coordinates", "latitude"],
-    ["latitude"],
-    ["lat"],
-    ["geometry", "coordinates", "1"]
-  ]) ?? (Array.isArray(record.geometry?.coordinates) ? record.geometry.coordinates[1] : null));
-  const longitude = numberOrNull(dig(source, [
-    ["attributes", "longitude"],
-    ["attributes", "coordinates", "longitude"],
-    ["longitude"],
-    ["lon"],
-    ["lng"]
-  ]) ?? (Array.isArray(record.geometry?.coordinates) ? record.geometry.coordinates[0] : null));
-  const today = new Date().toISOString().slice(0, 10);
+export function normalize(record, day) {
+  if (!record || record.id === undefined || record.id === null || !record.name || !record.slug) throw new Error("A directory record is missing id, name, or slug.");
+  const code = String(record.country_code || "").toUpperCase();
+  let country = code;
+  try { if (code) country = regionNames.of(code) || code; } catch { /* Retain an unrecognized region code. */ }
+  const links = [...new Set((Array.isArray(record.links) ? record.links : []).map((item) => httpUrl(item?.url)).filter(Boolean))];
+  // The feed has no primary/type designation. Prefer a supplied non-social link.
+  const website = links.find((link) => {
+    const host = new URL(link).hostname.toLowerCase();
+    return !socialDomains.some((domain) => host === domain || host.endsWith(`.${domain}`));
+  }) || "";
   return {
-    lab_id: `fablabs:${id}`,
-    name: String(name),
-    city: String(dig(source, [["attributes", "city"], ["attributes", "address", "city"], ["city"], ["properties", "city"]]) || ""),
-    country: String(dig(source, [["attributes", "country"], ["attributes", "country_code"], ["country"], ["properties", "country"]]) || ""),
-    latitude,
-    longitude,
-    official_fablabs_url: profile,
-    lab_website: httpUrl(dig(source, [["attributes", "website"], ["attributes", "lab_url"], ["website"], ["properties", "website"]])),
+    lab_id: `fablabs:${record.id}`,
+    name: String(record.name),
+    city: String(record.city || ""),
+    country,
+    country_code: code,
+    latitude: coordinate(record.latitude, 90),
+    longitude: coordinate(record.longitude, 180),
+    official_fablabs_url: `https://www.fablabs.io/labs/${encodeURIComponent(record.slug)}`,
+    lab_website: website,
+    directory_links: links,
+    capabilities: Array.isArray(record.capabilities) ? [...new Set(record.capabilities.filter((item) => typeof item === "string" && item))] : [],
+    activity_status: ["active", "planned", "closed", "corona"].includes(record.activity_status) ? record.activity_status : "unknown",
     participation_status: "directory",
     verification_date: null,
-    updated_at: today
+    // This is the snapshot date, not a provider-supplied profile update time.
+    updated_at: day
   };
 }
 
-async function fetchAll() {
-  const mapPayload = await getJson(endpoint("labs/map"));
-  const collected = [...asArray(mapPayload)];
-  for (let page = 1; page <= 40; page += 1) {
-    const url = endpoint("labs");
-    url.searchParams.set("page", String(page));
-    url.searchParams.set("page_size", "100");
-    const payload = await getJson(url);
-    const batch = asArray(payload);
-    if (!batch.length) break;
-    collected.push(...batch);
-    if (batch.length < 100) break;
-  }
-  return collected;
+export function normalizeDirectory(records, day) {
+  if (!Array.isArray(records) || !records.length) throw new Error("Expected a nonempty full directory array; the previous snapshot was not replaced.");
+  const labs = records.map((record) => normalize(record, day));
+  if (new Set(labs.map((lab) => lab.lab_id)).size !== labs.length) throw new Error("Duplicate directory IDs; the previous snapshot was not replaced.");
+  return labs.sort((a, b) => `${a.country}${a.city}${a.name}`.localeCompare(`${b.country}${b.city}${b.name}`));
 }
 
-try {
-  const records = await fetchAll();
-  const labs = [];
-  const seen = new Set();
-  records.forEach((record) => {
-    const lab = normalize(record);
-    if (!lab || seen.has(lab.lab_id)) return;
-    seen.add(lab.lab_id);
-    labs.push(lab);
+export async function refreshDirectory({ rootPath = root, base = process.env.FABLABS_API_BASE || DEFAULT_BASE, fetchImpl = fetch } = {}) {
+  const url = new URL("labs", `${base.replace(/\/$/, "")}/`);
+  if (url.protocol !== "https:") throw new Error("The directory API must use HTTPS.");
+  const response = await fetchImpl(url, {
+    headers: { Accept: "application/json", "User-Agent": "how-to-vend-almost-anything-directory-sync" },
+    signal: AbortSignal.timeout(60000)
   });
-  labs.sort((a, b) => `${a.country}${a.city}${a.name}`.localeCompare(`${b.country}${b.city}${b.name}`));
-  if (!labs.length) {
-    console.error("The API responded, but no labs could be read. The snapshot was not replaced.");
-    process.exit(1);
-  }
-  const day = new Date().toISOString().slice(0, 10);
+  if (!response.ok) throw new Error(`Directory API returned HTTP ${response.status}.`);
+  // The live public export returns all approved listings once; it is not paginated.
   const fetchedAt = new Date().toISOString();
-  for (const output of outputs) {
-    const previous = JSON.parse(readFileSync(output.path, "utf8"));
+  const labs = normalizeDirectory(await response.json(), fetchedAt.slice(0, 10));
+  const outputs = ["en", "ch"].map((locale) => {
+    const path = join(rootPath, "docs", locale, "data", "directory-labs.json");
+    const previous = readFileSync(path, "utf8");
+    const prior = JSON.parse(previous);
     const next = {
       source: "https://www.fablabs.io/",
-      attribution: previous.attribution,
+      attribution: "Names, locations, listed capabilities, activity status, and supplied links come from FabLabs.io. Directory membership is not vending participation or Fab Foundation endorsement. Website selection is a heuristic; all safe supplied links are retained.",
       api_base: base,
+      api_endpoint: url.href,
+      terms_url: "https://www.fablabs.io/tos",
       fetched_at: fetchedAt,
       status: "ok",
-      note: output.note(labs.length, day),
+      note: locale === "en"
+        ? `Fetched ${labs.length} FabLabs.io listings. Activity and capabilities are directory declarations, not verified equipment access or program participation.`
+        : `已抓取 ${labs.length} 条 FabLabs.io 名录。活动状态与能力来自名录，不代表已核实的设备使用权或售货项目参与情况。`,
       labs
     };
-    writeFileSync(output.path, `${JSON.stringify(next, null, 2)}\n`);
+    // Avoid committing a date-only change when the directory data is unchanged.
+    const stable = (rows) => rows.map(({ updated_at, ...lab }) => lab);
+    const unchanged = prior.status === "ok" && prior.api_endpoint === url.href && JSON.stringify(stable(prior.labs || [])) === JSON.stringify(stable(labs));
+    return { path, previous, text: unchanged ? previous : `${JSON.stringify(next, null, 2)}\n` };
+  });
+  const changed = outputs.filter((output) => output.text !== output.previous);
+  try {
+    // Prepare both locale files before replacing either existing snapshot.
+    changed.forEach((output) => writeFileSync(`${output.path}.tmp`, output.text));
+    changed.forEach((output) => renameSync(`${output.path}.tmp`, output.path));
+  } catch (error) {
+    changed.forEach((output) => { writeFileSync(output.path, output.previous); });
+    throw error;
+  } finally {
+    changed.forEach((output) => rmSync(`${output.path}.tmp`, { force: true }));
   }
-  console.log(`Wrote ${labs.length} directory labs to en and ch.`);
-} catch (error) {
-  console.error(error.message || error);
-  console.error("The previous snapshot was left in place.");
-  process.exit(1);
+  console.log(`${labs.length} directory listings checked; ${changed.length} locale snapshots changed.`);
+  return labs;
+}
+
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  try { await refreshDirectory(); }
+  catch (error) {
+    console.error(error.message || error);
+    console.error("The previous directory snapshots were left in place.");
+    process.exitCode = 1;
+  }
 }

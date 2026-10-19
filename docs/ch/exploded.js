@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+import { loadColoredAssembly } from './load-colored-assembly.js';
+import { partColor, SELECTED_COLOR } from './assembly-palette.js';
 
 const manifest = window.VENDING_PARTS;
 const replacements = Array.isArray(window.VENDING_REPLACEMENTS) ? window.VENDING_REPLACEMENTS : [];
@@ -53,14 +55,16 @@ if (partCount) partCount.textContent = manifest.parts.length;
 
 // --- Render navigation first. The page stays useful even if WebGL/CDN loading fails.
 const groupButtons = document.getElementById('group-buttons');
+if (groupButtons) {
 manifest.groups.forEach((group, index) => {
   const pieces = manifest.parts.filter((p) => p.group === group.id).reduce((sum, part) => sum + (part.qty || 1), 0);
   const button = document.createElement('button');
   button.className = 'group-button';
   button.dataset.group = group.id;
-  button.innerHTML = `<span>${String(index + 1).padStart(2,'0')}</span><strong>${group.name}</strong><small>${pieces} 件</small>`;
+  button.innerHTML = `<span>${String(index + 1).padStart(2,'0')}</span><strong>${group.name}</strong><small>${pieces} pieces</small>`;
   groupButtons.appendChild(button);
 });
+}
 
 const partsGroups = document.getElementById('parts-groups');
 if (partsGroups) {
@@ -78,10 +82,10 @@ manifest.groups.forEach((group) => {
     card.className = `part-card${revisions.length ? ' has-replacement' : ''}`;
     card.dataset.part = part.id;
     card.innerHTML = `
-      <div class="part-card-top"><span>${part.format.toUpperCase()} · ${part.variantOf ? 'ALT ' : ''}×${part.qty}</span><span>${revisions.length ? current.version + ' 当前' : 'V0 参考'}</span></div>
+      <div class="part-card-top"><span>${part.format.toUpperCase()} · ${part.variantOf ? 'ALT ' : ''}×${part.qty}</span><span>${revisions.length ? current.version + ' CURRENT' : 'V0 REFERENCE'}</span></div>
       <h3>${current.title || part.name}</h3>
       <p>${current.note || part.role}</p>
-      <div class="part-card-bottom"><span>${revisions.length ? `${revisions.length} 个替换件` : '还没有替换件'}</span><a href="${sourceLink(current.source)}" target="_blank" rel="noreferrer">模型 ↗</a></div>`;
+      <div class="part-card-bottom"><span>${revisions.length ? `${revisions.length} replacement${revisions.length > 1 ? 's' : ''}` : 'No replacement yet'}</span><a href="${sourceLink(current.source)}" target="_blank" rel="noreferrer">MODEL ↗</a></div>`;
     card.addEventListener('click', (event) => {
       if (event.target.closest('a')) return;
       selectPart(part.id, true);
@@ -102,7 +106,7 @@ function renderInspector(partId) {
   const previous = previousModel(part);
   const revisions = replacementMap.get(part.id) || [];
   const group = groupById.get(part.group);
-  const summary = `<strong>${current.title || part.name}</strong> · ${group.name} · ×${part.qty} · ${formatMillimeters(loadedObjects.get(part.id)?.userData.realSize)}`;
+  const summary = `<strong>${current.title || part.name}</strong> · ${group.name} · ×${part.qty} · ${formatMillimeters(loadedObjects.get(part.id)?.userData.unitSize)}`;
   if (selectionLine) selectionLine.innerHTML = summary;
   if (!inspector) return;
   inspector.innerHTML = `
@@ -110,19 +114,19 @@ function renderInspector(partId) {
     <h2>${current.title || part.name}</h2>
     <p class="part-role">${current.note || part.role}</p>
     <div class="part-facts">
-      <div><span>分组</span><strong>${group.name}</strong></div>
-      <div><span>数量</span><strong>${part.variantOf ? 'ALT ' : ''}×${part.qty}</strong></div>
-      <div><span>格式</span><strong>${(current.format || part.format).toUpperCase()}</strong></div>
+      <div><span>GROUP</span><strong>${group.name}</strong></div>
+      <div><span>QTY</span><strong>${part.variantOf ? 'ALT ' : ''}×${part.qty}</strong></div>
+      <div><span>FORMAT</span><strong>${(current.format || part.format).toUpperCase()}</strong></div>
     </div>
-    <p class="part-size"><span>真实尺寸</span><strong>${formatMillimeters(loadedObjects.get(part.id)?.userData.realSize)}</strong></p>
+    <p class="part-size"><span>TRUE SIZE</span><strong>${formatMillimeters(loadedObjects.get(part.id)?.userData.unitSize)}</strong></p>
     <div class="version-card current">
-      <div><span>当前</span><strong>${current.version || 'V0'}${current.isReplacement ? ' 替换' : ' 参考'}</strong></div>
-      <p>${current.isReplacement ? (current.note || '当前已公布的替换件。') : '这个零件还没有公布替换件。'}</p>
+      <div><span>CURRENT</span><strong>${current.version || 'V0'}${current.isReplacement ? ' replacement' : ' reference'}</strong></div>
+      <p>${current.isReplacement ? (current.note || 'Current published replacement.') : 'No replacement has been published for this part yet.'}</p>
     </div>
-    ${previous ? `<div class="version-card previous"><div><span>先前</span><strong>${previous.version || 'V0'} · ${previous.title || part.name}</strong></div><p>${previous.note || part.role}</p></div>` : ''}
-    ${revisions.length ? `<div class="revision-badge">${revisions.length} 个替换件叠在 V0 之上</div>` : ''}
-    <a class="source-link" href="${sourceLink(current.source)}" target="_blank" rel="noreferrer">打开当前源模型 ↗</a>
-    ${previous ? `<a class="source-link" href="${sourceLink(previous.source)}" target="_blank" rel="noreferrer">打开先前模型 ↗</a>` : ''}
+    ${previous ? `<div class="version-card previous"><div><span>PREVIOUS</span><strong>${previous.version || 'V0'} · ${previous.title || part.name}</strong></div><p>${previous.note || part.role}</p></div>` : ''}
+    ${revisions.length ? `<div class="revision-badge">${revisions.length} replacement${revisions.length > 1 ? 's' : ''} layered over V0</div>` : ''}
+    <a class="source-link" href="${sourceLink(current.source)}" target="_blank" rel="noreferrer">Open current source model ↗</a>
+    ${previous ? `<a class="source-link" href="${sourceLink(previous.source)}" target="_blank" rel="noreferrer">Open previous model ↗</a>` : ''}
   `;
 }
 
@@ -147,31 +151,40 @@ controls.maxDistance = 30;
 
 scene.add(new THREE.HemisphereLight(0xeef8ef, 0x16201c, 2.6));
 const key = new THREE.DirectionalLight(0xffffff, 3.2); key.position.set(28, 38, 50); scene.add(key);
-const rim = new THREE.DirectionalLight(0x9fd21b, 2.0); rim.position.set(-35, 10, -25); scene.add(rim);
+const rim = new THREE.DirectionalLight(0xffffff, 1.0); rim.position.set(-35, 10, -25); scene.add(rim);
 
 const modelRoot = new THREE.Group();
 scene.add(modelRoot);
+// The assembled model keeps its original component transforms.
+const assemblyRoot = new THREE.Group();
+assemblyRoot.name = 'complete-assembly';
+assemblyRoot.visible = false;
+scene.add(assemblyRoot);
+
+let fullMachineView = true;
+let preferredFullMode = 'separate';
 const loadedObjects = new Map();
 const pickables = [];
 const gltfLoader = new GLTFLoader();
 const stlLoader = new STLLoader();
 let selectedPartId = 'dispenser';
-let activeFilter = 'all';
-let explodedAmount = .74;
+let activeGroups = null;
+const explodedAmount = 0.28;
 let occtPromise = null;
 
-const groupZ = { shell:-2, frame:1, dispensing:0, interface:2, foundation:-1 };
-const materialBase = {
-  shell: 0xb7c5bc,
-  frame: 0x779286,
-  dispensing: 0x9fd21b,
-  interface: 0x86bdc7,
-  foundation: 0xc3a97d
-};
+const ENCLOSURE_PART_IDS = new Set(['led-holder', 'led-diffuser']);
+
+function viewerGroup(part) {
+  return ENCLOSURE_PART_IDS.has(part.id) ? 'shell' : part.group;
+}
+
+function groupVisible(groupId) {
+  return !activeGroups || activeGroups.has(groupId);
+}
 
 function meshMaterial(part, selected=false) {
-  const color = selected ? 0xd5ff4b : materialBase[part.group];
-  return new THREE.MeshStandardMaterial({ color, roughness:.58, metalness:.08, transparent:true, opacity: activeFilter === 'all' || activeFilter === part.group ? 1 : .08 });
+  const color = selected ? SELECTED_COLOR : partColor(part);
+  return new THREE.MeshStandardMaterial({ color, roughness:.58, metalness:.08, transparent:true, opacity: groupVisible(viewerGroup(part)) ? 1 : .08 });
 }
 
 function formatMillimeters(size) {
@@ -286,91 +299,316 @@ function realSizeOf(part) {
   return size ? size.clone() : new THREE.Vector3(0.05, 0.05, 0.05);
 }
 
-function layoutSizeOf(part) {
-  const size = realSizeOf(part);
+function orientForWorkbench(object, part) {
+  // Broad faces point up so panels and boards read clearly from the elevated view.
+  // The outer case and back plate stay upright, beside each other.
+  const layFlat = (['shell', 'frame'].includes(part.group) && !['outer-enclosure', 'back-plate'].includes(part.id))
+    || ['xiao-series', 'xiao-esp32s3', 'wio-terminal'].includes(part.id);
+  if (!layFlat || object.userData.proxy) return object;
+  const size = object.userData.realSize;
+  if (size.z <= size.x && size.z < size.y) object.rotation.x = -Math.PI / 2;
+  else if (size.x < size.y && size.x < size.z) object.rotation.z = Math.PI / 2;
+  else return object;
+  return centerToRealMeters(object);
+}
+
+function packSpec(part) {
   const count = Math.max(1, part.qty || 1);
-  if (count === 1) return size;
-  return new THREE.Vector3(size.x * count + COPY_GAP * (count - 1), size.y, size.z);
+  if (part.id === 'product-column') return { cols: 2, gap: 0.006 };
+  if (part.id === 'xiao-esp32s3') return { cols: 5, gap: 0.001 };
+  if (part.id === 'xiao-series') return { cols: 4, gap: 0.003 };
+  if (['dispenser', 'dispenser-specific', 'dispenser-arm', 'small-feet'].includes(part.id)) return { cols: 2, gap: 0.006 };
+  if (part.id === 'l-holder') return { cols: 3, gap: 0.006 };
+  return { cols: Math.ceil(Math.sqrt(count)), gap: COPY_GAP };
 }
 
 function withQuantityCopies(object, part) {
   const count = Math.max(1, part.qty || 1);
+  const size = object.userData.realSize.clone();
+  object.userData.unitSize = size.clone();
   if (count === 1) return object;
-  const size = object.userData.realSize;
   const holder = new THREE.Group();
   holder.name = part.id;
-  holder.userData.realSize = size;
-  const total = size.x * count + COPY_GAP * (count - 1);
-  let x = -total / 2 + size.x / 2;
+  const spec = packSpec(part);
+  const cols = Math.min(count, spec.cols);
+  const rows = Math.ceil(count / cols);
+  const pitchX = size.x + spec.gap;
+  const pitchZ = size.z + spec.gap;
+  holder.userData.unitSize = size.clone();
+  holder.userData.realSize = new THREE.Vector3(cols * pitchX - spec.gap, size.y, rows * pitchZ - spec.gap);
+  const originZ = -holder.userData.realSize.z / 2 + size.z / 2;
   for (let index = 0; index < count; index += 1) {
     const copy = index === 0 ? object : object.clone(true);
-    copy.position.set(x, 0, 0);
+    const row = Math.floor(index / cols);
+    const rowCount = Math.min(cols, count - row * cols);
+    // Center a partial final row instead of leaving an unbalanced corner.
+    copy.position.set(((index % cols) - (rowCount - 1) / 2) * pitchX, 0, originZ + row * pitchZ);
     copy.rotation.set(0, 0, 0);
     copy.scale.set(1, 1, 1);
     holder.add(copy);
-    x += size.x + COPY_GAP;
   }
   return holder;
 }
 
-function currentPartPosition(part) {
-  const gap = THREE.MathUtils.lerp(0.012, 0.05, explodedAmount);
-  const shellParts = manifest.parts.filter((item) => item.group === 'shell');
-  const shellSizes = shellParts.map((item) => layoutSizeOf(item));
-  const shellWidth = shellSizes.reduce((sum, size) => sum + size.x, 0) + gap * Math.max(shellParts.length - 1, 0);
-  const shellHeight = Math.max(...shellSizes.map((size) => size.y), 0.001);
+// A parts workbench, not an assembly drawing: each zone shares the same floor.
+const BULKS = [
+  { id: 'enclosure', label: 'Enclosure', groups: ['foundation', 'shell', 'frame'] },
+  { id: 'storage', label: 'Storage', groups: ['storage'] },
+  { id: 'control', label: 'Control', groups: ['interface'] },
+  { id: 'dispensing', label: 'Dispensing', groups: ['dispensing'] }
+];
+let workbenchLayout = { positions: new Map(), zones: [] };
 
-  if (part.group === 'shell') {
-    let x = -shellWidth / 2;
-    let partX = 0;
-    let partY = 0;
-    shellParts.forEach((item, index) => {
-      const size = shellSizes[index];
-      x += size.x / 2;
-      if (item.id === part.id) {
-        partX = x;
-        partY = size.y / 2;
+function placeBulk(parts, gap) {
+  if (!parts.length) return { centers: new Map(), width: 0, depth: 0 };
+  const items = parts.map((part) => ({ part, size: realSizeOf(part) }))
+    .sort((a, b) => b.size.z - a.size.z || b.size.x - a.size.x || a.part.id.localeCompare(b.part.id));
+  const widest = Math.max(...items.map((item) => item.size.x));
+  const area = items.reduce((sum, item) => sum + (item.size.x + gap) * (item.size.z + gap), 0);
+  const idealWidth = Math.max(widest, Math.sqrt(area) * 1.15);
+  let best;
+  for (const factor of [0.85, 1, 1.2, 1.45]) {
+    const maxWidth = Math.max(widest, idealWidth * factor);
+    const placed = [];
+    let x = 0, z = 0, rowDepth = 0;
+    for (const item of items) {
+      if (x > 0 && x + item.size.x > maxWidth + 1e-6) {
+        z += rowDepth + gap; x = 0; rowDepth = 0;
       }
-      x += size.x / 2 + gap;
-    });
-    return new THREE.Vector3(partX, partY, 0);
+      placed.push({ ...item, x, z });
+      x += item.size.x + gap;
+      rowDepth = Math.max(rowDepth, item.size.z);
+    }
+    const width = Math.max(...placed.map((item) => item.x + item.size.x));
+    const depth = Math.max(...placed.map((item) => item.z + item.size.z));
+    const score = width * depth * (1 + 0.3 * Math.abs(Math.log(width / Math.max(depth, 0.001))));
+    if (!best || score < best.score) best = { placed, width, depth, score };
   }
+  const centers = new Map(best.placed.map((item) => [item.part.id, {
+    x: item.x + item.size.x / 2 - best.width / 2,
+    z: item.z + item.size.z / 2 - best.depth / 2
+  }]));
+  return { centers, width: best.width, depth: best.depth };
+}
 
-  const upperGroups = manifest.groups.filter((group) => group.id !== 'shell');
-  const columns = upperGroups.map((group) => {
-    const parts = manifest.parts.filter((item) => item.group === group.id);
-    const sizes = parts.map((item) => layoutSizeOf(item));
-    const width = Math.max(...sizes.map((size) => size.x), 0.001);
-    return { id: group.id, parts, sizes, width };
+function placeEnclosure(parts, gap) {
+  const panels = ['outer-enclosure', 'back-plate'].map((id) => parts.find((part) => part.id === id)).filter(Boolean);
+  const leds = ['led-holder', 'led-diffuser'].map((id) => parts.find((part) => part.id === id)).filter(Boolean);
+  const rest = parts.filter((part) => !panels.includes(part) && !leds.includes(part));
+  const panelGap = 0.008;
+  const ledGap = 0.002;
+  const frontGap = 0.002;
+  const panelSizes = panels.map((part) => realSizeOf(part));
+  const panelWidth = panelSizes.reduce((sum, size, index) => sum + size.x + (index ? panelGap : 0), 0);
+  const panelDepth = Math.max(...panelSizes.map((size) => size.z), 0);
+  const restPacked = placeBulk(rest, gap);
+  const ledSizes = leds.map((part) => realSizeOf(part));
+  const ledWidth = ledSizes.reduce((sum, size, index) => sum + size.x + (index ? ledGap : 0), 0);
+  const ledDepth = Math.max(...ledSizes.map((size) => size.z), 0);
+  const bodyDepth = panelDepth + (panels.length && rest.length ? gap : 0) + restPacked.depth;
+  const width = Math.max(panelWidth, restPacked.width, ledWidth, 0.001);
+  const depth = bodyDepth + (leds.length ? frontGap + ledDepth : 0);
+  const centers = new Map();
+  let panelX = -panelWidth / 2;
+  panels.forEach((part, index) => {
+    const size = panelSizes[index];
+    centers.set(part.id, { x: panelX + size.x / 2, z: -depth / 2 + panelDepth / 2 });
+    panelX += size.x + panelGap;
   });
-  const upperGap = THREE.MathUtils.lerp(0.02, 0.09, explodedAmount);
-  const upperWidth = columns.reduce((sum, column) => sum + column.width, 0) + upperGap * Math.max(columns.length - 1, 0);
-  let cursor = -upperWidth / 2;
-  const groupX = new Map();
-  for (const column of columns) {
-    cursor += column.width / 2;
-    groupX.set(column.id, cursor);
-    cursor += column.width / 2 + upperGap;
-  }
-  const column = columns.find((item) => item.id === part.group);
-  let y = shellHeight + THREE.MathUtils.lerp(0.04, 0.1, explodedAmount);
-  let partY = y;
-  column.parts.forEach((item, index) => {
-    const size = column.sizes[index];
-    y += size.y / 2;
-    if (item.id === part.id) partY = y;
-    y += size.y / 2 + gap;
+  const restZ = -depth / 2 + panelDepth + (panels.length && rest.length ? gap : 0) + restPacked.depth / 2;
+  restPacked.centers.forEach((center, id) => centers.set(id, { x: center.x, z: restZ + center.z }));
+  let ledX = -ledWidth / 2;
+  leds.forEach((part, index) => {
+    const size = ledSizes[index];
+    centers.set(part.id, { x: ledX + size.x / 2, z: depth / 2 - size.z / 2 });
+    ledX += size.x + ledGap;
   });
-  const z = THREE.MathUtils.lerp(0, (groupZ[part.group] || 0) * 0.03, explodedAmount);
-  return new THREE.Vector3(groupX.get(part.group) || 0, partY, z);
+  return { centers, width, depth };
+}
+
+function placeStorage(parts, gap) {
+  const column = parts.find((part) => part.id === 'product-column');
+  if (!column) return placeBulk(parts, gap);
+  const size = realSizeOf(column);
+  const boards = placeBulk(parts.filter((part) => part !== column), gap);
+  const separation = boards.centers.size ? gap : 0;
+  const depth = size.z + separation + boards.depth;
+  const centers = new Map([[column.id, { x: 0, z: -depth / 2 + size.z / 2 }]]);
+  boards.centers.forEach((center, id) => centers.set(id, {
+    x: center.x, z: -depth / 2 + size.z + separation + boards.depth / 2 + center.z
+  }));
+  return { centers, width: Math.max(size.x, boards.width), depth };
+}
+
+function buildWorkbenchLayout() {
+  const innerGap = THREE.MathUtils.lerp(0.008, 0.025, explodedAmount);
+  const zoneGap = THREE.MathUtils.lerp(0.035, 0.095, explodedAmount);
+  const zones = BULKS.map((bulk) => {
+    const parts = manifest.parts.filter((part) => {
+      if (bulk.id === 'enclosure') return bulk.groups.includes(part.group) || ENCLOSURE_PART_IDS.has(part.id);
+      if (bulk.id === 'control') return part.group === 'interface' && !ENCLOSURE_PART_IDS.has(part.id);
+      return bulk.groups.includes(part.group);
+    });
+    const packed = bulk.id === 'storage'
+      ? placeStorage(parts, innerGap)
+      : bulk.id === 'enclosure'
+        ? placeEnclosure(parts, innerGap)
+        : placeBulk(parts, innerGap);
+    return { ...bulk, ...packed, parts };
+  });
+  // Give the large case its own column. Three smaller systems share the other
+  // column instead of reserving an enclosure-sized empty row for each system.
+  const enclosure = zones[0];
+  const rightZones = [zones[1], zones[3], zones[2]].filter((zone) => zone.parts.length);
+  const rightWidth = Math.max(...rightZones.map((zone) => zone.width), 0);
+  const rightDepth = rightZones.reduce((sum, zone) => sum + zone.depth, 0)
+    + zoneGap * Math.max(0, rightZones.length - 1);
+  const width = enclosure.width + (enclosure.parts.length && rightZones.length ? zoneGap : 0) + rightWidth;
+  enclosure.x = -width / 2 + enclosure.width / 2;
+  enclosure.z = 0;
+  let z = -rightDepth / 2;
+  rightZones.forEach((zone) => {
+    zone.x = width / 2 - rightWidth / 2;
+    zone.z = z + zone.depth / 2;
+    z += zone.depth + zoneGap;
+  });
+  const positions = new Map();
+  zones.forEach((zone) => {
+    zone.centers.forEach((center, id) => {
+      const part = manifest.parts.find((item) => item.id === id);
+      positions.set(id, new THREE.Vector3(zone.x + center.x, realSizeOf(part).y / 2, zone.z + center.z));
+    });
+  });
+  return { positions, zones };
+}
+
+function currentPartPosition(part) {
+  return workbenchLayout.positions.get(part.id)?.clone() || new THREE.Vector3();
 }
 
 function updatePositions(immediate=false) {
+  workbenchLayout = buildWorkbenchLayout();
   for (const part of manifest.parts) {
     const object = loadedObjects.get(part.id);
     if (!object) continue;
     object.userData.targetPosition = currentPartPosition(part);
     if (immediate) object.position.copy(object.userData.targetPosition);
+  }
+}
+
+// Labels live in the DOM, remain crisp, and never change the scale of the CAD.
+const workbenchStyle = document.createElement('style');
+workbenchStyle.id = 'vending-workbench-styles';
+workbenchStyle.textContent = `
+  #viewport { position: relative; isolation: isolate; }
+  #viewport .reference-ghost { display: none; }
+  .workbench-zone-labels { position: absolute; inset: 0; pointer-events: none; z-index: 3; overflow: hidden; }
+  .workbench-zone-label { position: absolute; transform: translate(-50%, 0); padding: 5px 9px; border: 1px solid rgba(196,224,222,.22); border-radius: 6px; background: rgba(0,43,55,.86); color: #e5f0e9; font: 500 11px/1.2 system-ui,sans-serif; letter-spacing: .03em; white-space: nowrap; }
+  .workbench-zone-label[hidden] { display: none; }
+  #model-canvas { touch-action: none; }
+  @media (max-width: 600px) { .workbench-zone-label { font-size: 10px; padding: 4px 6px; } }
+`;
+if (!document.getElementById(workbenchStyle.id)) document.head.appendChild(workbenchStyle);
+const zoneLabels = document.createElement('div');
+zoneLabels.className = 'workbench-zone-labels';
+zoneLabels.setAttribute('aria-hidden', 'true');
+viewport.appendChild(zoneLabels);
+for (const zone of BULKS) {
+  const label = document.createElement('span');
+  label.className = 'workbench-zone-label';
+  label.dataset.zone = zone.id;
+  const zhLabels = { enclosure: '机箱', storage: '储料', control: '控制', dispensing: '出料' };
+  label.textContent = document.documentElement.lang.startsWith('zh') ? zhLabels[zone.id] : zone.label;
+  zoneLabels.appendChild(label);
+}
+const assemblyModeControls = document.getElementById('assembly-mode-controls');
+const assemblyStatus = document.getElementById('assembly-status');
+let assemblyReady = false;
+let assemblyPromise = null;
+
+async function ensureAssemblyLoaded() {
+  if (assemblyReady) return;
+  if (!assemblyPromise) {
+    assemblyPromise = (async () => {
+      await loadColoredAssembly(gltfLoader, assemblyRoot);
+      const bounds = new THREE.Box3().setFromObject(assemblyRoot);
+      if (bounds.isEmpty()) throw new Error('The assembly model is empty.');
+      assemblyReady = true;
+    })().catch((error) => {
+      assemblyPromise = null;
+      throw error;
+    });
+  }
+  return assemblyPromise;
+}
+
+function assemblyStatusText(state) {
+  const zh = document.documentElement.lang.startsWith('zh');
+  if (state === 'loading') return zh ? '正在加载装配…' : 'Loading assembly…';
+  if (state === 'ready') return zh ? '已装配的整机' : 'Assembled machine';
+  return zh ? '装配不可用，正在显示分离零件。' : 'Assembly unavailable. Showing separate parts.';
+}
+
+function syncDisplayMode() {
+  const showAssembly = fullMachineView && preferredFullMode === 'assemble' && assemblyReady;
+  modelRoot.visible = !showAssembly;
+  assemblyRoot.visible = showAssembly;
+  zoneLabels.style.display = showAssembly ? 'none' : '';
+  const spacing = document.querySelector('.explode-control');
+  if (spacing) spacing.hidden = showAssembly;
+  if (assemblyModeControls) {
+    assemblyModeControls.hidden = !fullMachineView;
+    assemblyModeControls.querySelectorAll('[data-display-mode]').forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.displayMode === preferredFullMode));
+    });
+  }
+  if (assemblyStatus) {
+    assemblyStatus.hidden = !fullMachineView;
+    if (preferredFullMode === 'separate') assemblyStatus.textContent = '';
+    else if (assemblyReady) assemblyStatus.textContent = assemblyStatusText('ready');
+  }
+}
+
+async function setDisplayMode(mode) {
+  if (!['separate', 'assemble'].includes(mode)) return;
+  preferredFullMode = mode;
+  syncDisplayMode();
+  if (mode === 'assemble') {
+    if (assemblyStatus && !assemblyReady) assemblyStatus.textContent = assemblyStatusText('loading');
+    try {
+      await ensureAssemblyLoaded();
+    } catch (error) {
+      console.error('Assembly loading failed:', error);
+      if (preferredFullMode === 'assemble') {
+        preferredFullMode = 'separate';
+        syncDisplayMode();
+        if (assemblyStatus) assemblyStatus.textContent = assemblyStatusText('error');
+        fitAll();
+      }
+      return;
+    }
+  }
+  syncDisplayMode();
+  fitAll();
+}
+
+assemblyModeControls?.addEventListener('click', (event) => {
+  const button = event.target.closest('[data-display-mode]');
+  if (button) void setDisplayMode(button.dataset.displayMode);
+});
+
+syncDisplayMode();
+
+function updateZoneLabels() {
+  for (const zone of workbenchLayout.zones) {
+    const label = zoneLabels.querySelector(`[data-zone="${zone.id}"]`);
+    const visible = zone.parts.length && zone.groups.some(groupVisible);
+    const point = new THREE.Vector3(zone.x, 0, zone.z + zone.depth / 2 + 0.012).project(camera);
+    label.hidden = !visible || point.z < -1 || point.z > 1 || Math.abs(point.x) > 1 || Math.abs(point.y) > 1;
+    if (!label.hidden) {
+      label.style.left = `${(point.x + 1) * 50}%`;
+      label.style.top = `${(1 - point.y) * 50}%`;
+    }
   }
 }
 
@@ -382,7 +620,9 @@ async function loadPart(part) {
   const current = activeModel(part);
   let object;
   try {
-    if (current.display) {
+    if (typeof current.display === "string" && current.display.endsWith(".stl")) {
+      object = await loadStl(part, { source: new URL(current.display, import.meta.url).href });
+    } else if (current.display) {
       try {
         object = await loadGlb(part, current);
       } catch (error) {
@@ -392,10 +632,16 @@ async function loadPart(part) {
     } else {
       object = await loadSource(part, current);
     }
+    if (part.id === 'product-column') {
+      object.rotation.x = -Math.PI / 2;
+      object.updateMatrixWorld(true);
+      object = centerToRealMeters(object);
+    }
   } catch (error) {
     console.warn(`Using proxy for ${part.name}`, error);
     object = makeProxy(part);
   }
+  object = orientForWorkbench(object, part);
   object = withQuantityCopies(object, part);
   object.userData.partId = part.id;
   object.userData.part = part;
@@ -409,6 +655,8 @@ async function loadPart(part) {
   object.position.copy(currentPartPosition(part));
   loadedObjects.set(part.id,object);
   modelRoot.add(object);
+  updatePositions(true);
+  recolorPart(selectedPartId);
   return object;
 }
 
@@ -423,21 +671,23 @@ async function loadAll() {
       const part = queue.shift();
       await loadPart(part);
       done++;
-      state.textContent = `${done}/${manifest.parts.length} 个展示模型已就绪`;
+      fitAll();
+      state.textContent = `${done}/${manifest.parts.length} 个展示模型就绪`;
     }
   };
   await Promise.all([worker(),worker(),worker()]);
   document.getElementById('fallback-map').style.opacity = '0';
-  state.textContent = `${manifest.parts.length} 个展示模型 · 真实比例`;
+  const proxies = [...loadedObjects.values()].filter((object) => object.userData.proxy || object.children.some((child) => child.userData.proxy)).length;
+  state.textContent = proxies ? `${manifest.parts.length - proxies}/${manifest.parts.length} 个模型 · ${proxies} 个占位` : `${manifest.parts.length} 个模型 · 真实比例`;
   updatePositions(true);
   fitAll();
-  selectPart(selectedPartId,false);
+  recolorPart(selectedPartId);
 }
 
 function setObjectOpacity(object, opacity) {
   object.traverse((child) => {
     if (!child.isMesh || !child.material) return;
-    child.material.transparent = true;
+    child.material.transparent = opacity < 1;
     child.material.opacity = opacity;
     child.material.depthWrite = opacity > .2;
   });
@@ -445,73 +695,104 @@ function setObjectOpacity(object, opacity) {
 function recolorPart(partId) {
   for (const part of manifest.parts) {
     const object = loadedObjects.get(part.id); if (!object) continue;
-    const dimmed = activeFilter !== 'all' && activeFilter !== part.group;
+    const dimmed = activeGroups && !activeGroups.has(viewerGroup(part));
+    object.visible = !dimmed;
     const selected = part.id === partId;
     object.traverse((child) => {
       if (!child.isMesh) return;
-      child.material.color.setHex(selected ? 0xd5ff4b : materialBase[part.group]);
+      child.material.color.setHex(selected ? SELECTED_COLOR : partColor(part));
       child.material.emissive?.setHex(selected ? 0x213000 : 0x000000);
     });
-    setObjectOpacity(object, dimmed ? .07 : (selected ? 1 : .92));
+    setObjectOpacity(object, dimmed ? .07 : 1);
   }
 }
 
-function selectPart(partId, focus=false) {
+function selectPart(partId, focus=false, announce=false) {
   selectedPartId = partId;
-  renderInspector(partId);
+  const part = manifest.parts.find((item) => item.id === partId);
+  if (part && !groupVisible(viewerGroup(part))) activeGroups = null;
+  if (!document.body.classList.contains('workbench-page')) renderInspector(partId);
   recolorPart(partId);
+  if (announce) document.dispatchEvent(new CustomEvent('vending:part', { detail: { partId } }));
   if (focus) {
     const object = loadedObjects.get(partId);
-    if (object) {
-      const pos = object.position.clone();
-      const size = layoutSizeOf(manifest.parts.find((item) => item.id === partId));
-      const distance = Math.max(size.x, size.y, size.z, 0.04) * 2.8;
-      controls.target.copy(pos);
-      const direction = camera.position.clone().sub(pos);
-      if (direction.lengthSq() < 1e-6) direction.set(0.2, 0.25, 1);
-      camera.position.copy(pos.clone().add(direction.normalize().multiplyScalar(distance)));
-    }
+    if (object) fitObjects([object], true);
   }
 }
 
 function applyFilter(groupId) {
-  activeFilter = groupId;
+  activeGroups = !groupId || groupId === 'all' ? null : new Set([groupId]);
   document.querySelectorAll('.group-button').forEach((button) => button.classList.toggle('active',button.dataset.group === groupId));
   recolorPart(selectedPartId);
+  fitAll();
+}
+
+function focusGroups(ids) {
+  const list = Array.isArray(ids) ? ids.filter(Boolean) : [];
+  fullMachineView = list.length === 0;
+  activeGroups = list.length ? new Set(list) : null;
+  selectedPartId = '';
+  recolorPart('');
+  syncDisplayMode();
+  fitAll();
 }
 
 document.querySelectorAll('.group-button').forEach((button) => button.addEventListener('click',() => applyFilter(button.dataset.group)));
 
-document.getElementById('explode-range').addEventListener('input',(event) => {
-  explodedAmount = Number(event.target.value) / 100;
-  updatePositions();
-});
-
 document.getElementById('reset-view').addEventListener('click', fitAll);
 document.getElementById('fit-view').addEventListener('click',fitAll);
 
-function fitAll() {
-  const box = new THREE.Box3().setFromObject(modelRoot);
+function fitObjects(objects, preserveDirection=false) {
+  const box = new THREE.Box3();
+  objects.forEach((object) => {
+    if (!object.visible) return;
+    // Frame the destination even during loading/animation.
+    const local = new THREE.Box3().setFromObject(object);
+    if (object.userData.targetPosition) local.translate(object.userData.targetPosition.clone().sub(object.position));
+    box.union(local);
+  });
   if (box.isEmpty()) return;
-  const size = new THREE.Vector3(); box.getSize(size);
-  const center = new THREE.Vector3(); box.getCenter(center);
-  const max = Math.max(size.x,size.y,size.z);
-  const distance = max * 1.75;
+  const center = box.getCenter(new THREE.Vector3());
+  const direction = preserveDirection ? camera.position.clone().sub(controls.target).normalize() : new THREE.Vector3(0.32, 0.95, 1.3).normalize();
+  camera.position.copy(center).add(direction);
+  camera.lookAt(center);
+  camera.updateMatrixWorld(true);
+  // Fit all eight corners to both vertical AND horizontal fields of view.
+  const inverseRotation = camera.quaternion.clone().invert();
+  const tanY = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+  const tanX = tanY * camera.aspect;
+  let distance = 0.03;
+  for (const x of [box.min.x, box.max.x]) for (const y of [box.min.y, box.max.y]) for (const z of [box.min.z, box.max.z]) {
+    const corner = new THREE.Vector3(x, y, z).sub(center).applyQuaternion(inverseRotation);
+    distance = Math.max(distance, corner.z + Math.abs(corner.x) / (tanX * 0.80), corner.z + Math.abs(corner.y) / (tanY * 0.80));
+  }
   controls.target.copy(center);
-  camera.position.set(center.x + distance * 0.18, center.y + distance * 0.28, center.z + distance);
-  camera.lookAt(center); controls.update();
+  camera.position.copy(center).addScaledVector(direction, distance + 0.02);
+  controls.minDistance = Math.max(0.01, distance * 0.15);
+  controls.maxDistance = Math.max(2, distance * 6);
+  camera.lookAt(center);
+  controls.update();
+}
+function fitAll(preserveDirection=false) {
+  const objects = assemblyRoot.visible ? [assemblyRoot] : [...loadedObjects.values()];
+  fitObjects(objects, preserveDirection === true);
 }
 
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
+let pointerStart = null;
+canvas.addEventListener('pointerdown', (event) => { pointerStart = { x: event.clientX, y: event.clientY }; });
+canvas.addEventListener('pointercancel', () => { pointerStart = null; });
 canvas.addEventListener('pointerup',(event) => {
-  if (Math.abs(event.movementX) > 3 || Math.abs(event.movementY) > 3) return;
+  if (assemblyRoot.visible) return;
+  const start = pointerStart; pointerStart = null;
+  if (!start || Math.hypot(event.clientX - start.x, event.clientY - start.y) > 5) return;
   const rect = canvas.getBoundingClientRect();
   pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
   pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
   raycaster.setFromCamera(pointer,camera);
-  const hit = raycaster.intersectObjects(pickables,false).find((item) => item.object.visible);
-  if (hit?.object?.userData?.partId) selectPart(hit.object.userData.partId,false);
+  const hit = raycaster.intersectObjects(pickables,false).find((item) => loadedObjects.get(item.object.userData.partId)?.visible);
+  if (hit?.object?.userData?.partId) selectPart(hit.object.userData.partId, false, true);
 });
 
 function resize() {
@@ -519,7 +800,8 @@ function resize() {
   renderer.setSize(rect.width,rect.height,false);
   camera.aspect = rect.width / Math.max(rect.height,1); camera.updateProjectionMatrix();
 }
-window.addEventListener('resize',resize); resize();
+new ResizeObserver(() => { resize(); if (loadedObjects.size) fitAll(true); }).observe(viewport);
+resize();
 
 function animate() {
   requestAnimationFrame(animate);
@@ -528,10 +810,13 @@ function animate() {
     object.position.lerp(object.userData.targetPosition,.085);
   }
   controls.update();
+  updateZoneLabels();
   renderer.render(scene,camera);
 }
 animate();
-renderInspector(selectedPartId);
+if (!document.body.classList.contains('workbench-page')) renderInspector(selectedPartId);
+window.VENDING_VIEWER = { focusGroups, fitAll };
+document.dispatchEvent(new CustomEvent('vending:ready'));
 loadAll().catch((error) => {
   console.error(error);
   document.getElementById('load-state').textContent = '三维运行环境不可用 · 零件板仍然可用';

@@ -25,19 +25,21 @@ function esc(value) {
 }
 
 function safeHref(url) {
-  if (!url) return "";
-  if (url.startsWith("https://") || url.startsWith("http://")) return url;
-  return "";
+  if (typeof url !== "string") return "";
+  try {
+    const parsed = new URL(url);
+    return ["https:", "http:"].includes(parsed.protocol) && !parsed.username && !parsed.password ? parsed.href : "";
+  } catch { return ""; }
 }
 
 async function load(path) {
-  const response = await fetch(path);
+  const response = await fetch(path, { cache: "no-cache" });
   if (!response.ok) throw new Error(`${path} returned ${response.status}`);
   return response.json();
 }
 
 function hasCoords(lab) {
-  return typeof lab.latitude === "number" && typeof lab.longitude === "number";
+  return Number.isFinite(lab.latitude) && Math.abs(lab.latitude) <= 90 && Number.isFinite(lab.longitude) && Math.abs(lab.longitude) <= 180;
 }
 
 function buildLabs(directory, program, machines, updates) {
@@ -65,6 +67,9 @@ function buildLabs(directory, program, machines, updates) {
 function matches(lab, query, state) {
   const haystack = `${lab.name} ${lab.city} ${lab.country}`.toLowerCase();
   if (query && !haystack.includes(query)) return false;
+  if (state.country && state.country !== "all" && lab.country !== state.country) return false;
+  if (state.activity && state.activity !== "all" && (lab.activity_status || "unknown") !== state.activity) return false;
+  if (state.capability && state.capability !== "all" && !(lab.capabilities || []).includes(state.capability)) return false;
   if (state.status !== "all" && lab.marker_status !== state.status && lab.participation_status !== state.status) return false;
   if (state.machine === "with" && !lab.machines.length) return false;
   if (state.machine === "without" && lab.machines.length) return false;
@@ -79,6 +84,105 @@ function matches(lab, query, state) {
 function productCategories(lab, products) {
   const machineIds = new Set(lab.machines.map((machine) => machine.machine_id));
   return (products.products || []).filter((product) => machineIds.has(product.machine_id));
+}
+
+const CAPABILITY_LABEL = {
+  three_d_printing: "3D printing",
+  laser: "Laser cutting",
+  cnc_milling: "CNC milling",
+  vinyl_cutting: "Vinyl cutting",
+  circuit_production: "Circuit production",
+  precision_milling: "Precision milling"
+};
+const ACTIVITY_LABEL = { active: "Listed as active", planned: "Listed as planned", closed: "Listed as closed", corona: "Legacy COVID status", unknown: "Activity not supplied" };
+const PLAN_KEY = "fab-vending-lab-shortlist-v1";
+let shortlisted = new Set();
+let plannerPersistent = true;
+
+function issueHref(lab, action) {
+  const url = new URL("https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new");
+  const templates = { interest: ["register-interest.yml", "Lab interest"], installation: ["submit-installation.yml", "Installation"], improvement: ["submit-improvement.yml", "Improvement"], correction: ["correct-listing.yml", "Correction"] };
+  const [template, title] = templates[action];
+  url.searchParams.set("template", template);
+  url.searchParams.set("title", `[${title}]: ${lab.name}`);
+  if (action === "interest" || action === "installation") {
+    url.searchParams.set("lab-name", lab.name);
+    url.searchParams.set("city", lab.city || "");
+    url.searchParams.set("country", lab.country || "");
+  }
+  if (action === "interest") {
+    url.searchParams.set("fablabs-url", safeHref(lab.official_fablabs_url));
+    url.searchParams.set("website", safeHref(lab.lab_website));
+  }
+  if (action === "improvement") url.searchParams.set("attribution", `${lab.name} · ${safeHref(lab.official_fablabs_url)}`);
+  if (action === "correction") {
+    url.searchParams.set("record", `${lab.lab_id} · ${lab.name}`);
+    url.searchParams.set("source", safeHref(lab.official_fablabs_url));
+  }
+  return url.href;
+}
+
+function csvCell(value) {
+  let text = String(value ?? "");
+  // Spreadsheet formula prefixes are not executable content in a shortlist.
+  if (/^[\s]*[=+\-@]/.test(text)) text = `'${text}`;
+  return `"${text.replace(/"/g, '""')}"`;
+}
+
+function shortlistCsv(labs) {
+  const fields = ["lab_id", "name", "city", "country", "activity_status", "capabilities", "official_fablabs_url", "lab_website", "participation_status"];
+  return [fields.join(","), ...labs.map((lab) => fields.map((field) => csvCell(Array.isArray(lab[field]) ? lab[field].join("; ") : lab[field])).join(","))].join("\r\n");
+}
+
+function savePlanner() {
+  try { window.localStorage.setItem(PLAN_KEY, JSON.stringify([...shortlisted])); }
+  catch { plannerPersistent = false; }
+}
+
+function renderPlanner(labs) {
+  const saved = labs.filter((lab) => shortlisted.has(lab.lab_id));
+  document.querySelector("#shortlist-note").textContent = saved.length
+    ? `${saved.length} lab${saved.length === 1 ? "" : "s"} saved. ${plannerPersistent ? "Saved on this browser only." : "Browser storage is unavailable; this plan lasts for this page session."}`
+    : `Select a lab in Explore labs, then choose Save for planning. ${plannerPersistent ? "" : "Browser storage is unavailable; this plan lasts for this page session."}`;
+  document.querySelector("#export-shortlist").disabled = !saved.length;
+  document.querySelector("#shortlist").innerHTML = saved.map((lab) => `<li>
+    <h4>${esc(lab.name)}</h4><p>${esc([lab.city, lab.country].filter(Boolean).join(", "))} · ${esc(ACTIVITY_LABEL[lab.activity_status] || ACTIVITY_LABEL.unknown)}</p>
+    <p>${esc(STATUS_LABEL[lab.participation_status] || lab.participation_status)}${lab.capabilities?.length ? ` · ${esc(lab.capabilities.map((key) => CAPABILITY_LABEL[key] || key).join(", "))}` : ""}</p>
+    <div class="inline-links">${safeHref(lab.lab_website) ? `<a href="${esc(lab.lab_website)}" target="_blank" rel="noreferrer">Website link ↗</a>` : ""}<a href="${esc(safeHref(lab.official_fablabs_url))}" target="_blank" rel="noreferrer">Directory profile ↗</a></div>
+    <div class="inline-links"><a href="${esc(issueHref(lab, "interest"))}" target="_blank" rel="noreferrer">Draft early interest ↗</a><a href="${esc(issueHref(lab, "installation"))}" target="_blank" rel="noreferrer">Report an installation ↗</a><a href="${esc(issueHref(lab, "improvement"))}" target="_blank" rel="noreferrer">Share an improvement ↗</a></div>
+    <button type="button" data-shortlist="${esc(lab.lab_id)}" aria-label="Remove ${esc(lab.name)} from your plan">Remove from plan</button>
+  </li>`).join("");
+}
+
+function initPlanner(labs) {
+  try {
+    const saved = JSON.parse(window.localStorage.getItem(PLAN_KEY) || "[]");
+    if (Array.isArray(saved)) shortlisted = new Set(saved.filter((id) => typeof id === "string" && labs.some((lab) => lab.lab_id === id)));
+  } catch { plannerPersistent = false; }
+  renderPlanner(labs);
+  document.querySelector("#export-shortlist").addEventListener("click", () => {
+    const saved = labs.filter((lab) => shortlisted.has(lab.lab_id));
+    if (!saved.length) return;
+    const url = URL.createObjectURL(new Blob(["\uFEFF", shortlistCsv(saved)], { type: "text/csv;charset=utf-8" }));
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "fab-lab-shortlist.csv";
+    document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+}
+
+function renderDirectoryStats(directory, labs) {
+  const records = directory.labs || [];
+  const entries = [
+    [records.length, "Directory listings"],
+    [new Set(records.map((lab) => lab.country).filter(Boolean)).size, "Countries & territories"],
+    [records.filter((lab) => safeHref(lab.lab_website)).length, "With website links"],
+    [labs.filter((lab) => lab.machines.length).length, "Labs with reviewed machines"]
+  ];
+  document.querySelector("#directory-stats").innerHTML = entries.map(([value, label]) => `<div><strong>${value.toLocaleString()}</strong><span>${esc(label)}</span></div>`).join("") + `<p class="snapshot-note">${directory.status === "ok" ? `Directory fetched ${esc(directory.fetched_at?.slice(0, 10) || "on an unrecorded date")}. ${records.filter((lab) => lab.activity_status === "active").length.toLocaleString()} listed as active; check current access with the lab.` : "The directory snapshot is not ready. Reviewed program records remain separate."}</p>`;
 }
 
 function renderList(labs, total) {
@@ -96,6 +200,7 @@ function renderList(labs, total) {
         <strong>${esc(lab.name)}</strong>
         <span>${esc(lab.city)}, ${esc(lab.country)} · ${esc(STATUS_LABEL[lab.marker_status] || lab.marker_status)}</span>
       </button>
+      <div class="lab-links">${safeHref(lab.lab_website) ? `<a href="${esc(lab.lab_website)}" target="_blank" rel="noreferrer">Lab website ↗</a>` : ""}<a href="${esc(safeHref(lab.official_fablabs_url))}" target="_blank" rel="noreferrer">Directory profile ↗</a></div>
     </li>
   `).join("");
   if (labs.length > shown.length) {
@@ -129,9 +234,14 @@ function renderPanel(lab, products) {
   panel.innerHTML = `
     <p class="status status-${lab.marker_status === "directory" ? "planned" : "done"}">${esc(STATUS_LABEL[lab.marker_status] || lab.marker_status)}</p>
     <h2>${esc(lab.name)}</h2>
-    <p>${esc(lab.city)}, ${esc(lab.country)}</p>
+    <p>${esc([lab.city, lab.country].filter(Boolean).join(", "))}</p>
+    <p>${esc(ACTIVITY_LABEL[lab.activity_status] || ACTIVITY_LABEL.unknown)}</p>
+    <p>Listed capabilities: ${esc((lab.capabilities || []).map((key) => CAPABILITY_LABEL[key] || key).join(", ") || "Not supplied")}. Confirm equipment access with the lab.</p>
     <p>${profile ? `<a href="${esc(profile)}" target="_blank" rel="noreferrer">Official FabLabs.io profile</a>` : ""}</p>
     <p>${website ? `<a href="${esc(website)}" target="_blank" rel="noreferrer">Lab website</a>` : "No lab website is recorded."}</p>
+    <div class="lab-actions"><button type="button" data-shortlist="${esc(lab.lab_id)}">${shortlisted.has(lab.lab_id) ? "Remove from plan" : "Save for planning"}</button><a href="#fab-actions">Open your plan →</a></div>
+    <p><a href="${esc(issueHref(lab, "correction"))}" target="_blank" rel="noreferrer">Suggest a listing correction ↗</a></p>
+    ${lab.directory_links?.length ? `<details><summary>All supplied links</summary><ul>${lab.directory_links.map((url) => safeHref(url) ? `<li><a href="${esc(url)}" target="_blank" rel="noreferrer">${esc(new URL(url).hostname)}</a></li>` : "").join("")}</ul></details>` : ""}
     <p><strong>Installed machines.</strong><br>${machineText}</p>
     <div><strong>Products.</strong>${productText}</div>
     <p>Last verified update: ${esc(lab.verification_date || "Not verified for this program")}</p>
@@ -245,12 +355,28 @@ async function init() {
       load("data/updates.json")
     ]);
     const labs = buildLabs(directory, program, machines, updates);
+    initPlanner(labs);
+    renderDirectoryStats(directory, labs);
+    const countrySelect = document.querySelector("#filter-country");
+    [...new Set(labs.map((lab) => lab.country).filter(Boolean))].sort().forEach((country) => {
+      const option = document.createElement("option");
+      option.value = country;
+      option.textContent = country;
+      countrySelect.append(option);
+    });
     labs.forEach((lab) => {
       lab.machines.forEach((machine) => {
         machine.product_categories = (products.products || [])
           .filter((product) => product.machine_id === machine.machine_id)
           .map((product) => product.category);
       });
+    });
+    const capabilitySelect = document.querySelector("#filter-capability");
+    [...new Set(labs.flatMap((lab) => lab.capabilities || []))].sort().forEach((key) => {
+      const option = document.createElement("option");
+      option.value = key;
+      option.textContent = CAPABILITY_LABEL[key] || key;
+      capabilitySelect.append(option);
     });
     const categorySelect = document.querySelector("#filter-category");
     const categories = [...new Set((products.products || []).map((product) => product.category))].sort();
@@ -278,6 +404,9 @@ async function init() {
 
     const apply = () => {
       const state = {
+        country: countrySelect.value,
+        activity: document.querySelector("#filter-activity").value,
+        capability: document.querySelector("#filter-capability").value,
         status: document.querySelector("#filter-status").value,
         machine: document.querySelector("#filter-machine").value,
         category: document.querySelector("#filter-category").value,
@@ -296,8 +425,12 @@ async function init() {
         empty.hidden = true;
       }
       renderList(visible, labs.length);
+      document.querySelector("#results-note").textContent = `${visible.length.toLocaleString()} of ${labs.length.toLocaleString()} labs match · ${visible.filter((lab) => safeHref(lab.lab_website)).length.toLocaleString()} with website links · ${visible.filter(hasCoords).length.toLocaleString()} with map locations`;
       mapApi?.draw(visible);
-      if (selected && !visible.some((lab) => lab.lab_id === selected)) renderPanel(null, products);
+      if (selected && !visible.some((lab) => lab.lab_id === selected)) {
+        selected = null;
+        renderPanel(null, products);
+      }
     };
 
     document.querySelector("#map-filters").addEventListener("submit", (event) => event.preventDefault());
@@ -309,8 +442,18 @@ async function init() {
       selected = button.dataset.lab;
       renderPanel(labs.find((lab) => lab.lab_id === selected), products);
     });
+    document.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-shortlist]");
+      if (!button) return;
+      const id = button.dataset.shortlist;
+      if (shortlisted.has(id)) shortlisted.delete(id);
+      else if (labs.some((lab) => lab.lab_id === id)) shortlisted.add(id);
+      savePlanner();
+      renderPlanner(labs);
+      if (selected) renderPanel(labs.find((lab) => lab.lab_id === selected), products);
+    });
     document.querySelector("#directory-note").textContent = directory.status === "ok"
-      ? "Directory listings come from FabLabs.io. Program participation and installed machines are reviewed separately."
+      ? `Directory listings come from the public FabLabs.io API, fetched ${directory.fetched_at?.slice(0, 10) || "on an unrecorded date"}. Program participation and installed machines are reviewed separately.`
       : "The directory is not available yet. Lab interest and design contributions are open while we prepare the first edition.";
     renderFeeds(machines, products, updates, labs);
     apply();

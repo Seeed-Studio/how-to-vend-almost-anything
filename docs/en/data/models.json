@@ -2,7 +2,7 @@
   "updated_at": "2026-10-08",
   "machine_id": "reference-v0",
   "reference_version": "V0",
-  "viewer_url": "exploded.html",
+  "viewer_url": "journey.html#reference",
   "note": "Records match docs/en/parts-manifest.js as checked on 2026-10-08. Display GLB paths are web derivatives. If a GLB is not published, the exploded viewer falls back to the STEP or STL source. An alternative part is not a newer revision. Replacements belong in docs/en/replacements.js and must not overwrite these Version Zero files.",
   "parts": [
     {

@@ -22,10 +22,10 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Fetch directory snapshot
-        env:
-          FABLABS_ACCESS_TOKEN: ${{ secrets.FABLABS_ACCESS_TOKEN }}
-          FABLABS_API_BASE: ${{ secrets.FABLABS_API_BASE }}
+      - name: Test directory normalization
+        run: node --test scripts/fetch-fablabs-directory.test.mjs scripts/network.test.mjs
+
+      - name: Fetch public directory snapshot
         run: node scripts/fetch-fablabs-directory.mjs
 
       - name: Validate site data
@@ -40,5 +40,5 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update FabLabs.io directory snapshot"
+          git commit -m "Keep lab discovery aligned with the public directory" -m "Confidence: high" -m "Scope-risk: narrow" -m "Tested: Directory regression tests and site data validation"
           git push

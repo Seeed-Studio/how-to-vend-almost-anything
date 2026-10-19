@@ -5,14 +5,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Workbench · How to Vend Almost Anything</title>
-  <meta name="description" content="Help design Version One. Explore the working reference, open contribution tasks, and the work needed for a reproducible Fab Lab vending machine." />
+  <meta name="description" content="One workspace for the Version Zero vending machine: four systems, the reference model, and a single place to contribute." />
   <meta name="theme-color" content="#003a4a" />
   <link rel="stylesheet" href="assets/css/site.css?v=20261008-2" />
   <link rel="stylesheet" href="assets/css/pages.css" />
   <link rel="stylesheet" href="assets/css/companions.css?v=20261008-5" />
+  <link rel="stylesheet" href="exploded.css?v=palette" />
 </head>
 <body class="companion compact-page workbench-page">
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#explorer">Skip to the model</a>
   <header class="site-header">
     <div class="shell header-inner">
       <a class="identity" href="index.html" aria-label="Fab Lab Vending homepage">
@@ -20,145 +21,145 @@
         <span class="identity-label"><strong>Fab Lab Vending</strong><small>BY THE LABS. FOR THE LABS.</small></span>
       </a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" data-menu-toggle><span data-menu-label data-open="Menu" data-close="Close">Menu</span><span aria-hidden="true">+</span></button>
-      <nav class="nav" id="primary-nav" aria-label="Main navigation" data-menu>
+      <nav id="primary-nav" class="nav" data-menu aria-label="Main navigation">
         <a href="index.html">The idea</a>
         <a href="journey.html" aria-current="page">The workbench</a>
         <a href="network.html">The network</a>
         <a class="nav-lang" href="../ch/journey.html" hreflang="zh-Hans" lang="zh-Hans">中文</a>
-        <a class="nav-github" href="index.html#contribute">Contribute ↗</a>
+        <a class="nav-github" href="#contribute">Contribute ↗</a>
       </nav>
     </div>
   </header>
+
   <main id="main">
-    <header class="shell page-hero" id="top">
-      <div class="compact-hero">
-        <div>
-          <p class="eyebrow">The workbench / Open design call</p>
-          <h1>From one build<br>to every lab.</h1>
-          <p class="lede">Adapt the machine. Make it reliable. Share what works.</p>
-          <p class="compact-note">An open design call, backed by Seeed Studio.</p>
+    <h1 class="visually-hidden">The workbench</h1>
+    <div id="evolution"></div>
+    <section class="wb-workspace" id="reference">
+      <div class="wb-bar">
+        <p class="eyebrow">The workbench</p>
+        <p>V0 / Reference</p>
+      </div>
+      <div class="wb-tabs" role="tablist" aria-label="Four systems" data-system-tabs>
+        <button type="button" role="tab" id="tab-full" data-system="full" data-groups="" aria-selected="true" aria-controls="inspector-content">00 Full design</button>
+        <button type="button" role="tab" id="tab-dispensing" data-system="dispensing" data-groups="dispensing" aria-selected="false" tabindex="-1" aria-controls="inspector-content">01 Dispensing</button>
+        <button type="button" role="tab" id="tab-storage" data-system="storage" data-groups="storage,dispensing" aria-selected="false" tabindex="-1" aria-controls="inspector-content">02 Storage</button>
+        <button type="button" role="tab" id="tab-enclosure" data-system="enclosure" data-groups="shell,frame,foundation" aria-selected="false" tabindex="-1" aria-controls="inspector-content">03 Enclosure</button>
+        <button type="button" role="tab" id="tab-control" data-system="control" data-groups="interface" aria-selected="false" tabindex="-1" aria-controls="inspector-content">04 Control</button>
+      </div>
+      <div class="wb-stage" id="explorer">
+        <div class="viewport-panel">
+          <div class="viewport-topbar">
+            <div>
+              <span class="view-label">V0 / Interactive model</span>
+              <span id="load-state" class="load-state">Loading models…</span>
+              <span id="selection-line" class="selection-line"></span>
+            </div>
+            <div class="view-actions">
+              <div id="assembly-mode-controls" role="group" aria-label="Whole-machine display">
+                <button type="button" data-display-mode="separate" aria-pressed="true">Separate</button>
+                <button type="button" data-display-mode="assemble" aria-pressed="false">Assemble</button>
+              </div>
+              <span id="assembly-status" role="status" aria-live="polite"></span>
+              <button type="button" id="reset-view">Reset</button>
+              <button type="button" id="fit-view">Fit</button>
+            </div>
+          </div>
+          <div class="viewport" id="viewport">
+            <div class="reference-ghost" aria-hidden="true"><img src="assets/reference-machine.jpg" alt="" /></div>
+            <div class="fallback-map" id="fallback-map" aria-hidden="true">
+              <div class="fallback-layer layer-shell">Shell</div>
+              <div class="fallback-layer layer-frame">Frame</div>
+              <div class="fallback-layer layer-dispense">Dispensing</div>
+              <div class="fallback-layer layer-interface">Interface</div>
+              <div class="fallback-layer layer-foundation">Feet</div>
+            </div>
+            <canvas id="model-canvas" aria-label="Interactive three-dimensional view of the Version Zero parts"></canvas>
+            <div class="viewport-help">Drag to orbit · Scroll to zoom · Click a part</div>
+          </div>
         </div>
-        <aside class="hero-action" aria-label="Join the design call">
-          <a class="btn btn-dark" href="#contribute"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m16 3 5 5-13 13H3v-5L16 3Z"/><path d="m14 5 5 5"/></svg> Help design Version One →</a>
-          <a class="text-link" href="#evolution">Inspect the working reference ↓</a>
-          <small>Applications follow release.</small>
+        <aside class="wb-inspector" id="contribute" aria-live="polite">
+          <div id="inspector-content" role="tabpanel" aria-labelledby="tab-full"></div>
+          <button type="button" class="btn btn-dark wb-upload" id="system-upload" data-upload-system="dispensing">Upload contribution</button>
         </aside>
       </div>
-      <ol class="compact-stages" aria-label="The path to a lab-ready machine">
-        <li><span class="stage-number">01</span><div><strong>Working reference</strong><span>V0 · built &amp; tested</span></div></li>
-        <li><span class="stage-number">02</span><div><strong>Design Version One</strong><span>Open design call</span></div></li>
-        <li><span class="stage-number">03</span><div><strong>Lab applications</strong><span>After release</span></div></li>
+      <ol class="wb-strip" aria-label="Release path">
+        <li><span>V0 reference</span><strong>Working machine</strong></li>
+        <li class="is-now"><span>V1 open design</span><strong>Design together</strong></li>
+        <li><span>Lab-ready</span><strong>Planned</strong></li>
       </ol>
-    </header>
-
-    <div class="shell" data-tabs>
-      <nav class="tab-nav" data-tablist aria-label="Explore the workbench">
-        <a class="tab-link" href="#implementation" data-tab aria-controls="implementation"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="M3 8v9l9 5 9-5V8M12 13v9"/></svg> The system</a>
-        <a class="tab-link" href="#evolution" data-tab aria-controls="evolution"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg> Build &amp; files</a>
-        <a class="tab-link" href="#contribute" data-tab aria-controls="contribute"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m16 3 5 5-13 13H3v-5L16 3Z"/><path d="m14 5 5 5"/></svg> Ways to contribute</a>
-      </nav>
-      <p id="data-error" class="empty-note" hidden></p>
-      <noscript><p class="compact-note">The overview and links work without JavaScript. Read the complete <a href="data/implementations.json">system notes</a>, <a href="data/models.json">source parts</a>, <a href="data/roadmap.json">roadmap</a>, and <a href="data/standards.json">interface ideas</a> directly.</p></noscript>
-
-      <section id="implementation" data-tab-panel class="tab-panel">
-        <div class="panel-heading">
-          <div><p class="eyebrow">Three parts of one system</p><h2>Build it. Run it. Share it.</h2></div>
-          <p>Adapt the machine, make it dependable, and let every improvement travel.</p>
-        </div>
-        <div class="pillar-grid">
-          <article class="pillar-card">
-            <svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="M3 8v9l9 5 9-5V8M12 13v9"/></svg>
-            <p class="pillar-caption">Structure · Dispensing · Products</p>
-            <h3>Build it</h3>
-            <p>One open machine, adaptable to different products.</p>
-            <p><strong>Already here.</strong> Editable CAD and a working four-column dispenser.</p>
-            <p><strong>Next.</strong> Product dimensions and tested, replaceable dispensing modules.</p>
-          </article>
-          <article class="pillar-card">
-            <svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5Z"/></svg>
-            <p class="pillar-caption">Electronics · Software · Operations</p>
-            <h3>Run it</h3>
-            <p>Authorize a card, dispense reliably, and keep inventory clear.</p>
-            <p><strong>Already here.</strong> Wio controls, firmware, and an operator dashboard.</p>
-            <p><strong>Next.</strong> Clear interfaces, repeated trials, and easy restocking.</p>
-          </article>
-          <article class="pillar-card">
-            <svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a16 16 0 0 1 0 18 16 16 0 0 1 0-18Z"/></svg>
-            <p class="pillar-caption">Deployment · Community · Standards</p>
-            <h3>Share it</h3>
-            <p>Make the next lab’s build easier than the first.</p>
-            <p><strong>Already here.</strong> Assembly notes, versioned parts, and public proposals.</p>
-            <p><strong>Next.</strong> Reproducible deployment, compatibility rules, and reviewed evidence.</p>
-          </article>
-        </div>
-        <ol class="system-loop" aria-label="How a dispense works">
-          <li><span class="step-number">01</span><div><strong>Choose</strong><span>A product on screen or a direct-order card.</span></div></li>
-          <li><span class="step-number">02</span><div><strong>Authorize</strong><span>The backend checks the card and the order.</span></div></li>
-          <li><span class="step-number">03</span><div><strong>Dispense</strong><span>The controller drives the release mechanism.</span></div></li>
-          <li><span class="step-number">04</span><div><strong>Record</strong><span>The result and inventory return to the dashboard.</span></div></li>
-        </ol>
-        <p class="compact-note">XIAO is the intended default product. Wio Terminal controls the current reference machine.</p>
-
-        <details class="fold" id="system-details">
-          <summary><span class="fold-title"><strong>Explore all nine systems</strong><span>Implementation, next milestones, and contribution routes</span></span></summary>
-          <div class="fold-body">
-            <p class="compact-note">“Done” means the reference has an implementation; it can still improve. The other statuses show work ahead.</p>
-            <form class="filters" id="filters">
-              <label>System<select id="filter-system"><option value="all">All systems</option></select></label>
-              <label>Status<select id="filter-status"><option value="all">All statuses</option><option value="done">Done</option><option value="in_progress">In progress</option><option value="needs_contributors">Needs contributors</option><option value="planned">Planned</option></select></label>
-              <label>Opportunity<select id="filter-opportunity"><option value="any">All modules</option><option value="open">Open contributions</option></select></label>
-            </form>
-            <div id="modules"></div>
-          </div>
-        </details>
-        <details class="fold" id="standards-section">
-          <summary><span class="fold-title"><strong>Shared interfaces &amp; verification</strong><span>11 proposals · all still ideas</span></span></summary>
-          <div class="fold-body">
-            <p class="compact-note">Agree on how parts connect, how changes are tested, and when a listing is verified. Maturity follows Idea → Draft → Under review → Accepted; none is accepted yet.</p>
-            <div id="standards" class="parts-list"></div>
-          </div>
-        </details>
-      </section>
-
-      <section id="evolution" data-tab-panel class="tab-panel">
-        <div class="panel-heading">
-          <div><p class="eyebrow">The working reference</p><h2>Start from something real.</h2></div>
-          <p>Source, build notes, and two recorded dispense modes. Keep Version Zero intact when adding a new design.</p>
-        </div>
-        <div class="resource-grid">
-          <article class="resource-card"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg><h3>Build the reference</h3><p>Bill of materials, wiring, and photographed assembly.</p><p class="inline-links"><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/README.md" target="_blank" rel="noreferrer">Assembly guide ↗</a></p></article>
-          <article class="resource-card"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18"/></svg><h3>Run the software</h3><p>Wio firmware and the Operate, Inventory, and Config dashboard.</p><p class="inline-links"><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-full-code-system/frontend-vending-machine/official_frontend_wio_terminal" target="_blank" rel="noreferrer">Firmware ↗</a><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-full-code-system/backend-full" target="_blank" rel="noreferrer">Backend ↗</a></p></article>
-          <article class="resource-card"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="M3 8v9l9 5 9-5V8M12 13v9"/></svg><h3>Inspect the machine</h3><p>An interactive exploded view of the Version Zero parts.</p><p class="inline-links"><a href="exploded.html">Open the 3D viewer →</a></p></article>
-          <article class="resource-card"><svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5Z"/></svg><h3>See it dispense</h3><p>Direct orders and product selection with a balance card.</p><p class="inline-links"><a href="assets/real-operation-order-dispense.mp4">Direct order ↗</a><a href="assets/real-operation-balance-dispense.mp4">Balance card ↗</a></p></article>
-        </div>
-        <div class="panel-heading"><div><h3>Source parts, grouped by purpose.</h3></div><p>18 reference parts · 5 groups · direct source CAD</p></div>
-        <p class="compact-note">Add replacements beside Version Zero. The product-specific dispenser is an alternative, not a newer revision of the common dispenser.</p>
-        <div id="parts"></div>
-        <details class="fold" id="replacement-history">
-          <summary><span class="fold-title"><strong>Replacement history &amp; source notes</strong><span>Versioned changes keep the reference available</span></span></summary>
-          <div class="fold-body"><p id="model-note" class="compact-note"></p><div id="replacements" class="parts-list"></div></div>
-        </details>
-        <details class="fold" id="timeline">
-          <summary><span class="fold-title"><strong>Full roadmap &amp; evidence</strong><span>Working reference → design Version One → applications after launch</span></span></summary>
-          <div class="fold-body"><div class="phases" id="phases"></div></div>
-        </details>
-      </section>
-
-      <section id="contribute" data-tab-panel class="tab-panel">
-        <div class="panel-heading">
-          <div><p class="eyebrow">Open contribution tasks</p><h2>Bring one useful improvement.</h2></div>
-          <p>Choose a problem. Share what you would change, what another lab can reuse, and how you will show it works.</p>
-        </div>
-        <div class="task-grid" id="contributions"></div>
-        <aside class="hero-action">
-          <h3>An early sketch belongs here, too.</h3>
-          <p>Have a different idea? Share the need, a sketch or reference, and the change you hope it makes.</p>
-          <a class="text-link" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new" target="_blank" rel="noreferrer">Open a design conversation ↗</a>
-        </aside>
-        <p class="compact-note">Proposal links open GitHub and need an account. Part designs should include version, compatibility, test evidence, attribution, and license.</p>
-      </section>
-    </div>
+    </section>
   </main>
+
+  <template id="tpl-dispensing">
+    <p class="wb-kicker">01 / Dispensing</p>
+    <h2>Dispensing</h2>
+    <p>Release a product after the backend authorizes the card.</p>
+    <h3>V0 reference</h3>
+    <p>Four-column dispenser, servo-driven arms, and recorded direct and balance dispenses.</p>
+    <h3>Next improvement</h3>
+    <p>Tested mechanisms for product sizes the reference columns do not fit.</p>
+    <details>
+      <summary>Source and details</summary>
+      <p><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts" target="_blank" rel="noopener noreferrer">Dispenser CAD ↗</a></p>
+      <p>An alternative dispenser is not a newer revision. Version Zero stays in place.</p>
+    </details>
+  </template>
+  <template id="tpl-full">
+    <p class="wb-kicker">00 / Full design</p>
+    <h2>Whole machine</h2>
+    <p>Every Version Zero part, plus the product columns, the XIAO boards they vend, and the Wio Terminal.</p>
+    <h3>V0 reference</h3>
+    <p>The case, frame, four dispensers, tube support, and interface parts are the frozen reference.</p>
+    <h3>Added on this view</h3>
+    <p>Four product columns, xiao-series.stl, xiao-esp32s3-only.stl, and wio-terminal.stl. Nothing here replaces a Version Zero file.</p>
+    <details>
+      <summary>Source and details</summary>
+      <p><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files" target="_blank" rel="noopener noreferrer">All source CAD ↗</a></p>
+    </details>
+  </template>
+  <template id="tpl-storage">
+    <p class="wb-kicker">02 / Storage</p>
+    <h2>Storage</h2>
+    <p>Four product columns, one on each dispenser, holding the XIAO boards.</p>
+    <h3>V0 reference</h3>
+    <p>The four dispenser bodies and the tube support are in the reference. The columns themselves were bought PVC, 260 mm tall, and had no model.</p>
+    <h3>Now shown</h3>
+    <p>An OpenSCAD column, 50 mm outside and 46 mm inside, four copies. xiao-series.stl and xiao-esp32s3-only.stl are the products those columns vend.</p>
+    <details>
+      <summary>Source and details</summary>
+      <p><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/product-column.scad" target="_blank" rel="noopener noreferrer">OpenSCAD column ↗</a></p>
+      <p>OpenSCAD is the open-source editor for that tube. The highlighted parts are the columns, the two XIAO models, and the dispensers they sit on.</p>
+    </details>
+  </template>
+  <template id="tpl-enclosure">
+    <p class="wb-kicker">03 / Enclosure</p>
+    <h2>Enclosure</h2>
+    <p>The printable and editable body of the reference machine.</p>
+    <h3>V0 reference</h3>
+    <p>STEP case files, STL structure, and a photographed assembly of the finished enclosure.</p>
+    <h3>Next improvement</h3>
+    <p>Shared mounting dimensions for lab-specific panels and product bays.</p>
+    <details>
+      <summary>Source and details</summary>
+      <p><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files" target="_blank" rel="noopener noreferrer">Case and structure CAD ↗</a></p>
+      <p>Highlighted parts are the shell, frame, and feet. They are not a new enclosure design.</p>
+    </details>
+  </template>
+  <template id="tpl-control">
+    <p class="wb-kicker">04 / Control &amp; computing</p>
+    <h2>Control &amp; computing</h2>
+    <p>Sense a card, drive the servos, and record the result.</p>
+    <h3>V0 reference</h3>
+    <p>Two Wio Terminals, Feetech ST3215 bus servos, and an RFID reader. XIAO is not the controller. Wio firmware and a Node.js backend provide Operate, Inventory, and Config.</p>
+    <h3>Next improvement</h3>
+    <p>A written software contract for a lab that changes the mechanism or the product map. A later control redesign would be a new version, not a silent swap.</p>
+    <p>The highlighted parts are the Wio Terminal model and the Wio, RFID, and status-light holders. Firmware and the backend are not in the CAD.</p>
+    <details>
+      <summary>Source and details</summary>
+      <p><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-full-code-system" target="_blank" rel="noopener noreferrer">Firmware and backend ↗</a></p>
+    </details>
+  </template>
+
   <footer class="site-footer">
     <div class="shell">
       <div class="footer-inner">
@@ -171,15 +172,77 @@
           <a href="journey.html">The workbench</a>
           <a href="network.html">The network</a>
           <a href="open-source.html">Open-source notices</a>
-          <a href="#top">Back to top ↑</a>
+          <a href="#reference">Back to top ↑</a>
         </div>
       </div>
-      <p class="footer-note">Supply arrangements, eligibility, and support details will be published before applications open. This is not an official Fab Foundation program. The plus mark is the project symbol; Seeed Studio assets are in the <a href="https://www.seeedstudio.com/blog/branding-kit/">branding kit</a>.</p>
+      <p class="footer-note">Version Zero CAD stays untouched. The model uses Three.js and occt-import-js; see the <a href="open-source.html">open-source notices</a>. A proposal is not a release.</p>
     </div>
   </footer>
+
+  <dialog id="upload-dialog" class="upload-dialog" aria-labelledby="upload-title">
+    <div class="dialog-top">
+      <div>
+        <p class="eyebrow">Submit a proposal</p>
+        <h2 id="upload-title">Add your contribution.</h2>
+      </div>
+      <button type="button" class="dialog-close" data-close-upload aria-label="Close submission form">✕</button>
+    </div>
+    <p class="dialog-intro">Files stay out of the frozen Version Zero folder. A draft pull request is created only when the submission service is configured.</p>
+    <form id="upload-form">
+      <div class="form-grid">
+        <label>System
+          <select id="upload-system" name="system" required>
+            <option value="dispensing">01 / Dispensing</option>
+            <option value="storage">02 / Storage</option>
+            <option value="enclosure">03 / Enclosure</option>
+            <option value="control">04 / Control &amp; computing</option>
+          </select>
+        </label>
+        <label>Change type
+          <select name="changeType" required>
+            <option value="idea">Idea / test result</option>
+            <option value="new_module">New module</option>
+            <option value="alternative">Alternative part</option>
+            <option value="revision">Revision of an existing part</option>
+          </select>
+        </label>
+      </div>
+      <label>Title <input name="title" required minlength="5" maxlength="100" placeholder="e.g. Adjustable slot for wider kits" /></label>
+      <label>What does it improve? <textarea name="description" required minlength="15" maxlength="2500" rows="3" placeholder="The problem, how it works, and where it connects"></textarea></label>
+      <div class="form-grid">
+        <label>Part ID / version (optional) <input name="version" maxlength="100" placeholder="e.g. dispenser / V0.1 (proposed)" /></label>
+        <label>License for submitted files <input name="license" required maxlength="120" placeholder="e.g. CERN-OHL-S-2.0, MIT, CC BY 4.0" /></label>
+      </div>
+      <label>Compatibility and test evidence <textarea name="evidence" rows="2" maxlength="2000" placeholder="Which V0 parts does it fit? Untested ideas are welcome if marked as such."></textarea></label>
+      <label>Contributor / GitHub handle (optional, not verified) <input name="contributor" maxlength="80" placeholder="Your public attribution" /></label>
+      <label class="file-zone" for="upload-files">Select files <small>Up to 4 files · 5 MB each · 12 MB total</small><input id="upload-files" name="files" type="file" multiple accept=".stl,.step,.stp,.3mf,.glb,.gltf,.dxf,.svg,.pdf,.png,.jpg,.jpeg,.md,.txt,.json,.csv,.kicad_pcb,.kicad_sch,.ino,.py,.cpp,.h,.zip" /></label>
+      <ul id="upload-file-list" class="file-list" aria-live="polite"><li>No files selected — a text-only proposal is also welcome.</li></ul>
+      <div id="upload-captcha"></div>
+      <p id="upload-target" class="upload-target"></p>
+      <p id="upload-status" class="upload-status" role="status" aria-live="polite"></p>
+      <div class="dialog-actions">
+        <button type="submit" class="btn btn-dark" id="upload-submit">Create draft GitHub PR ↗</button>
+        <a id="upload-issue-link" class="text-link" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml" target="_blank" rel="noopener noreferrer">Use GitHub issue instead ↗</a>
+      </div>
+      <p class="form-note">No repository token is stored in this page. An alternative part is not a newer revision. Reliability and deployment notes use their own GitHub issue forms.</p>
+    </form>
+  </dialog>
+
+  <script src="parts-manifest.js?v=gear4"></script>
   <script src="replacements.js"></script>
-  <script src="assets/js/journey.js?v=20261008-3"></script>
+  <script src="assets/js/contribution-config.js"></script>
+  <script src="assets/js/journey-upload.js?v=2"></script>
+  <script src="assets/js/workbench.js?v=1"></script>
   <script src="assets/js/initiative.js?v=20261008-2" defer></script>
-  <script src="assets/js/compact-tabs.js?v=20261008-3" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/occt-import-js@0.0.24/dist/occt-import-js.js"></script>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="exploded.js?v=matched-colors"></script>
 </body>
 </html>

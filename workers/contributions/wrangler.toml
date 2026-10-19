@@ -1,0 +1,19 @@
+name = "fab-vending-contributions"
+main = "index.mjs"
+compatibility_date = "2026-10-10"
+
+[vars]
+REPOSITORY_OWNER = "Seeed-Studio"
+REPOSITORY_NAME = "how-to-vend-almost-anything"
+BASE_BRANCH = "site/fab-vending-pages"
+ALLOWED_ORIGIN = "https://seeed-studio.github.io"
+
+# Deploy separately from GitHub Pages, after the secrets exist:
+#   npx wrangler secret put GITHUB_APP_ID
+#   npx wrangler secret put GITHUB_INSTALLATION_ID
+#   npx wrangler secret put GITHUB_APP_PRIVATE_KEY
+#   npx wrangler secret put TURNSTILE_SECRET
+#   npx wrangler deploy
+# Then set endpoint and turnstileSiteKey in both contribution-config.js files.
+# GITHUB_APP_PRIVATE_KEY is an unencrypted PEM in PKCS#8 form.
+# Do not put any of these secrets in the site.
