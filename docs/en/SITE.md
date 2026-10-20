@@ -40,10 +40,10 @@ Hero photography is `assets/reference-machine.jpg`. The prototype player uses th
 From the repository root:
 
 ```bash
-python3 -m http.server 8000 --directory docs
+python3 -m http.server 8080 --directory docs
 ```
 
-Open `http://localhost:8000/`, then the English or Chinese pages. Serve over HTTP so roadmap and map JSON can load.
+Open `http://localhost:8080/`, then the English or Chinese pages. Serve over HTTP so roadmap and map JSON can load.
 
 Check the existing data rules with:
 

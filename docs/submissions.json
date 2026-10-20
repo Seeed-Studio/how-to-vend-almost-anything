@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "id": "dispensing-v1-matthew-chaihuo",
+      "system": "dispensing",
+      "version": "V1",
+      "lab": "Chaihuo Makerspace",
+      "lab_id": "fablabs:1543",
+      "name": "Matthew",
+      "title": "V1 dispensing mechanism",
+      "description": "Sketch and photograph of the Version One dispenser, from Chaihuo Makerspace.",
+      "sketch": "submissions/dispensing/matthew-chaihuo/sketch.png",
+      "actual": "submissions/dispensing/matthew-chaihuo/actual.jpeg"
+    }
+  ]
+}

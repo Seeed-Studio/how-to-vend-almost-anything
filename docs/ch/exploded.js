@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 import { loadColoredAssembly } from './load-colored-assembly.js';
-import { partColor, SELECTED_COLOR } from './assembly-palette.js';
+import { applyAssemblyGroupFilter, partColor, SELECTED_COLOR } from './assembly-palette.js';
 
 const manifest = window.VENDING_PARTS;
 const replacements = Array.isArray(window.VENDING_REPLACEMENTS) ? window.VENDING_REPLACEMENTS : [];
@@ -160,6 +160,12 @@ const assemblyRoot = new THREE.Group();
 assemblyRoot.name = 'complete-assembly';
 assemblyRoot.visible = false;
 scene.add(assemblyRoot);
+const stepAssemblyRoot = new THREE.Group();
+stepAssemblyRoot.name = 'step-assembly';
+stepAssemblyRoot.visible = false;
+scene.add(stepAssemblyRoot);
+let stepAssemblyPath = '';
+let stepAssemblyPromise = null;
 
 let fullMachineView = true;
 let preferredFullMode = 'separate';
@@ -440,11 +446,81 @@ function placeStorage(parts, gap) {
   return { centers, width: Math.max(size.x, boards.width), depth };
 }
 
+const VERSION_RANK = { V0: 0, V1: 1 };
+let selectedVersion = 'V0';
+
+function versionRank(id) {
+  return Object.prototype.hasOwnProperty.call(VERSION_RANK, id) ? VERSION_RANK[id] : 0;
+}
+
+let displayMap = null;
+
+function currentSystem() {
+  return document.querySelector('[data-system][aria-selected="true"]')?.dataset.system || 'full';
+}
+
+function modePaths(mode = preferredFullMode) {
+  if (!displayMap) return null;
+  const entry = displayMap[selectedVersion]?.[currentSystem()];
+  if (!entry) return null;
+  if (mode === 'separate') {
+    const list = Array.isArray(entry.separate) ? entry.separate.filter(Boolean) : [];
+    return list.length ? list : null;
+  }
+  const path = typeof entry.assemble === 'string' ? entry.assemble.trim() : '';
+  return path || null;
+}
+
+function partShown(part) {
+  if (preferredFullMode === 'assemble') {
+    const path = modePaths('assemble');
+    return Boolean(path && !path.endsWith('.glb') && part.display === path);
+  }
+  const paths = modePaths('separate');
+  return Boolean(paths && paths.includes(part.display));
+}
+
+function refreshVersionChrome() {
+  const zh = document.documentElement.lang.startsWith('zh');
+  document.querySelectorAll('[data-machine-version]').forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset.machineVersion === selectedVersion));
+  });
+  const label = document.getElementById('view-label');
+  const bar = document.getElementById('machine-version-label');
+  if (label) label.textContent = zh ? `${selectedVersion} / 交互模型` : `${selectedVersion} / Interactive model`;
+  if (bar) {
+    const note = selectedVersion === 'V0' ? (zh ? '参考' : 'Reference') : (zh ? '替换件' : 'Replacements');
+    bar.textContent = `${selectedVersion} / ${note}`;
+  }
+}
+
+function preferAvailableMode() {
+  if (!displayMap || modePaths(preferredFullMode)) return;
+  if (modePaths('separate')) preferredFullMode = 'separate';
+  else if (modePaths('assemble')) preferredFullMode = 'assemble';
+}
+
+function setMachineVersion(id) {
+  if (!Object.prototype.hasOwnProperty.call(VERSION_RANK, id) || id === selectedVersion) return;
+  selectedVersion = id;
+  refreshVersionChrome();
+  preferAvailableMode();
+  if (preferredFullMode === 'assemble' && modePaths('assemble')) {
+    void setDisplayMode('assemble');
+    return;
+  }
+  updatePositions(true);
+  recolorPart(selectedPartId);
+  syncDisplayMode();
+  fitAll();
+}
+
 function buildWorkbenchLayout() {
   const innerGap = THREE.MathUtils.lerp(0.008, 0.025, explodedAmount);
   const zoneGap = THREE.MathUtils.lerp(0.035, 0.095, explodedAmount);
   const zones = BULKS.map((bulk) => {
     const parts = manifest.parts.filter((part) => {
+      if (!partShown(part)) return false;
       if (bulk.id === 'enclosure') return bulk.groups.includes(part.group) || ENCLOSURE_PART_IDS.has(part.id);
       if (bulk.id === 'control') return part.group === 'interface' && !ENCLOSURE_PART_IDS.has(part.id);
       return bulk.groups.includes(part.group);
@@ -542,38 +618,76 @@ async function ensureAssemblyLoaded() {
   return assemblyPromise;
 }
 
+async function ensureStepAssembly(path) {
+  if (stepAssemblyPath === path && stepAssemblyRoot.children.length) return;
+  if (stepAssemblyPromise) return stepAssemblyPromise;
+  stepAssemblyPromise = (async () => {
+    const url = new URL(path, import.meta.url).href;
+    const object = /\.(step|stp)$/i.test(path)
+      ? await loadStep({ id: 'step-assembly', group: 'frame' }, { source: url })
+      : await loadStl({ id: 'step-assembly', group: 'frame' }, { source: url });
+    object.traverse((child) => {
+      if (!child.isMesh) return;
+      child.material = new THREE.MeshStandardMaterial({ color: 0x81968d, roughness: 0.62, metalness: 0.06 });
+    });
+    stepAssemblyRoot.clear();
+    stepAssemblyRoot.add(object);
+    stepAssemblyPath = path;
+  })().catch((error) => {
+    stepAssemblyPromise = null;
+    throw error;
+  });
+  return stepAssemblyPromise;
+}
+
 function assemblyStatusText(state) {
   const zh = document.documentElement.lang.startsWith('zh');
   if (state === 'loading') return zh ? '正在加载装配…' : 'Loading assembly…';
-  if (state === 'ready') return zh ? '已装配的整机' : 'Assembled machine';
+  if (state === 'ready') return zh ? '已装配' : 'Assembled';
   return zh ? '装配不可用，正在显示分离零件。' : 'Assembly unavailable. Showing separate parts.';
 }
 
 function syncDisplayMode() {
-  const showAssembly = fullMachineView && preferredFullMode === 'assemble' && assemblyReady;
-  modelRoot.visible = !showAssembly;
+  const separatePaths = modePaths('separate');
+  const assemblePath = modePaths('assemble');
+  const hasSeparate = Boolean(separatePaths);
+  const hasAssemble = Boolean(assemblePath);
+  const showAssembly = preferredFullMode === 'assemble' && hasAssemble && assemblePath.endsWith('.glb') && assemblyReady;
+  const showStep = preferredFullMode === 'assemble' && hasAssemble && !assemblePath.endsWith('.glb') && !manifest.parts.some((part) => part.display === assemblePath);
+  const hasView = preferredFullMode === 'separate' ? hasSeparate : hasAssemble;
+  if (showAssembly) applyAssemblyGroupFilter(assemblyRoot, null, null);
+  modelRoot.visible = hasView && !showAssembly && !showStep;
   assemblyRoot.visible = showAssembly;
-  zoneLabels.style.display = showAssembly ? 'none' : '';
+  stepAssemblyRoot.visible = showStep;
+  zoneLabels.style.display = hasView && !showAssembly ? '' : 'none';
   const spacing = document.querySelector('.explode-control');
-  if (spacing) spacing.hidden = showAssembly;
+  if (spacing) spacing.hidden = !hasView || showAssembly;
+  let viewEmpty = document.getElementById('view-empty');
+  if (!viewEmpty) {
+    viewEmpty = document.createElement('div');
+    viewEmpty.id = 'view-empty';
+    viewport.appendChild(viewEmpty);
+  }
+  const zh = document.documentElement.lang.startsWith('zh');
+  viewEmpty.textContent = zh ? '此视图还没有模型' : 'No model for this view';
+  viewEmpty.hidden = hasView;
   if (assemblyModeControls) {
-    assemblyModeControls.hidden = !fullMachineView;
+    assemblyModeControls.hidden = false;
     assemblyModeControls.querySelectorAll('[data-display-mode]').forEach((button) => {
-      button.setAttribute('aria-pressed', String(button.dataset.displayMode === preferredFullMode));
+      const available = button.dataset.displayMode === 'separate' ? hasSeparate : hasAssemble;
+      button.disabled = !available;
+      button.setAttribute('aria-pressed', String(available && button.dataset.displayMode === preferredFullMode));
     });
   }
-  if (assemblyStatus) {
-    assemblyStatus.hidden = !fullMachineView;
-    if (preferredFullMode === 'separate') assemblyStatus.textContent = '';
-    else if (assemblyReady) assemblyStatus.textContent = assemblyStatusText('ready');
-  }
+  if (assemblyStatus) assemblyStatus.hidden = true;
 }
 
 async function setDisplayMode(mode) {
   if (!['separate', 'assemble'].includes(mode)) return;
+  if (displayMap && !modePaths(mode)) return;
   preferredFullMode = mode;
   syncDisplayMode();
-  if (mode === 'assemble') {
+  if (mode === 'assemble' && modePaths('assemble')?.endsWith('.glb')) {
     if (assemblyStatus && !assemblyReady) assemblyStatus.textContent = assemblyStatusText('loading');
     try {
       await ensureAssemblyLoaded();
@@ -588,6 +702,16 @@ async function setDisplayMode(mode) {
       return;
     }
   }
+  if (mode === 'assemble' && modePaths('assemble') && !modePaths('assemble').endsWith('.glb') && !manifest.parts.some((part) => part.display === modePaths('assemble'))) {
+    try {
+      await ensureStepAssembly(modePaths('assemble'));
+    } catch (error) {
+      console.error('Assembly file loading failed:', error);
+      return;
+    }
+  }
+  updatePositions(true);
+  recolorPart('');
   syncDisplayMode();
   fitAll();
 }
@@ -695,6 +819,10 @@ function setObjectOpacity(object, opacity) {
 function recolorPart(partId) {
   for (const part of manifest.parts) {
     const object = loadedObjects.get(part.id); if (!object) continue;
+    if (!partShown(part)) {
+      object.visible = false;
+      continue;
+    }
     const dimmed = activeGroups && !activeGroups.has(viewerGroup(part));
     object.visible = !dimmed;
     const selected = part.id === partId;
@@ -732,15 +860,23 @@ function focusGroups(ids) {
   fullMachineView = list.length === 0;
   activeGroups = list.length ? new Set(list) : null;
   selectedPartId = '';
+  preferAvailableMode();
   recolorPart('');
+  updatePositions(true);
+  if (preferredFullMode === 'assemble' && modePaths('assemble')?.endsWith('.glb')) {
+    void setDisplayMode('assemble');
+    return;
+  }
   syncDisplayMode();
   fitAll();
 }
 
 document.querySelectorAll('.group-button').forEach((button) => button.addEventListener('click',() => applyFilter(button.dataset.group)));
 
-document.getElementById('reset-view').addEventListener('click', fitAll);
-document.getElementById('fit-view').addEventListener('click',fitAll);
+document.querySelectorAll('[data-machine-version]').forEach((button) => {
+  button.addEventListener('click', () => setMachineVersion(button.dataset.machineVersion));
+});
+refreshVersionChrome();
 
 function fitObjects(objects, preserveDirection=false) {
   const box = new THREE.Box3();
@@ -774,7 +910,18 @@ function fitObjects(objects, preserveDirection=false) {
   controls.update();
 }
 function fitAll(preserveDirection=false) {
-  const objects = assemblyRoot.visible ? [assemblyRoot] : [...loadedObjects.values()];
+  const objects = [];
+  if (assemblyRoot.visible) {
+    assemblyRoot.traverse((object) => {
+      if (object.isMesh && object.visible) objects.push(object);
+    });
+  }
+  if (stepAssemblyRoot.visible) {
+    stepAssemblyRoot.traverse((object) => {
+      if (object.isMesh && object.visible) objects.push(object);
+    });
+  }
+  if (modelRoot.visible) objects.push(...loadedObjects.values());
   fitObjects(objects, preserveDirection === true);
 }
 
@@ -817,6 +964,16 @@ animate();
 if (!document.body.classList.contains('workbench-page')) renderInspector(selectedPartId);
 window.VENDING_VIEWER = { focusGroups, fitAll };
 document.dispatchEvent(new CustomEvent('vending:ready'));
+fetch(new URL('../display-models.json?v=v1-dispensing-more', import.meta.url))
+  .then((response) => response.json())
+  .then((data) => {
+    displayMap = data;
+    updatePositions(true);
+    recolorPart('');
+    syncDisplayMode();
+    fitAll();
+  })
+  .catch((error) => console.error('Display list failed', error));
 loadAll().catch((error) => {
   console.error(error);
   document.getElementById('load-state').textContent = '三维运行环境不可用 · 零件板仍然可用';

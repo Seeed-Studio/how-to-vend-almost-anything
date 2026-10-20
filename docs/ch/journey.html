@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="assets/css/site.css?v=20261008-2" />
   <link rel="stylesheet" href="assets/css/pages.css" />
   <link rel="stylesheet" href="assets/css/companions.css?v=20261008-5" />
-  <link rel="stylesheet" href="exploded.css?v=palette" />
+  <link rel="stylesheet" href="exploded.css?v=ideas-still" />
 </head>
 <body class="companion compact-page workbench-page">
   <a class="skip-link" href="#explorer">跳到模型</a>
@@ -37,7 +37,7 @@
     <section class="wb-workspace" id="reference">
       <div class="wb-bar">
         <p class="eyebrow">共建工作台</p>
-        <p>V0 / 参考</p>
+        <p id="machine-version-label">V0 / 参考</p>
       </div>
       <div class="wb-tabs" role="tablist" aria-label="四个系统" data-system-tabs>
         <button type="button" role="tab" id="tab-full" data-system="full" data-groups="" aria-selected="true" aria-controls="inspector-content">00 整机</button>
@@ -50,18 +50,25 @@
         <div class="viewport-panel">
           <div class="viewport-topbar">
             <div>
-              <span class="view-label">V0 / 交互模型</span>
+              <span class="view-label" id="view-label">V0 / 交互模型</span>
               <span id="load-state" class="load-state">正在加载模型…</span>
               <span id="selection-line" class="selection-line"></span>
             </div>
             <div class="view-actions">
-              <div id="assembly-mode-controls" role="group" aria-label="整机显示">
-                <button type="button" data-display-mode="separate" aria-pressed="true">分离</button>
-                <button type="button" data-display-mode="assemble" aria-pressed="false">装配</button>
+              <div class="view-filter">
+                <span class="view-filter-label">视图</span>
+                <div id="assembly-mode-controls" role="group" aria-label="视图">
+                  <button type="button" data-display-mode="separate" aria-pressed="true">分离</button>
+                  <button type="button" data-display-mode="assemble" aria-pressed="false">装配</button>
+                </div>
               </div>
-              <span id="assembly-status" role="status" aria-live="polite"></span>
-              <button type="button" id="reset-view">重置</button>
-              <button type="button" id="fit-view">适配</button>
+              <div class="view-filter">
+                <span class="view-filter-label">版本</span>
+                <div id="assembly-version-controls" role="group" aria-label="版本">
+                  <button type="button" data-machine-version="V0" aria-pressed="true">V0 版本</button>
+                  <button type="button" data-machine-version="V1" aria-pressed="false">V1 版本</button>
+                </div>
+              </div>
             </div>
           </div>
           <div class="viewport" id="viewport">
@@ -81,6 +88,16 @@
           <div id="inspector-content" role="tabpanel" aria-labelledby="tab-full"></div>
           <button type="button" class="btn btn-dark wb-upload" id="system-upload" data-upload-system="dispensing">上传贡献</button>
         </aside>
+        <aside class="wb-ideas" aria-label="想法">
+          <div class="wb-ideas-head">
+            <p class="wb-kicker">想法</p>
+            <h2 id="idea-system-title">00 整机</h2>
+          </div>
+          <div class="idea-scroll" id="idea-scroll">
+            <div class="idea-track" id="idea-track"></div>
+          </div>
+          <button type="button" class="btn btn-dark wb-upload" id="idea-upload">上传想法</button>
+        </aside>
       </div>
       <ol class="wb-strip" aria-label="发布路径">
         <li><span>V0 参考</span><strong>可运行的机器</strong></li>
@@ -90,74 +107,170 @@
     </section>
   </main>
 
-  <template id="tpl-dispensing">
-    <p class="wb-kicker">01 / 出货</p>
-    <h2>出货机构</h2>
-    <p>后端授权卡片之后放出一件产品。</p>
-    <h3>V0 已有</h3>
-    <p>四列出货机构、舵机驱动的摆臂，以及已录制的直接出货和余额出货。</p>
-    <h3>下一步</h3>
-    <p>针对参考货道装不下的产品尺寸，经过测试的机构。</p>
-    <details>
-      <summary>来源与细节</summary>
-      <p><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts" target="_blank" rel="noopener noreferrer">出货 CAD ↗</a></p>
-      <p>替代出货机构不是更新的修订。零号版本保持不动。</p>
-    </details>
-  </template>
   <template id="tpl-full">
     <p class="wb-kicker">00 / 整机</p>
     <h2>完整设计</h2>
-    <p>零号版本的全部零件，加上产品管、管里售出的 XIAO，以及 Wio Terminal。</p>
-    <h3>V0 参考</h3>
-    <p>箱体、框架、四个出货机构、管支架和界面零件是冻结的参考。</p>
-    <h3>这一视图新增</h3>
-    <p>四根产品管、xiao-series.stl、xiao-esp32s3-only.stl 和 wio-terminal.stl。这些都不替换零号版本里的原文件。</p>
-    <details>
-      <summary>来源与细节</summary>
-      <p><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files" target="_blank" rel="noopener noreferrer">全部源 CAD ↗</a></p>
-    </details>
+    <section class="wb-version">
+      <h3>1. V0 设计</h3>
+      <p>一台可运行的四列机器：箱体、框架、出货机构和顾客界面。</p>
+    </section>
+    <section class="wb-proof">
+      <h3>2. V0 记录</h3>
+      <div class="wb-proof-grid">
+        <figure>
+          <img src="../../xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/10-assemble-final-look-design.png" alt="零号版本整机的示意图">
+          <figcaption>V0 示意图</figcaption>
+        </figure>
+        <figure>
+          <img src="../../xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/10-assemble-final-look-real-life.jpg" alt="零号版本整机的实拍">
+          <figcaption>V0 实物</figcaption>
+        </figure>
+      </div>
+      <a class="btn btn-dark wb-cad" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files" target="_blank" rel="noopener noreferrer">下载 CAD</a>
+    </section>
+    <section class="wb-version">
+      <h3>3. V1 设计</h3>
+      <p>V1 整机把新的出货和储料合在一个装配里。</p>
+    </section>
+    <section class="wb-submissions">
+      <h3>4. 投稿</h3>
+      <article class="wb-submission">
+        <h4>还没有公开投稿</h4>
+        <p>之后每一块可以放一个人的示意图、短视频，或两者都有，并附上一段说明。</p>
+      </article>
+    </section>
+  </template>
+  <template id="tpl-dispensing">
+    <p class="wb-kicker">01 / 出货</p>
+    <h2>出货机构</h2>
+    <section class="wb-version">
+      <h3>1. V0 设计</h3>
+      <p>四列货道在卡片授权后，用舵机摆臂放出一件产品。</p>
+    </section>
+    <section class="wb-proof">
+      <h3>2. V0 记录</h3>
+      <div class="wb-proof-grid">
+        <figure>
+          <img src="../../xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/2-full-dispense-part-design.png" alt="零号版本出货机构的示意图">
+          <figcaption>V0 示意图</figcaption>
+        </figure>
+        <figure>
+          <img src="../../xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/2-full-dispense-part-real-life.jpg" alt="零号版本出货机构的实拍">
+          <figcaption>V0 实物</figcaption>
+        </figure>
+      </div>
+      <a class="btn btn-dark wb-cad" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts" target="_blank" rel="noopener noreferrer">下载 CAD</a>
+    </section>
+    <section class="wb-version">
+      <h3>3. V1 设计</h3>
+      <p>连杆出货机构，含上舵机固定板、FT90M、M4 铜柱和一体机构。</p>
+    </section>
+    <section class="wb-submissions">
+      <h3>4. 投稿</h3>
+      <article class="wb-submission">
+        <h4>还没有公开投稿</h4>
+        <p>之后每一块可以放一个人的示意图、短视频，或两者都有，并附上一段说明。</p>
+      </article>
+    </section>
   </template>
   <template id="tpl-storage">
     <p class="wb-kicker">02 / 货道</p>
     <h2>货道与储存</h2>
-    <p>四根产品管，各坐在一个出货机构上，里面是要售出的 XIAO。</p>
-    <h3>V0 已有</h3>
-    <p>四个出货机构和管支架在参考模型里。产品管当时买的是 260 mm 的 PVC，没有模型。</p>
-    <h3>现在显示</h3>
-    <p>一根用 OpenSCAD 做的圆管，外径 50 mm、内径 46 mm，共四根。xiao-series.stl 和 xiao-esp32s3-only.stl 是这些货道售出的产品。</p>
-    <details>
-      <summary>来源与细节</summary>
-      <p><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/product-column.scad" target="_blank" rel="noopener noreferrer">OpenSCAD 产品管 ↗</a></p>
-      <p>OpenSCAD 是编辑这根管子的开源工具。高亮的是产品管、两个 XIAO 模型，以及它们所在的出货机构。</p>
-    </details>
+    <section class="wb-version">
+      <h3>1. V0 设计</h3>
+      <p>四根货道坐在出货机构上，里面放着要售出的 XIAO。</p>
+    </section>
+    <section class="wb-proof">
+      <h3>2. V0 记录</h3>
+      <div class="wb-proof-grid">
+        <figure>
+          <img src="../../xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/7-columns-top-deisgn.png" alt="零号版本货道的示意图">
+          <figcaption>V0 示意图</figcaption>
+        </figure>
+        <figure>
+          <img src="../../xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/7-columns-top-real-life.jpg" alt="零号版本货道的实拍">
+          <figcaption>V0 实物</figcaption>
+        </figure>
+      </div>
+      <a class="btn btn-dark wb-cad" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts" target="_blank" rel="noopener noreferrer">下载 CAD</a>
+    </section>
+    <section class="wb-version">
+      <h3>3. V1 设计</h3>
+      <p>折弯 XIAO 桶由上、中、下板约束，可以看分离零件，也可以看一体装配。</p>
+    </section>
+    <section class="wb-submissions">
+      <h3>4. 投稿</h3>
+      <article class="wb-submission">
+        <h4>还没有公开投稿</h4>
+        <p>之后每一块可以放一个人的示意图、短视频，或两者都有，并附上一段说明。</p>
+      </article>
+    </section>
   </template>
   <template id="tpl-enclosure">
     <p class="wb-kicker">03 / 箱体</p>
     <h2>箱体与结构</h2>
-    <p>参考机可打印、可编辑的机体。</p>
-    <h3>V0 已有</h3>
-    <p>STEP 外壳文件、STL 结构，以及完成外壳的装配照片。</p>
-    <h3>下一步</h3>
-    <p>供实验室专用面板和产品仓使用的共享安装尺寸。</p>
-    <details>
-      <summary>来源与细节</summary>
-      <p><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files" target="_blank" rel="noopener noreferrer">箱体与结构 CAD ↗</a></p>
-      <p>高亮的是外壳、框架和脚垫，不是一套新的箱体设计。</p>
-    </details>
+    <section class="wb-version">
+      <h3>1. V0 设计</h3>
+      <p>可打印的箱体、框架和脚垫包住并承托整机。</p>
+    </section>
+    <section class="wb-proof">
+      <h3>2. V0 记录</h3>
+      <div class="wb-proof-grid">
+        <figure>
+          <img src="../../xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/8-fixed-case-design.png" alt="零号版本箱体的示意图">
+          <figcaption>V0 示意图</figcaption>
+        </figure>
+        <figure>
+          <img src="../../xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/8-fixed-case-real-life.jpg" alt="零号版本箱体的实拍">
+          <figcaption>V0 实物</figcaption>
+        </figure>
+      </div>
+      <a class="btn btn-dark wb-cad" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files" target="_blank" rel="noopener noreferrer">下载 CAD</a>
+    </section>
+    <section class="wb-version">
+      <h3>3. V1 设计</h3>
+      <p>还没有新的箱体设计。实验室可以提出面板和产品仓。</p>
+    </section>
+    <section class="wb-submissions">
+      <h3>4. 投稿</h3>
+      <article class="wb-submission">
+        <h4>还没有公开投稿</h4>
+        <p>之后每一块可以放一个人的示意图、短视频，或两者都有，并附上一段说明。</p>
+      </article>
+    </section>
   </template>
   <template id="tpl-control">
     <p class="wb-kicker">04 / 控制与计算</p>
     <h2>控制与计算</h2>
-    <p>感应卡片、驱动舵机，并记录结果。</p>
-    <h3>V0 已有</h3>
-    <p>两台 Wio Terminal、飞特 ST3215 总线舵机和一只 RFID 读卡器。控制器不是 XIAO。Wio 固件和 Node.js 后端提供运营、库存和配置。</p>
-    <h3>下一步</h3>
-    <p>给改变了机构或产品映射的实验室一份写下来的软件约定。以后的控制重新设计应成为新版本，而不是悄悄替换。</p>
-    <p>高亮的是 Wio Terminal 模型，以及 Wio、RFID 和状态灯支架。固件和后端不在 CAD 里。</p>
-    <details>
-      <summary>来源与细节</summary>
-      <p><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-full-code-system" target="_blank" rel="noopener noreferrer">固件与后台 ↗</a></p>
-    </details>
+    <section class="wb-version">
+      <h3>1. V0 设计</h3>
+      <p>两台 Wio Terminal、总线舵机和 RFID 读卡器感应卡片并驱动机器。</p>
+    </section>
+    <section class="wb-proof">
+      <h3>2. V0 记录</h3>
+      <div class="wb-proof-grid">
+        <figure>
+          <img src="../../xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/6-wio-terminal-rfid-design.jpg" alt="零号版本 Wio Terminal 与 RFID 的示意图">
+          <figcaption>V0 示意图</figcaption>
+        </figure>
+        <figure>
+          <img src="../../xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/assets/6-wio-terminal-rfid-real-life.jpg" alt="零号版本 Wio Terminal 与 RFID 的实拍">
+          <figcaption>V0 实物</figcaption>
+        </figure>
+      </div>
+      <a class="btn btn-dark wb-cad" href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/tree/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-full-code-system" target="_blank" rel="noopener noreferrer">下载 CAD</a>
+    </section>
+    <section class="wb-version">
+      <h3>3. V1 设计</h3>
+      <p>还没有新的控制设计。以后的改动应成为新版本，而不是悄悄替换。</p>
+    </section>
+    <section class="wb-submissions">
+      <h3>4. 投稿</h3>
+      <article class="wb-submission">
+        <h4>还没有公开投稿</h4>
+        <p>之后每一块可以放一个人的示意图、短视频，或两者都有，并附上一段说明。</p>
+      </article>
+    </section>
   </template>
 
   <footer class="site-footer">
@@ -178,6 +291,39 @@
       <p class="footer-note">零号 CAD 保持不动。模型使用 Three.js 与 occt-import-js，详见<a href="open-source.html">开源声明</a>。提案不是发布。</p>
     </div>
   </footer>
+
+  <dialog id="image-zoom" class="image-zoom">
+    <button type="button" data-close-zoom aria-label="关闭">✕</button>
+    <img alt="">
+  </dialog>
+
+  <dialog id="idea-dialog" class="upload-dialog" aria-labelledby="idea-title">
+    <div class="dialog-top">
+      <div>
+        <p class="eyebrow">一个想法</p>
+        <h2 id="idea-title">写下想法。</h2>
+      </div>
+      <button type="button" class="dialog-close" data-close-idea aria-label="关闭想法表单">✕</button>
+    </div>
+    <p class="dialog-intro">文字就是想法。图片可选，两者都会写入这个仓库。</p>
+    <form id="idea-form" class="upload-compact">
+      <input type="hidden" name="system" id="idea-system-field" value="full" />
+      <label>想法 <textarea name="description" required minlength="15" maxlength="2500" rows="4" placeholder="用自己的话写下这个想法"></textarea></label>
+      <div class="form-grid">
+        <label>贡献者
+          <select name="contributor_kind" id="idea-lab" required>
+            <option value="individual">个人贡献者</option>
+          </select>
+        </label>
+        <label>名字 <input name="contributor" maxlength="80" placeholder="GitHub 名字" required /></label>
+      </div>
+      <label class="file-zone">图片 <input id="idea-images" name="images" type="file" accept=".png,.jpg,.jpeg,.webp,.gif" multiple /></label>
+      <p id="idea-status" class="upload-status" role="status" aria-live="polite"></p>
+      <div class="dialog-actions">
+        <button type="submit" class="btn btn-dark" id="idea-submit">写入仓库</button>
+      </div>
+    </form>
+  </dialog>
 
   <dialog id="upload-dialog" class="upload-dialog" aria-labelledby="upload-title">
     <div class="dialog-top">
@@ -228,11 +374,11 @@
     </form>
   </dialog>
 
-  <script src="parts-manifest.js?v=gear4"></script>
+  <script src="parts-manifest.js?v=v1-storage-qty"></script>
   <script src="replacements.js"></script>
   <script src="assets/js/contribution-config.js"></script>
   <script src="assets/js/journey-upload.js?v=2"></script>
-  <script src="assets/js/workbench.js?v=1"></script>
+  <script src="assets/js/workbench.js?v=7"></script>
   <script src="assets/js/initiative.js?v=20261008-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/occt-import-js@0.0.24/dist/occt-import-js.js"></script>
   <script type="importmap">
@@ -243,6 +389,6 @@
     }
   }
   </script>
-  <script type="module" src="exploded.js?v=matched-colors"></script>
+  <script type="module" src="exploded.js?v=prefer-available-view"></script>
 </body>
 </html>

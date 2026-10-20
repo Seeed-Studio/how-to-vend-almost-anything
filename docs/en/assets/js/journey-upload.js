@@ -19,20 +19,23 @@
     : {
         unconfigured: "The submission service is not configured yet. Use the GitHub issue link.",
         unconfiguredButton: "Submission service not configured",
-        submit: "Create draft GitHub PR ↗",
-        emptyFiles: "No files selected — a text-only proposal is also welcome.",
+        submit: "Add to the repository",
+        emptyFiles: "Add the sketch diagram and the actual diagram.",
         tooMany: "Maximum four files per proposal.",
         tooBig: "Each file must be 5 MB or smaller.",
         total: "The combined files must be 12 MB or smaller.",
         type: "That file type is not accepted.",
         captcha: "Complete the security check before submitting.",
-        sending: "Creating the draft pull request…",
-        failed: "The upload did not finish. Use the GitHub issue instead.",
-        folder: "Draft folder",
-        openPr: "Open the draft pull request ↗"
+        sending: "Saving into the repository…",
+        failed: "The upload did not finish.",
+        folder: "Saved under",
+        openPr: "Open the draft pull request ↗",
+        added: "Added. It is on this page now.",
+        needBoth: "Add both the sketch diagram and the actual diagram."
       };
 
   const issues = {
+    full: "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=submit-improvement.yml",
     dispensing: "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml",
     storage: "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-product-module.yml",
     enclosure: "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml",
@@ -45,7 +48,7 @@
   const dialog = document.querySelector("#upload-dialog");
   const form = document.querySelector("#upload-form");
   const system = document.querySelector("#upload-system");
-  const fileInput = document.querySelector("#upload-files");
+  const fileInputs = [...document.querySelectorAll("#upload-sketch, #upload-actual")];
   const fileList = document.querySelector("#upload-file-list");
   const status = document.querySelector("#upload-status");
   const target = document.querySelector("#upload-target");
@@ -54,9 +57,28 @@
   if (!dialog || !form || !system || !status) return;
 
   const config = window.CONTRIBUTION_CONFIG || {};
-  const ready = Boolean(config.endpoint && config.turnstileSiteKey);
+  const local = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+  const endpoint = local ? "/api/contributions" : (config.endpoint || "");
+  const ready = Boolean(endpoint) && (local || Boolean(config.turnstileSiteKey));
   let widgetId = null;
   const issueLabel = issueLink ? issueLink.textContent : "";
+  const labSelect = document.querySelector("#upload-lab");
+  const version = document.querySelector("#upload-version");
+  const example = document.querySelector("#upload-example");
+
+  fetch("data/directory-labs.json")
+    .then((response) => response.json())
+    .then((data) => {
+      const labs = [...(data.labs || [])].sort((a, b) => String(a.name).localeCompare(String(b.name)));
+      if (!labSelect) return;
+      const options = ['<option value="individual">Individual contributor</option>'];
+      for (const lab of labs) {
+        if (!lab.name) continue;
+        options.push(`<option value="${esc(lab.lab_id || lab.name)}">${esc(lab.name)}</option>`);
+      }
+      labSelect.innerHTML = options.join("");
+    })
+    .catch(() => {});
 
   function esc(value) {
     return String(value).replace(/[&<>"']/g, (char) => ({
@@ -74,17 +96,23 @@
     else delete status.dataset.state;
   }
 
+  function syncExample() {
+    const label = document.querySelector("#upload-example-label");
+    if (label) label.textContent = system.selectedOptions?.[0]?.textContent || system.value;
+  }
+
   function syncSystem(value) {
     if (issues[value]) system.value = value;
     const current = system.value;
     if (issueLink && !issueLink.dataset.pr) issueLink.href = issues[current] || issues.dispensing;
     if (target) {
-      target.textContent = ready ? `${text.folder}: contributions/proposals/${current}/` : "";
+      target.textContent = ready ? `${text.folder}: docs/submissions/${current}/` : "";
     }
+    syncExample();
   }
 
   function renderFiles() {
-    const files = [...(fileInput?.files || [])];
+    const files = fileInputs.flatMap((input) => [...(input.files || [])]);
     if (!fileList) return "";
     if (!files.length) {
       fileList.innerHTML = `<li>${esc(text.emptyFiles)}</li>`;
@@ -144,6 +172,9 @@
         issueLink.textContent = issueLabel;
       }
       syncSystem(button.dataset.uploadSystem || "dispensing");
+      const pressed = document.querySelector("[data-machine-version][aria-pressed='true']");
+      if (pressed && version) version.value = pressed.dataset.machineVersion || "V0";
+      syncExample();
       renderFiles();
       setStatus(ready ? "" : text.unconfigured, "");
       if (submit) {
@@ -151,12 +182,13 @@
         submit.textContent = ready ? text.submit : text.unconfiguredButton;
       }
       dialog.showModal();
-      if (ready) ensureCaptcha().catch((error) => setStatus(error.message || text.captcha, "error"));
+      if (ready && !local) ensureCaptcha().catch((error) => setStatus(error.message || text.captcha, "error"));
     });
   });
 
   system.addEventListener("change", () => syncSystem(system.value));
-  fileInput?.addEventListener("change", renderFiles);
+  version?.addEventListener("change", syncExample);
+  fileInputs.forEach((input) => input.addEventListener("change", renderFiles));
   document.querySelectorAll("[data-close-upload]").forEach((button) => {
     button.addEventListener("click", () => dialog.close());
   });
@@ -175,28 +207,43 @@
       setStatus(problem, "error");
       return;
     }
-    const token = window.turnstile?.getResponse(widgetId);
-    if (!token) {
-      setStatus(text.captcha, "error");
+    const sketch = document.querySelector("#upload-sketch")?.files?.[0];
+    const actual = document.querySelector("#upload-actual")?.files?.[0];
+    if (!sketch || !actual) {
+      setStatus(text.needBoth, "error");
       return;
+    }
+    if (!local) {
+      const token = window.turnstile?.getResponse(widgetId);
+      if (!token) {
+        setStatus(text.captcha, "error");
+        return;
+      }
     }
     if (submit) submit.disabled = true;
     setStatus(text.sending, "");
     try {
       const body = new FormData(form);
-      body.append("turnstile_token", token);
-      const response = await fetch(config.endpoint, { method: "POST", body });
+      const labName = labSelect?.selectedOptions?.[0]?.textContent?.trim() || "";
+      body.set("lab_name", labName);
+      if (!local) body.append("turnstile_token", window.turnstile.getResponse(widgetId));
+      const response = await fetch(endpoint, { method: "POST", body });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || text.failed);
-      setStatus(payload.pr_url || text.submit, "ok");
+      setStatus(local ? text.added : (payload.pr_url || text.submit), "ok");
       if (payload.pr_url && issueLink) {
         issueLink.href = payload.pr_url;
         issueLink.textContent = text.openPr;
         issueLink.dataset.pr = "true";
       }
+      if (local) {
+        document.querySelector(`[data-system="${system.value}"]`)?.click();
+        document.dispatchEvent(new CustomEvent("vending:submissions"));
+        dialog.close();
+      }
     } catch (error) {
       setStatus(error.message || text.failed, "error");
-      window.turnstile?.reset(widgetId);
+      if (!local) window.turnstile?.reset(widgetId);
     } finally {
       if (submit) submit.disabled = !ready;
     }

@@ -54,9 +54,22 @@ export function applyAssemblyPalette(root) {
       if (node === root) break;
     }
     if (!group) { unmapped.push(mesh.name); return; }
+    mesh.userData.assemblyGroup = group;
     tint(mesh, PALETTE[group]);
     colored++;
   });
   if (unmapped.length) console.warn('Assembly meshes without colorGroup:', unmapped);
   return { colored, unmapped };
+}
+
+export function applyAssemblyGroupFilter(root, groups, hiddenGroups) {
+  const allow = groups && groups.size ? groups : null;
+  const hide = hiddenGroups && hiddenGroups.size ? hiddenGroups : null;
+  root.traverse(mesh => {
+    if (!mesh.isMesh) return;
+    const group = mesh.userData.assemblyGroup;
+    const allowed = !allow || Boolean(group && allow.has(group));
+    const blocked = Boolean(hide && group && hide.has(group));
+    mesh.visible = allowed && !blocked;
+  });
 }

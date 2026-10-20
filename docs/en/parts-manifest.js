@@ -124,7 +124,8 @@ window.VENDING_PARTS = {
       source: "parts/dispenser.stl",
       format: "stl",
       display: "models/dispenser__v0.glb",
-      role: "Common dispenser body for the reference product geometry."
+      role: "Common dispenser body for the reference product geometry.",
+      supersededIn: "V1"
     },
     {
       id: "dispenser-specific",
@@ -135,7 +136,8 @@ window.VENDING_PARTS = {
       format: "stl",
       display: "models/dispenser-specific__v0.glb",
       role: "Alternative body for adapting the mechanism to another product geometry.",
-      variantOf: "dispenser"
+      variantOf: "dispenser",
+      supersededIn: "V1"
     },
     {
       id: "dispenser-arm",
@@ -145,7 +147,8 @@ window.VENDING_PARTS = {
       source: "parts/dispenser arm.stl",
       format: "stl",
       display: "models/dispenser-arm__v0.glb",
-      role: "Moves the release mechanism for each dispensing column."
+      role: "Moves the release mechanism for each dispensing column.",
+      supersededIn: "V1"
     },
     {
       id: "spur-gear",
@@ -155,7 +158,8 @@ window.VENDING_PARTS = {
       source: "parts/Spur Gear 24 teeth.stl",
       format: "stl",
       display: "models/spur-gear__v0.glb",
-      role: "Transfers servo rotation into the release mechanism."
+      role: "Transfers servo rotation into the release mechanism.",
+      supersededIn: "V1"
     },
     {
       id: "tube-support",
@@ -266,6 +270,210 @@ window.VENDING_PARTS = {
       format: "stl",
       display: "../models/wio-terminal.stl",
       role: "The controller board. It belongs with control and computing, beside the slider holder."
+    },
+    {
+      id: "v1-dispensing-integrated",
+      name: "V1 integrated dispenser",
+      group: "dispensing",
+      qty: 1,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-integrated.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-integrated.stl",
+      role: "One-piece V1 dispensing mechanism. Shown when V1 is assembled.",
+      introducedIn: "V1",
+      form: "integrated"
+    },
+    {
+      id: "v1-dispensing-y-link",
+      name: "V1 Y link",
+      group: "dispensing",
+      qty: 1,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-y-link.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-y-link.stl",
+      role: "Y link from the separated V1 dispenser.",
+      introducedIn: "V1",
+      form: "separated"
+    },
+    {
+      id: "v1-dispensing-connector",
+      name: "V1 connector",
+      group: "dispensing",
+      qty: 1,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-connector.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-connector.stl",
+      role: "Connector between the first and second links of the separated V1 dispenser.",
+      introducedIn: "V1",
+      form: "separated"
+    },
+    {
+      id: "v1-dispensing-push-arm",
+      name: "V1 push arm",
+      group: "dispensing",
+      qty: 1,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-push-arm.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-push-arm.stl",
+      role: "Push arm from the separated V1 dispenser.",
+      introducedIn: "V1",
+      form: "separated"
+    },
+    {
+      id: "v1-dispensing-link-arm",
+      name: "V1 link arm",
+      group: "dispensing",
+      qty: 1,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-link-arm.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-link-arm.stl",
+      role: "Link arm from the separated V1 dispenser.",
+      introducedIn: "V1",
+      form: "separated"
+    },
+    {
+      id: "v1-dispensing-ft90m",
+      name: "V1 FT90M",
+      group: "dispensing",
+      qty: 2,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-ft90m.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-ft90m.stl",
+      role: "FT90M piece from the separated V1 dispenser.",
+      introducedIn: "V1",
+      form: "separated"
+    },
+    {
+      id: "v1-dispensing-upper-servo-plate",
+      name: "V1 upper servo plate",
+      group: "dispensing",
+      qty: 1,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-upper-servo-plate.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-upper-servo-plate.stl",
+      role: "Upper servo fixing plate from the separated V1 dispenser.",
+      introducedIn: "V1",
+      form: "separated"
+    },
+    {
+      id: "v1-dispensing-lower-fixing-plate",
+      name: "V1 lower fixing plate",
+      group: "dispensing",
+      qty: 1,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-lower-fixing-plate.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-lower-fixing-plate.stl",
+      role: "Lower fixing plate from the separated V1 dispenser.",
+      introducedIn: "V1",
+      form: "separated"
+    },
+    {
+      id: "v1-dispensing-m4-standoff",
+      name: "V1 M4 standoff",
+      group: "dispensing",
+      qty: 8,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-m4-standoff.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-m4-standoff.stl",
+      role: "M4 copper standoff from the separated V1 dispenser.",
+      introducedIn: "V1",
+      form: "separated"
+    },
+    {
+      id: "v1-storage-integrated",
+      name: "V1 integrated storage",
+      group: "storage",
+      qty: 1,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-integrated.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-integrated.stl",
+      role: "One-piece V1 storage assembly. Shown when V1 storage is assembled.",
+      introducedIn: "V1",
+      form: "integrated"
+    },
+    {
+      id: "v1-storage-upper-constraint-plate",
+      name: "V1 upper constraint plate",
+      group: "storage",
+      qty: 1,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-upper-constraint-plate.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-upper-constraint-plate.stl",
+      role: "Upper constraint plate from the separated V1 storage.",
+      introducedIn: "V1",
+      form: "separated"
+    },
+    {
+      id: "v1-storage-lower-fixing-plate",
+      name: "V1 lower fixing plate",
+      group: "storage",
+      qty: 1,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-lower-fixing-plate.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-lower-fixing-plate.stl",
+      role: "Lower fixing plate from the separated V1 storage.",
+      introducedIn: "V1",
+      form: "separated"
+    },
+    {
+      id: "v1-storage-middle-constraint-plate",
+      name: "V1 middle constraint plate",
+      group: "storage",
+      qty: 1,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-middle-constraint-plate.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-middle-constraint-plate.stl",
+      role: "Middle constraint plate from the separated V1 storage.",
+      introducedIn: "V1",
+      form: "separated"
+    },
+    {
+      id: "v1-storage-middle-constraint-plate-l",
+      name: "V1 middle constraint plate L",
+      group: "storage",
+      qty: 1,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-middle-constraint-plate-l.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-middle-constraint-plate-l.stl",
+      role: "Left middle constraint plate from the separated V1 storage.",
+      introducedIn: "V1",
+      form: "separated"
+    },
+    {
+      id: "v1-storage-side-fix",
+      name: "V1 side fix",
+      group: "storage",
+      qty: 1,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-side-fix.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-side-fix.stl",
+      role: "Side fixing piece from the separated V1 storage.",
+      introducedIn: "V1",
+      form: "separated"
+    },
+    {
+      id: "v1-storage-xiao-tube",
+      name: "V1 bent XIAO tube",
+      group: "storage",
+      qty: 6,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-xiao-tube.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-xiao-tube.stl",
+      role: "Bent XIAO tube from the separated V1 storage.",
+      introducedIn: "V1",
+      form: "separated"
+    },
+    {
+      id: "v1-storage-xiao-tube-thick",
+      name: "V1 bent XIAO tube, thick",
+      group: "storage",
+      qty: 1,
+      source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-xiao-tube-thick.stl",
+      format: "stl",
+      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-xiao-tube-thick.stl",
+      role: "Thick bent XIAO tube from the separated V1 storage.",
+      introducedIn: "V1",
+      form: "separated"
     }
   ]
 };

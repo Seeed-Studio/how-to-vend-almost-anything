@@ -1,0 +1,15 @@
+{
+  "items": [
+    {
+      "id": "idea-matthew-chaihuo-makerspace-1792500345",
+      "lab": "Chaihuo Makerspace",
+      "lab_id": "fablabs:1543",
+      "name": "Matthew",
+      "system": "dispensing",
+      "description": "A quieter release motion for the next dispenser, tried as a pure idea.",
+      "images": [
+        "ideas/matthew-chaihuo-makerspace-1792500345/image-1.png"
+      ]
+    }
+  ]
+}

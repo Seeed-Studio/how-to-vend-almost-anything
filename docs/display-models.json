@@ -1,0 +1,107 @@
+{
+  "V0": {
+    "full": {
+      "separate": [
+        "models/outer-enclosure__v0.glb",
+        "models/top-plate__v0.glb",
+        "models/back-plate__v0.glb",
+        "models/lock-holder__v0.glb",
+        "models/mag-plate__v0.glb",
+        "models/pillar-a__v0.glb",
+        "models/pillar-b__v0.glb",
+        "models/dispenser__v0.glb",
+        "models/dispenser-specific__v0.glb",
+        "models/dispenser-arm__v0.glb",
+        "models/spur-gear__v0.glb",
+        "models/tube-support__v0.glb",
+        "models/wio-slider-holder__v0.glb",
+        "models/rfid-cap__v0.glb",
+        "models/led-holder__v0.glb",
+        "models/led-diffuser__v0.glb",
+        "models/l-holder__v0.glb",
+        "models/small-feet__v0.glb",
+        "../models/product-column.stl",
+        "../models/xiao-series.stl",
+        "../models/xiao-esp32s3-only.stl",
+        "../models/wio-terminal.stl"
+      ],
+      "assemble": "models/machine-assembly.glb"
+    },
+    "dispensing": {
+      "separate": [
+        "models/dispenser__v0.glb",
+        "models/dispenser-arm__v0.glb",
+        "models/spur-gear__v0.glb",
+        "models/tube-support__v0.glb"
+      ],
+      "assemble": ""
+    },
+    "storage": {
+      "separate": [
+        "models/dispenser__v0.glb",
+        "models/tube-support__v0.glb",
+        "../models/product-column.stl",
+        "../models/xiao-series.stl",
+        "../models/xiao-esp32s3-only.stl"
+      ],
+      "assemble": ""
+    },
+    "enclosure": {
+      "separate": [
+        "models/outer-enclosure__v0.glb",
+        "models/top-plate__v0.glb",
+        "models/back-plate__v0.glb",
+        "models/lock-holder__v0.glb",
+        "models/mag-plate__v0.glb",
+        "models/pillar-a__v0.glb",
+        "models/pillar-b__v0.glb",
+        "models/l-holder__v0.glb",
+        "models/small-feet__v0.glb"
+      ],
+      "assemble": ""
+    },
+    "control": {
+      "separate": [
+        "models/wio-slider-holder__v0.glb",
+        "models/rfid-cap__v0.glb",
+        "models/led-holder__v0.glb",
+        "models/led-diffuser__v0.glb",
+        "../models/wio-terminal.stl"
+      ],
+      "assemble": ""
+    }
+  },
+  "V1": {
+    "full": {
+      "separate": [],
+      "assemble": "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/XIAO-vending-machine-v1.stl"
+    },
+    "dispensing": {
+      "separate": [
+        "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-y-link.stl",
+        "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-connector.stl",
+        "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-push-arm.stl",
+        "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-link-arm.stl",
+        "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-ft90m.stl",
+        "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-upper-servo-plate.stl",
+        "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-lower-fixing-plate.stl",
+        "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-m4-standoff.stl"
+      ],
+      "assemble": "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-integrated.stl"
+    },
+    "storage": {
+      "separate": [
+        "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-upper-constraint-plate.stl",
+        "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-lower-fixing-plate.stl",
+        "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-middle-constraint-plate.stl",
+        "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-middle-constraint-plate-l.stl",
+        "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-side-fix.stl",
+        "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-xiao-tube.stl",
+        "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-xiao-tube-thick.stl"
+      ],
+      "assemble": "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-integrated.stl"
+    },
+    "enclosure": { "separate": [], "assemble": "" },
+    "control": { "separate": [], "assemble": "" }
+  }
+}

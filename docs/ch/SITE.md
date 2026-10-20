@@ -40,10 +40,10 @@ GitHub Pages 发布 `/docs`。入口页介绍项目并提供英文、中文入�
 在仓库根目录运行：
 
 ```bash
-python3 -m http.server 8000 --directory docs
+python3 -m http.server 8080 --directory docs
 ```
 
-打开 `http://localhost:8000/`，再进入英文或中文页面。通过 HTTP 预览，路线图与地图的 JSON 才能正常加载。
+打开 `http://localhost:8080/`，再进入英文或中文页面。通过 HTTP 预览，路线图与地图的 JSON 才能正常加载。
 
 检查已有数据规则：
 
