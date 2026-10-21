@@ -381,6 +381,8 @@ code { font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace; }
 .wb-proof-grid img, .wb-submission img, .wb-submission video { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 6px; background: #e7ece8; }
 .wb-proof-grid figcaption, .wb-submission figcaption { margin-top: 4px; color: #657d3e; font-size: 11px; font-weight: 700; }
 .wb-cad { display: inline-flex; margin-top: 10px; min-height: 36px; padding: 7px 12px; font-size: 12px; }
+.upload-example { margin: 0; }
+.upload-example[hidden] { display: none; }
 .wb-submission { margin-top: 10px; padding: 12px; border: 1px solid #d5e0d8; border-radius: 10px; background: white; }
 .wb-submission h4 { margin: 0; color: var(--seeed-blue); font-size: 14px; }
 .wb-submission p { margin-top: 6px; }

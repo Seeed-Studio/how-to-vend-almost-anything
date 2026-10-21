@@ -4,17 +4,19 @@
     ? {
         unconfigured: "投稿服务尚未配置。请先用 GitHub issue 提交提案。",
         unconfiguredButton: "投稿服务尚未配置",
-        submit: "创建 GitHub 草稿 PR ↗",
-        emptyFiles: "尚未选择文件。只提交文字说明也可以。",
+        submit: "写入仓库",
+        emptyFiles: "请加上示意图和实物图。",
         tooMany: "每次最多 4 个文件。",
         tooBig: "单个文件不能超过 5 MB。",
         total: "文件合计不能超过 12 MB。",
         type: "不接受这个文件类型。",
         captcha: "请先完成安全验证。",
-        sending: "正在创建草稿 PR…",
-        failed: "上传没有完成。可以改用 GitHub issue。",
-        folder: "草稿将写入",
-        openPr: "打开草稿 PR ↗"
+        sending: "正在写入仓库…",
+        failed: "没有写入。",
+        folder: "将写入",
+        openPr: "打开草稿 PR ↗",
+        added: "已加上，现在显示在页面上。",
+        needBoth: "请同时加上示意图和实物图。"
       }
     : {
         unconfigured: "The submission service is not configured yet. Use the GitHub issue link.",
@@ -71,7 +73,7 @@
     .then((data) => {
       const labs = [...(data.labs || [])].sort((a, b) => String(a.name).localeCompare(String(b.name)));
       if (!labSelect) return;
-      const options = ['<option value="individual">Individual contributor</option>'];
+      const options = [`<option value="individual">${esc(zh ? "个人贡献者" : "Individual contributor")}</option>`];
       for (const lab of labs) {
         if (!lab.name) continue;
         options.push(`<option value="${esc(lab.lab_id || lab.name)}">${esc(lab.name)}</option>`);

@@ -88,7 +88,7 @@
           ${item.title ? `<p><strong>${esc(item.title)}</strong></p>` : ""}
           ${item.description ? `<p>${esc(item.description)}</p>` : ""}
           <div class="wb-proof-grid">
-            ${sketch ? `<figure><button type="button" class="wb-zoom" data-zoom="${esc(sketch)}"><img src="${esc(sketch)}" alt="草图"></button><figcaption>草图</figcaption></figure>` : ""}
+            ${sketch ? `<figure><button type="button" class="wb-zoom" data-zoom="${esc(sketch)}"><img src="${esc(sketch)}" alt="示意图"></button><figcaption>示意图</figcaption></figure>` : ""}
             ${actual ? `<figure><button type="button" class="wb-zoom" data-zoom="${esc(actual)}"><img src="${esc(actual)}" alt="实物"></button><figcaption>实物</figcaption></figure>` : ""}
           </div>`;
         slot.append(article);
