@@ -6,6 +6,11 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 export const DEFAULT_BASE = "https://www.fablabs.io/api";
 const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 const socialDomains = ["facebook.com", "instagram.com", "twitter.com", "x.com", "linkedin.com", "youtube.com", "youtu.be", "fablabs.io", "flickr.com", "vimeo.com", "tiktok.com"];
+// The public directory omits coordinates for these labs. The point is the OpenStreetMap
+// place that matches the street address published on the lab's FabLabs.io profile.
+export const PLACES_WHEN_MISSING = {
+  "fablabs:1543": { latitude: 22.5767074, longitude: 113.9387176 }
+};
 
 export function httpUrl(value) {
   if (typeof value !== "string") return "";
@@ -27,6 +32,13 @@ export function normalize(record, day) {
   let country = code;
   try { if (code) country = regionNames.of(code) || code; } catch { /* Retain an unrecognized region code. */ }
   const links = [...new Set((Array.isArray(record.links) ? record.links : []).map((item) => httpUrl(item?.url)).filter(Boolean))];
+  let latitude = coordinate(record.latitude, 90);
+  let longitude = coordinate(record.longitude, 180);
+  const placed = PLACES_WHEN_MISSING[`fablabs:${record.id}`];
+  if ((latitude === null || longitude === null) && placed) {
+    latitude = placed.latitude;
+    longitude = placed.longitude;
+  }
   // The feed has no primary/type designation. Prefer a supplied non-social link.
   const website = links.find((link) => {
     const host = new URL(link).hostname.toLowerCase();
@@ -38,8 +50,8 @@ export function normalize(record, day) {
     city: String(record.city || ""),
     country,
     country_code: code,
-    latitude: coordinate(record.latitude, 90),
-    longitude: coordinate(record.longitude, 180),
+    latitude,
+    longitude,
     official_fablabs_url: `https://www.fablabs.io/labs/${encodeURIComponent(record.slug)}`,
     lab_website: website,
     directory_links: links,

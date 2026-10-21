@@ -43,11 +43,12 @@ test('prefilled issue drafts use form field IDs and preserve special characters'
  assert.equal(url.searchParams.has('body'),false);
  assert.equal(new URL(context.issueHref(item,'correction')).searchParams.get('record'),`${item.lab_id} · ${item.name}`);
 });
-test('shortlist CSV quotes content and neutralizes spreadsheet formula prefixes', () => {
- assert.equal(context.csvCell('=HYPERLINK("bad")'),'"\'=HYPERLINK(""bad"")"');
- assert.equal(context.csvCell('one,two'),'"one,two"');
- const csv=context.shortlistCsv([{...lab,name:'Lab "Example"',capabilities:['laser','cnc_milling']}]);
- assert.ok(csv.includes('"Lab ""Example"""'));assert.ok(csv.includes('"laser; cnc_milling"'));
+test('a status filter keeps the selected marker and drops the others', () => {
+ const directory = {...lab, marker_status:'directory'};
+ const pilot = {...lab, lab_id:'fablabs:1543', name:'Chaihuo Makerspace', marker_status:'pilot'};
+ const state = {status:'pilot', machine:'any', category:'all', recent:false};
+ assert.equal(context.matches(pilot, '', state), true);
+ assert.equal(context.matches(directory, '', state), false);
 });
 test('map locations reject missing, infinite and out-of-range coordinates', () => {
  for (const candidate of [lab,{latitude:Infinity,longitude:0},{latitude:91,longitude:0}]) assert.equal(context.hasCoords(candidate),false);

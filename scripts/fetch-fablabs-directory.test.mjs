@@ -18,6 +18,13 @@ test("public fields retain directory status and prefer non-social supplied websi
  assert.equal("email" in result,false);
  assert.equal("phone" in result,false);
 });
+test("Chaihuo keeps a directory-supplied point and receives the published place only when coordinates are absent", () => {
+ const chaihuo = { id: 1543, name: "Chaihuo Makerspace", slug: "chaihuomakerspace", country_code: "CN", city: "Shenzhen", latitude: null, longitude: null, links: [], activity_status: "active" };
+ const placed = normalize(chaihuo, day);
+ assert.equal(placed.latitude, 22.5767074);
+ assert.equal(placed.longitude, 113.9387176);
+ assert.equal(normalize({ ...chaihuo, latitude: 22.5, longitude: 114 }, day).latitude, 22.5);
+});
 test("absent coordinates are null, valid zero is retained, and invalid ranges are rejected", () => {
  assert.equal(normalize(record,day).latitude,null);
  assert.equal(normalize({...record,latitude:"",longitude:false},day).longitude,null);

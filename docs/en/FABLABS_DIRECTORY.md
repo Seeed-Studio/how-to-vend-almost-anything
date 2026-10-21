@@ -1,10 +1,10 @@
 # FabLabs.io directory and FAB action guide
 
-Verified on **2026-10-10**. The [Network page](network.html#explore) uses a public FabLabs.io directory snapshot. A directory listing is not participation in this vending program or endorsement by the Fab Foundation.
+Verified on **2026-10-22**. The [Network page](network.html#explore) uses a public FabLabs.io directory snapshot. A directory listing is not participation in this vending program or endorsement by the Fab Foundation.
 
 ## The API that works today
 
-**Use [`GET https://www.fablabs.io/api/labs`](https://www.fablabs.io/api/labs).** It returned HTTP 200 and a top-level JSON array of 2,874 listings without an account, application, OAuth login, or access token. The current public controller returns the full approved directory in one response; pagination and search parameters are not implemented. Filter locally after fetching it once.
+**Use [`GET https://www.fablabs.io/api/labs`](https://www.fablabs.io/api/labs).** It returned HTTP 200 and a top-level JSON array of 2,882 listings without an account, application, OAuth login, or access token. The current public controller returns the full approved directory in one response; pagination and search parameters are not implemented. Filter locally after fetching it once.
 
 | Endpoint | Observed behavior | Use |
 | --- | --- | --- |
@@ -36,20 +36,20 @@ For website selection, the sync prefers the first supplied HTTP(S) link outside 
 
 ## What the directory currently tells us
 
-Analysis of the fetched **2026-10-10** response:
+Analysis of the fetched **2026-10-22** response:
 
 | Measure | Count |
 | --- | ---: |
-| Approved directory listings | 2,874 |
+| Approved directory listings | 2,882 |
 | Country/territory codes represented | 146 |
-| Records with usable map coordinates | 2,639 |
-| Records with at least one safe supplied HTTP(S) link | 2,343 |
-| Records with a preferred website candidate | 2,094 |
-| Records declaring at least one capability | 2,755 |
-| Records listed as active | 2,009 |
-| Records listed as closed | 102 |
+| Records with usable map coordinates | 2,648 |
+| Records with at least one safe supplied HTTP(S) link | 2,341 |
+| Records with a preferred website candidate | 2,099 |
+| Records declaring at least one capability | 2,763 |
+| Records listed as active | 2,014 |
+| Records listed as closed | 105 |
 
-**Inference:** the directory is already useful for discovering potential partners and planning regional projects. It is not a measurement of operating vending machines or demand. Country totals include inactive, planned, and unspecified listings, so activity filters matter. For example, the United States has 319 listings, France 296, Brazil 201, and Italy 195; these are directory counts, not pilot priorities or confirmed opportunities.
+**Inference:** the directory is already useful for discovering potential partners and planning regional projects. It is not a measurement of operating vending machines or demand. Country totals include inactive, planned, and unspecified listings, so activity filters matter. For example, the United States has 319 listings, France 297, Brazil 201, and Italy 195; these are directory counts, not pilot priorities or confirmed opportunities.
 
 ## Refreshing this site
 
@@ -57,13 +57,13 @@ Analysis of the fetched **2026-10-10** response:
 2. Run `node scripts/fetch-fablabs-directory.mjs` from the repository root.
 3. Run `node scripts/validate-site-data.mjs` and review the resulting snapshot diff.
 
-The [Refresh FabLabs directory workflow](../../.github/workflows/fablabs-directory.yml) does this daily at **03:15 UTC / 11:15 Asia/Shanghai** and on manual dispatch. The public refresh requires **no Actions secrets**. Old `FABLABS_ACCESS_TOKEN` and `FABLABS_API_BASE` secrets are no longer read by that workflow. A local `FABLABS_API_BASE` override is only for a confirmed HTTPS endpoint returning the same full-array schema.
+The [Refresh FabLabs directory workflow](../../.github/workflows/fablabs-directory.yml) does this daily at **03:15 UTC / 11:15 Asia/Shanghai** and on manual dispatch. The schedule runs from `main`, then checks out and commits `site/fab-vending-pages`, because GitHub Pages publishes that branch. The public refresh requires **no Actions secrets**. Old `FABLABS_ACCESS_TOKEN` and `FABLABS_API_BASE` secrets are no longer read by that workflow. A local `FABLABS_API_BASE` override is only for a confirmed HTTPS endpoint returning the same full-array schema.
 
 The synchronizer:
 
 - Fetches the public full directory once, with a timeout.
 - Validates essential fields and rejects empty, unexpected, or duplicate-ID payloads before writing.
-- Preserves absent coordinates as `null`, rather than inventing map points at zero.
+- Preserves absent coordinates as `null`, rather than inventing map points at zero. Chaihuo Makerspace (`fablabs:1543`) is the exception: the public feed omits its coordinates, so the sync uses the OpenStreetMap place 万科云城 (22.5767074, 113.9387176), which matches the street address on its FabLabs.io profile. A later directory coordinate replaces that place.
 - Forces every imported record to `participation_status: "directory"` and `verification_date: null`.
 - Prepares both English and Chinese snapshots before replacing them; API/parse failures leave the last good snapshots unchanged.
 - Skips a commit when directory content has not changed. `fetched_at` records when the committed snapshot was refreshed, not every daily check.
@@ -72,12 +72,12 @@ GitHub Pages reads [`data/directory-labs.json`](data/directory-labs.json). It do
 
 ## FAB actions you can build
 
-The following are proposed uses of the verified directory fields. The first group is implemented on the [Network page](network.html#fab-actions).
+The following are proposed uses of the verified directory fields. The network page now filters the map and lab list by marker status.
 
 | Action | Data and workflow | Current support |
 | --- | --- | --- |
-| Find a fabrication partner | Country + declared capability + lab activity; check the supplied website | Filters and website links |
-| Plan a workshop or regional visit | Shortlist labs, confirm access and interest with each lab, export your planning list | Browser-local shortlist and CSV export |
+| Find a fabrication partner | Country + declared capability + lab activity; check the supplied website | Directory fields are in the snapshot; the page filters by marker status |
+| Plan a workshop or regional visit | Confirm access and interest with each lab | Not a page feature |
 | Register your lab's early interest | Prefill lab name, location, profile, and website; add your needs before submitting | GitHub form draft |
 | Report a real vending installation | Start from a shortlisted lab; supply version, date, photograph, and verification source | GitHub form draft; review still required |
 | Share an open improvement | Attribute the lab, add CAD/source, compatibility, license, and test evidence | GitHub form draft and existing workbench |
