@@ -334,7 +334,7 @@ code { font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace; }
 }
 .wb-stage {
   display: grid;
-  grid-template-columns: minmax(0, 1.7fr) minmax(240px, 0.95fr) minmax(200px, 0.72fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(230px, 1fr) minmax(230px, 1fr);
   min-height: 0;
   margin: 0 16px;
   border: 1px solid var(--line);
@@ -357,7 +357,18 @@ code { font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace; }
   color: var(--ink);
   border-left: 1px solid var(--line);
 }
-.wb-inspector #inspector-content { overflow: auto; padding: 18px 18px 8px; }
+.wb-inspector #inspector-content { overflow: auto; flex: 1; min-height: 0; padding: 4px 18px 8px; }
+.wb-feed-head { flex: none; padding: 18px 18px 0; }
+.wb-welcome { margin-top: 6px; }
+.wb-feed { flex: 1; min-height: 0; overflow: auto; padding: 4px 18px 8px; }
+.wb-card { margin-top: 10px; padding: 12px; border: 1px solid #d5e0d8; border-radius: 10px; background: white; }
+.wb-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.wb-card-title { margin: 0; color: var(--seeed-blue); font-size: 15px; font-weight: 650; line-height: 1.35; }
+.wb-card-who { margin-top: 4px; color: #657d3e; font-size: 12px; font-weight: 700; }
+.wb-up { display: inline-flex; align-items: center; gap: 4px; flex: none; min-height: 28px; padding: 2px 8px; border: 1px solid #c9d5cf; border-radius: 999px; background: white; color: var(--seeed-blue); font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+.wb-up svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+.wb-up[aria-pressed="true"] { border-color: #8fc31f; background: #f3f8e8; color: #3f6214; }
+.wb-up[aria-pressed="true"] svg { fill: currentColor; }
 .wb-inspector h2 { margin: 0 0 8px; color: var(--seeed-blue); font-size: 22px; font-weight: 650; line-height: 1.2; letter-spacing: -.03em; }
 .wb-inspector h3 { margin: 14px 0 4px; color: #4c7413; font-size: 11px; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
 .wb-inspector p, .wb-inspector dd { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
@@ -409,7 +420,7 @@ code { font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace; }
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  background: #f7f4ea;
+  background: #fbfcf8;
   color: var(--ink);
   border-left: 1px solid var(--line);
 }

@@ -42,6 +42,9 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_POST(self):
         path = urlparse(self.path).path
+        if path == "/api/votes":
+            self.vote()
+            return
         if path not in ("/api/contributions", "/api/ideas"):
             self.send_error(404)
             return
@@ -85,6 +88,37 @@ class Handler(SimpleHTTPRequestHandler):
             self.reply(400, {"error": str(error)})
             return
         self.reply(200, {"ok": True, "item": item})
+
+    def vote(self):
+        length = int(self.headers.get("Content-Length") or 0)
+        if length <= 0 or length > 10000:
+            self.reply(400, {"error": "Missing vote."})
+            return
+        try:
+            payload = json.loads(self.rfile.read(length).decode("utf-8"))
+        except json.JSONDecodeError:
+            self.reply(400, {"error": "Missing vote."})
+            return
+        kind = payload.get("kind")
+        item_id = payload.get("id")
+        path = SUBMISSIONS if kind == "submission" else IDEAS if kind == "idea" else None
+        if path is None or not item_id:
+            self.reply(400, {"error": "Unknown vote."})
+            return
+        current = json.loads(path.read_text()) if path.exists() else {"items": []}
+        found = None
+        for item in current.get("items") or []:
+            if item.get("id") == item_id:
+                item["upvotes"] = int(item.get("upvotes") or 0) + 1
+                found = item
+                break
+        if not found:
+            self.reply(404, {"error": "That item is not in the list."})
+            return
+        temporary = path.with_suffix(".json.tmp")
+        temporary.write_text(json.dumps(current, indent=2) + "\n")
+        temporary.replace(path)
+        self.reply(200, {"ok": True, "upvotes": found["upvotes"]})
 
     def reply(self, status, payload):
         body = json.dumps(payload).encode()
@@ -140,6 +174,7 @@ def save_contribution(fields, files):
         "description": description,
         "sketch": f"submissions/{system}/{folder_name}/{sketch_name}",
         "actual": f"submissions/{system}/{folder_name}/{actual_name}",
+        "upvotes": 0,
     }
     current = {"items": []}
     if SUBMISSIONS.exists():
@@ -192,6 +227,7 @@ def save_idea(fields, files):
         "name": name,
         "description": description,
         "images": saved,
+        "upvotes": 0,
     }
     write_items(IDEAS, item)
     return item

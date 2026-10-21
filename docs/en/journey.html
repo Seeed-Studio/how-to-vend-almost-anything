@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="assets/css/site.css?v=20261008-2" />
   <link rel="stylesheet" href="assets/css/pages.css" />
   <link rel="stylesheet" href="assets/css/companions.css?v=20261008-5" />
-  <link rel="stylesheet" href="exploded.css?v=example-size" />
+  <link rel="stylesheet" href="exploded.css?v=feeds" />
 </head>
 <body class="companion compact-page workbench-page">
   <a class="skip-link" href="#explorer">Skip to the model</a>
@@ -85,17 +85,21 @@
           </div>
         </div>
         <aside class="wb-inspector" id="contribute" aria-live="polite">
-          <div id="inspector-content" role="tabpanel" aria-labelledby="tab-full"></div>
-          <button type="button" class="btn btn-dark wb-upload" id="system-upload" data-upload-system="dispensing">Upload contribution</button>
+          <div class="wb-feed-head" id="contribution-head">
+            <p class="wb-kicker">Contributions</p>
+            <h2 id="contribution-system-title">00 Full design</h2>
+            <p class="wb-welcome">Welcome to submit your sketch and design here.</p>
+          </div>
+          <div id="inspector-content" class="wb-feed" role="tabpanel" aria-labelledby="tab-full"></div>
+          <button type="button" class="btn btn-dark wb-upload" id="system-upload" data-upload-system="full">Upload contribution</button>
         </aside>
         <aside class="wb-ideas" aria-label="Ideas">
-          <div class="wb-ideas-head">
+          <div class="wb-feed-head">
             <p class="wb-kicker">Ideas</p>
             <h2 id="idea-system-title">00 Full design</h2>
+            <p class="wb-welcome">Welcome to share an idea here.</p>
           </div>
-          <div class="idea-scroll" id="idea-scroll">
-            <div class="idea-track" id="idea-track"></div>
-          </div>
+          <div class="wb-feed" id="idea-feed"></div>
           <button type="button" class="btn btn-dark wb-upload" id="idea-upload">Upload ideas</button>
         </aside>
       </div>
@@ -106,97 +110,6 @@
       </ol>
     </section>
   </main>
-
-  <template id="tpl-full">
-    <p class="wb-kicker">00 / Full design</p>
-    <h2>Full design</h2>
-    <section class="wb-block">
-      <header class="wb-block-head"><h3>Full design - V0</h3><a class="wb-raw" href="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/XIAO-vending-machine-v0.step" download aria-label="Download the V0 model"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10m0 0 4-4m-4 4-4-4M5 20h14"/></svg></a></header>
-      <p>A working four-column machine: case, frame, dispensers, and the customer interface.</p>
-      <div class="wb-proof-grid">
-        <figure><button type="button" class="wb-zoom" data-zoom="../assets/v0/10-assemble-final-look-design.png"><img src="../assets/v0/10-assemble-final-look-design.png" alt="Sketch diagram of the finished Version Zero machine"></button><figcaption>Sketch diagram</figcaption></figure>
-        <figure><button type="button" class="wb-zoom" data-zoom="../assets/v0/10-assemble-final-look-real-life.jpg"><img src="../assets/v0/10-assemble-final-look-real-life.jpg" alt="Photograph of the finished Version Zero machine"></button><figcaption>Actual looking</figcaption></figure>
-      </div>
-      <div data-submission-slot data-system="full" data-version="V0"></div>
-    </section>
-    <section class="wb-block">
-      <header class="wb-block-head"><h3>Full design - V1</h3></header>
-      <p>The integrated V1 machine brings the new dispensing and storage together in one assembly.</p>
-      <div data-submission-slot data-system="full" data-version="V1"></div>
-    </section>
-  </template>
-  <template id="tpl-dispensing">
-    <p class="wb-kicker">01 / Dispensing</p>
-    <h2>Dispensing</h2>
-    <section class="wb-block">
-      <header class="wb-block-head"><h3>Dispensing - V0</h3><a class="wb-raw" href="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/dispenser.stl" download aria-label="Download the V0 dispenser"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10m0 0 4-4m-4 4-4-4M5 20h14"/></svg></a></header>
-      <p>Four columns release a product with servo-driven arms after the card is authorized.</p>
-      <div class="wb-proof-grid">
-        <figure><button type="button" class="wb-zoom" data-zoom="../assets/v0/2-full-dispense-part-design.png"><img src="../assets/v0/2-full-dispense-part-design.png" alt="Sketch diagram of the Version Zero dispenser"></button><figcaption>Sketch diagram</figcaption></figure>
-        <figure><button type="button" class="wb-zoom" data-zoom="../assets/v0/2-full-dispense-part-real-life.jpg"><img src="../assets/v0/2-full-dispense-part-real-life.jpg" alt="Photograph of the Version Zero dispenser"></button><figcaption>Actual looking</figcaption></figure>
-      </div>
-      <div data-submission-slot data-system="dispensing" data-version="V0"></div>
-    </section>
-    <section class="wb-block">
-      <header class="wb-block-head"><h3>Dispensing - V1</h3></header>
-      <p>A linked dispenser with a servo plate, FT90M drives, M4 standoffs, and one integrated body.</p>
-      <div data-submission-slot data-system="dispensing" data-version="V1"></div>
-    </section>
-  </template>
-  <template id="tpl-storage">
-    <p class="wb-kicker">02 / Storage</p>
-    <h2>Storage</h2>
-    <section class="wb-block">
-      <header class="wb-block-head"><h3>Storage - V0</h3><a class="wb-raw" href="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/product-column.stl" download aria-label="Download the V0 column"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10m0 0 4-4m-4 4-4-4M5 20h14"/></svg></a></header>
-      <p>Four columns sit on the dispensers and hold the XIAO boards.</p>
-      <div class="wb-proof-grid">
-        <figure><button type="button" class="wb-zoom" data-zoom="../assets/v0/7-columns-top-deisgn.png"><img src="../assets/v0/7-columns-top-deisgn.png" alt="Sketch diagram of the Version Zero columns"></button><figcaption>Sketch diagram</figcaption></figure>
-        <figure><button type="button" class="wb-zoom" data-zoom="../assets/v0/7-columns-top-real-life.jpg"><img src="../assets/v0/7-columns-top-real-life.jpg" alt="Photograph of the Version Zero columns"></button><figcaption>Actual looking</figcaption></figure>
-      </div>
-      <div data-submission-slot data-system="storage" data-version="V0"></div>
-    </section>
-    <section class="wb-block">
-      <header class="wb-block-head"><h3>Storage - V1</h3></header>
-      <p>A bent XIAO tube held by upper, middle, and lower plates, as separate parts or one assembly.</p>
-      <div data-submission-slot data-system="storage" data-version="V1"></div>
-    </section>
-  </template>
-  <template id="tpl-enclosure">
-    <p class="wb-kicker">03 / Enclosure</p>
-    <h2>Enclosure</h2>
-    <section class="wb-block">
-      <header class="wb-block-head"><h3>Enclosure - V0</h3><a class="wb-raw" href="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/case/outer%20enclosure.step" download aria-label="Download the V0 enclosure"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10m0 0 4-4m-4 4-4-4M5 20h14"/></svg></a></header>
-      <p>A printable case, frame, and feet close and carry the machine.</p>
-      <div class="wb-proof-grid">
-        <figure><button type="button" class="wb-zoom" data-zoom="../assets/v0/8-fixed-case-design.png"><img src="../assets/v0/8-fixed-case-design.png" alt="Sketch diagram of the Version Zero enclosure"></button><figcaption>Sketch diagram</figcaption></figure>
-        <figure><button type="button" class="wb-zoom" data-zoom="../assets/v0/8-fixed-case-real-life.jpg"><img src="../assets/v0/8-fixed-case-real-life.jpg" alt="Photograph of the Version Zero enclosure"></button><figcaption>Actual looking</figcaption></figure>
-      </div>
-      <div data-submission-slot data-system="enclosure" data-version="V0"></div>
-    </section>
-    <section class="wb-block">
-      <header class="wb-block-head"><h3>Enclosure - V1</h3></header>
-      <p>No enclosure redesign yet. A lab can propose panels and product bays.</p>
-      <div data-submission-slot data-system="enclosure" data-version="V1"></div>
-    </section>
-  </template>
-  <template id="tpl-control">
-    <p class="wb-kicker">04 / Control &amp; computing</p>
-    <h2>Control &amp; computing</h2>
-    <section class="wb-block">
-      <header class="wb-block-head"><h3>Control - V0</h3><a class="wb-raw" href="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/site/fab-vending-pages/docs/models/wio-terminal.stl" download aria-label="Download the V0 Wio Terminal model"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10m0 0 4-4m-4 4-4-4M5 20h14"/></svg></a></header>
-      <p>Two Wio Terminals, bus servos, and an RFID reader sense the card and drive the machine.</p>
-      <div class="wb-proof-grid">
-        <figure><button type="button" class="wb-zoom" data-zoom="../assets/v0/6-wio-terminal-rfid-design.jpg"><img src="../assets/v0/6-wio-terminal-rfid-design.jpg" alt="Sketch diagram of the Version Zero Wio Terminal and RFID"></button><figcaption>Sketch diagram</figcaption></figure>
-        <figure><button type="button" class="wb-zoom" data-zoom="../assets/v0/6-wio-terminal-rfid-real-life.jpg"><img src="../assets/v0/6-wio-terminal-rfid-real-life.jpg" alt="Photograph of the Version Zero Wio Terminal and RFID"></button><figcaption>Actual looking</figcaption></figure>
-      </div>
-      <div data-submission-slot data-system="control" data-version="V0"></div>
-    </section>
-    <section class="wb-block">
-      <header class="wb-block-head"><h3>Control - V1</h3></header>
-      <p>No control redesign yet. A later change should be a new version, not a silent swap.</p>
-      <div data-submission-slot data-system="control" data-version="V1"></div>
-    </section>
-  </template>
 
   <footer class="site-footer">
     <div class="shell">
@@ -315,7 +228,7 @@
   <script src="replacements.js"></script>
   <script src="assets/js/contribution-config.js"></script>
   <script src="assets/js/journey-upload.js?v=7"></script>
-  <script src="assets/js/workbench.js?v=7"></script>
+  <script src="assets/js/workbench.js?v=10"></script>
   <script src="assets/js/initiative.js?v=20261008-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/occt-import-js@0.0.24/dist/occt-import-js.js"></script>
   <script type="importmap">

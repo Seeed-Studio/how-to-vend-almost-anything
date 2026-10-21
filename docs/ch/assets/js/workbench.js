@@ -22,7 +22,7 @@
         replacement: "Replacement"
       };
 
-  const tabs = [...document.querySelectorAll("[data-system]")];
+  const tabs = [...document.querySelectorAll("[data-system-tabs] [role='tab']")];
   const panel = document.querySelector("#inspector-content");
   const upload = document.querySelector("#system-upload");
   const tablist = document.querySelector("[data-system-tabs]");
@@ -48,6 +48,31 @@
     return `https://github.com/Seeed-Studio/how-to-vend-almost-anything/blob/site/fab-vending-pages/${(base + path).split("/").map(encodeURIComponent).join("/")}`;
   }
 
+  const systemNames = zh
+    ? { full: "00 整机", dispensing: "01 出货", storage: "02 货道", enclosure: "03 箱体", control: "04 控制" }
+    : { full: "00 Full design", dispensing: "01 Dispensing", storage: "02 Storage", enclosure: "03 Enclosure", control: "04 Control" };
+  const sketchLabel = zh ? "示意图" : "Sketch diagram";
+  const actualLabel = zh ? "实物" : "Actual looking";
+
+  function voteStore(name) {
+    try { return JSON.parse(localStorage.getItem(name) || "{}"); }
+    catch { return {}; }
+  }
+  function voted(id) { return Boolean(voteStore("vending-votes")[id]); }
+  function synced(id) { return Boolean(voteStore("vending-votes-synced")[id]); }
+  function markVote(name, id) {
+    const store = voteStore(name);
+    store[id] = true;
+    localStorage.setItem(name, JSON.stringify(store));
+  }
+  function score(item) {
+    return (item.upvotes || 0) + (voted(item.id) && !synced(item.id) ? 1 : 0);
+  }
+  function thumb(kind, item) {
+    const pressed = voted(item.id);
+    return `<button type="button" class="wb-up" data-vote-kind="${esc(kind)}" data-vote-id="${esc(item.id)}" aria-pressed="${pressed ? "true" : "false"}" aria-label="${esc(zh ? "点赞" : "Thumbs up")}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 11v8H5v-8h3zm2.2 8.8A2 2 0 0 0 12 21h6.2a2 2 0 0 0 2-1.7l1.2-6A2 2 0 0 0 19.4 11H15V7.2A2.2 2.2 0 0 0 12.8 5h-.3L8.2 11"/></svg><span>${score(item)}</span></button>`;
+  }
+
   function focus(tab) {
     const groups = (tab.dataset.groups || "").split(",").map((item) => item.trim()).filter(Boolean);
     window.VENDING_VIEWER?.focusGroups(groups);
@@ -61,38 +86,45 @@
     return `../${path}`;
   }
 
-  function renderSubmissions(root) {
-    root.querySelectorAll("[data-submission-slot]").forEach((slot) => {
-      const items = submissions.filter((item) => item.system === slot.dataset.system && item.version === slot.dataset.version);
-      slot.replaceChildren();
-      if (!items.length && slot.dataset.version === "V1") {
-        const fab = "../assets/example-fab-showing.jpg";
-        const after = "../assets/example-after-looking.jpg";
-        const fabLabel = zh ? "这是示例的加工图" : "This is the example fab showing";
-        const afterLabel = zh ? "这是示例的实物图" : "This is the example image after looking";
-        slot.innerHTML = `
+  function renderSubmissions() {
+    const system = current?.dataset.system;
+    const items = submissions
+      .filter((item) => item.system === system)
+      .sort((a, b) => score(b) - score(a) || String(b.id).localeCompare(String(a.id)));
+    panel.replaceChildren();
+    if (!items.length) {
+      const fab = "../assets/example-fab-showing.jpg";
+      const after = "../assets/example-after-looking.jpg";
+      const fabLabel = zh ? "这是示例的加工图" : "This is the example fab showing";
+      const afterLabel = zh ? "这是示例的实物图" : "This is the example image after looking";
+      panel.innerHTML = `
+        <article class="wb-card">
+          <p class="wb-card-title">${esc(zh ? "示例" : "Example")}</p>
           <div class="wb-proof-grid">
             <figure><button type="button" class="wb-zoom" data-zoom="${fab}"><img src="${fab}" alt="${esc(fabLabel)}"></button><figcaption>${esc(fabLabel)}</figcaption></figure>
             <figure><button type="button" class="wb-zoom" data-zoom="${after}"><img src="${after}" alt="${esc(afterLabel)}"></button><figcaption>${esc(afterLabel)}</figcaption></figure>
-          </div>`;
-        return;
-      }
-      items.forEach((item) => {
-        const who = [item.name, item.lab].filter(Boolean).join(" · ");
-        const sketch = submissionSrc(item.sketch);
-        const actual = submissionSrc(item.actual);
-        const article = document.createElement("article");
-        article.className = "wb-submission";
-        article.innerHTML = `
-          <h4>${esc(who || item.title || "")}</h4>
-          ${item.title ? `<p><strong>${esc(item.title)}</strong></p>` : ""}
-          ${item.description ? `<p>${esc(item.description)}</p>` : ""}
-          <div class="wb-proof-grid">
-            ${sketch ? `<figure><button type="button" class="wb-zoom" data-zoom="${esc(sketch)}"><img src="${esc(sketch)}" alt="示意图"></button><figcaption>示意图</figcaption></figure>` : ""}
-            ${actual ? `<figure><button type="button" class="wb-zoom" data-zoom="${esc(actual)}"><img src="${esc(actual)}" alt="实物"></button><figcaption>实物</figcaption></figure>` : ""}
-          </div>`;
-        slot.append(article);
-      });
+          </div>
+        </article>`;
+      return;
+    }
+    items.forEach((item) => {
+      const who = [item.name, item.lab].filter(Boolean).join(" · ");
+      const sketch = submissionSrc(item.sketch);
+      const actual = submissionSrc(item.actual);
+      const article = document.createElement("article");
+      article.className = "wb-card";
+      article.innerHTML = `
+        <div class="wb-card-top">
+          <p class="wb-card-title">${esc(item.title || who)}</p>
+          ${thumb("submission", item)}
+        </div>
+        ${who ? `<p class="wb-card-who">${esc(who)}</p>` : ""}
+        ${item.description ? `<p>${esc(item.description)}</p>` : ""}
+        <div class="wb-proof-grid">
+          ${sketch ? `<figure><button type="button" class="wb-zoom" data-zoom="${esc(sketch)}"><img src="${esc(sketch)}" alt="${esc(sketchLabel)}"></button><figcaption>${esc(sketchLabel)}</figcaption></figure>` : ""}
+          ${actual ? `<figure><button type="button" class="wb-zoom" data-zoom="${esc(actual)}"><img src="${esc(actual)}" alt="${esc(actualLabel)}"></button><figcaption>${esc(actualLabel)}</figcaption></figure>` : ""}
+        </div>`;
+      panel.append(article);
     });
   }
 
@@ -113,17 +145,16 @@
       item.setAttribute("aria-selected", selected ? "true" : "false");
       item.tabIndex = selected ? 0 : -1;
     });
-    const template = document.querySelector(`#tpl-${tab.dataset.system}`);
-    panel.replaceChildren(template ? template.content.cloneNode(true) : document.createTextNode(""));
+    document.querySelector("#contribution-head")?.removeAttribute("hidden");
+    const title = document.querySelector("#contribution-system-title");
+    if (title) title.textContent = systemNames[tab.dataset.system] || tab.textContent.trim();
     panel.setAttribute("aria-labelledby", tab.id);
     if (upload) {
-      const system = tab.dataset.system;
-      const canUpload = Boolean(system);
-      upload.hidden = !canUpload;
-      if (canUpload) upload.dataset.uploadSystem = system;
+      upload.hidden = false;
+      upload.dataset.uploadSystem = tab.dataset.system;
     }
     focus(tab);
-    renderSubmissions(panel);
+    renderSubmissions();
     window.VENDING_RENDER_IDEAS?.();
   }
 
@@ -131,6 +162,7 @@
     const manifest = window.VENDING_PARTS;
     const part = manifest?.parts?.find((item) => item.id === partId);
     if (!part) return;
+    document.querySelector("#contribution-head")?.setAttribute("hidden", "");
     const group = manifest.groups?.find((item) => item.id === part.group);
     const revisions = (window.VENDING_REPLACEMENTS || []).filter((item) => item.partId === part.id);
     const currentModel = revisions.length ? revisions[revisions.length - 1] : null;
@@ -183,6 +215,29 @@
   showSystem(current);
   loadSubmissions();
   setupIdeas();
+  document.addEventListener("click", async (event) => {
+    const button = event.target.closest("[data-vote-id]");
+    if (!button || voted(button.dataset.voteId)) return;
+    const id = button.dataset.voteId;
+    const kind = button.dataset.voteKind;
+    markVote("vending-votes", id);
+    try {
+      const response = await fetch("/api/votes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ kind, id })
+      });
+      if (response.ok) {
+        markVote("vending-votes-synced", id);
+        await loadSubmissions();
+        document.dispatchEvent(new CustomEvent("vending:ideas"));
+        return;
+      }
+    } catch { /* keep the local vote */ }
+    renderSubmissions();
+    window.VENDING_RENDER_IDEAS?.();
+  });
+
   document.querySelectorAll("[data-close-zoom]").forEach((button) => {
     button.addEventListener("click", () => document.querySelector("#image-zoom")?.close());
   });
@@ -218,7 +273,7 @@
           sending: "Saving into the repository…",
           failed: "The idea was not saved."
         };
-    const track = document.querySelector("#idea-track");
+    const feed = document.querySelector("#idea-feed");
     const dialog = document.querySelector("#idea-dialog");
     const form = document.querySelector("#idea-form");
     const status = document.querySelector("#idea-status");
@@ -239,31 +294,35 @@
     }
 
     function renderIdeas() {
-      if (!track) return;
+      if (!feed) return;
       const system = activeSystem();
       const title = document.querySelector("#idea-system-title");
       if (title) title.textContent = systemNames[system] || system;
-      const scroller = document.querySelector("#idea-scroll");
-      const lines = ideas.filter((item) => item.system === system).map((item) => {
+      const items = ideas
+        .filter((item) => item.system === system)
+        .sort((a, b) => score(b) - score(a) || String(b.id).localeCompare(String(a.id)));
+      feed.replaceChildren();
+      if (!items.length) {
+        feed.innerHTML = `<p class="wb-card-who">${esc(copy.empty)}</p>`;
+        return;
+      }
+      items.forEach((item) => {
         const who = [item.name, item.lab].filter(Boolean).join(" · ");
-        const thumbs = (item.images || []).map((path) => {
+        const images = (item.images || []).map((path) => {
           const href = src(path);
-          return `<button type="button" data-zoom="${esc(href)}"><img src="${esc(href)}" alt=""></button>`;
+          return `<figure><button type="button" class="wb-zoom" data-zoom="${esc(href)}"><img src="${esc(href)}" alt=""></button></figure>`;
         }).join("");
-        return `<div class="idea-line">${esc(item.description || item.title || "")}${who ? `<span>${esc(who)}</span>` : ""}${thumbs ? `<div class="idea-thumbs">${thumbs}</div>` : ""}</div>`;
+        const article = document.createElement("article");
+        article.className = "wb-card";
+        article.innerHTML = `
+          <div class="wb-card-top">
+            <p class="wb-card-title">${esc(item.description || item.title || "")}</p>
+            ${thumb("idea", item)}
+          </div>
+          ${who ? `<p class="wb-card-who">${esc(who)}</p>` : ""}
+          ${images ? `<div class="wb-proof-grid">${images}</div>` : ""}`;
+        feed.append(article);
       });
-      const scrolling = lines.length > 1;
-      scroller?.classList.toggle("is-scrolling", scrolling);
-      if (!lines.length) {
-        track.innerHTML = `<div class="idea-line">${esc(copy.empty)}</div>`;
-        return;
-      }
-      if (!scrolling) {
-        track.innerHTML = lines.join("");
-        return;
-      }
-      track.innerHTML = lines.concat(lines).join("");
-      scroller?.style.setProperty("--idea-duration", `${Math.max(16, lines.length * 6)}s`);
     }
 
     function loadIdeas() {
@@ -354,6 +413,7 @@
     });
 
     loadIdeas();
+    document.addEventListener("vending:ideas", () => loadIdeas());
     window.VENDING_RENDER_IDEAS = renderIdeas;
   }
 })();
