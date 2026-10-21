@@ -886,6 +886,33 @@ document.querySelectorAll('[data-machine-version]').forEach((button) => {
   button.addEventListener('click', () => setMachineVersion(button.dataset.machineVersion));
 });
 refreshVersionChrome();
+document.getElementById('step-download')?.addEventListener('click', async (event) => {
+  event.preventDefault();
+  const step = event.currentTarget;
+  if (step.dataset.busy === 'true') return;
+  const zh = document.documentElement.lang.startsWith('zh');
+  const filename = step.getAttribute('download') || 'model.step';
+  step.dataset.busy = 'true';
+  step.textContent = zh ? '正在下载…' : 'Downloading…';
+  try {
+    const response = await fetch(step.href);
+    if (!response.ok) throw new Error('download failed');
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const saver = document.createElement('a');
+    saver.href = url;
+    saver.download = filename;
+    document.body.append(saver);
+    saver.click();
+    saver.remove();
+    URL.revokeObjectURL(url);
+  } catch {
+    step.textContent = zh ? '下载没有完成' : 'Download did not finish';
+  } finally {
+    step.dataset.busy = 'false';
+    window.setTimeout(() => refreshVersionChrome(), 1200);
+  }
+});
 
 function fitObjects(objects, preserveDirection=false) {
   const box = new THREE.Box3();
