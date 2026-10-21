@@ -492,6 +492,15 @@ function refreshVersionChrome() {
     const note = selectedVersion === 'V0' ? (zh ? '参考' : 'Reference') : (zh ? '替换件' : 'Replacements');
     bar.textContent = `${selectedVersion} / ${note}`;
   }
+  const step = document.getElementById('step-download');
+  if (step) {
+    const file = selectedVersion === 'V1'
+      ? 'xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/XIAO-vending-machine-v1.step'
+      : 'xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/XIAO-vending-machine-v0.step';
+    step.href = `https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/site/fab-vending-pages/${file.split('/').map(encodeURIComponent).join('/')}`;
+    step.setAttribute('download', file.split('/').pop());
+    step.textContent = zh ? `下载 ${selectedVersion} STEP` : `Download ${selectedVersion} STEP`;
+  }
 }
 
 function preferAvailableMode() {

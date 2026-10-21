@@ -120,6 +120,8 @@
 .layer-dispense { min-height:420px; border-color:rgba(143,195,31,.6); color:var(--seeed-green); }
 .group-labels { position:absolute; z-index:5; left:6%; right:6%; bottom:42px; display:grid; grid-template-columns:repeat(5,1fr); text-align:center; pointer-events:none; font-size:9px; letter-spacing:.13em; color:rgba(255,255,255,.26); }
 .viewport-help { position:absolute; z-index:6; left:16px; bottom:13px; font-size:9px; letter-spacing:.11em; color:#56625c; }
+.step-download { position:absolute; z-index:7; right:16px; bottom:14px; display:inline-flex; align-items:center; min-height:42px; padding:0 16px; border-radius:999px; background:#9fd21b; color:#003a4a; font-size:13px; font-weight:750; letter-spacing:.02em; text-decoration:none; box-shadow:0 8px 18px rgba(0,0,0,.28); }
+.step-download:hover { background:#b6e34a; }
 
 .inspector { overflow:auto; }
 .part-index { color:var(--seeed-green); font-size:10px; letter-spacing:.12em; margin-bottom:28px; }
