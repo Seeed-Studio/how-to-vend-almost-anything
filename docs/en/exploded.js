@@ -964,7 +964,7 @@ animate();
 if (!document.body.classList.contains('workbench-page')) renderInspector(selectedPartId);
 window.VENDING_VIEWER = { focusGroups, fitAll };
 document.dispatchEvent(new CustomEvent('vending:ready'));
-fetch(new URL('../display-models.json?v=v1-dispensing-more', import.meta.url))
+fetch(new URL('../display-models.json?v=pages-models', import.meta.url))
   .then((response) => response.json())
   .then((data) => {
     displayMap = data;

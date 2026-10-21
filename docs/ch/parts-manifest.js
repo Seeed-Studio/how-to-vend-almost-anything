@@ -278,7 +278,7 @@ window.VENDING_PARTS = {
       qty: 1,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-integrated.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-integrated.stl",
+      display: "../models/v1/v1-dispensing-integrated.stl",
       role: "V1 出货机构的一体模型。装配时显示。",
       introducedIn: "V1",
       form: "integrated"
@@ -290,7 +290,7 @@ window.VENDING_PARTS = {
       qty: 1,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-y-link.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-y-link.stl",
+      display: "../models/v1/v1-dispensing-y-link.stl",
       role: "分离的 V1 出货机构里的 Y 连杆。",
       introducedIn: "V1",
       form: "separated"
@@ -302,7 +302,7 @@ window.VENDING_PARTS = {
       qty: 1,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-connector.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-connector.stl",
+      display: "../models/v1/v1-dispensing-connector.stl",
       role: "分离的 V1 出货机构里的一二连接件。",
       introducedIn: "V1",
       form: "separated"
@@ -314,7 +314,7 @@ window.VENDING_PARTS = {
       qty: 1,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-push-arm.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-push-arm.stl",
+      display: "../models/v1/v1-dispensing-push-arm.stl",
       role: "分离的 V1 出货机构里的推进臂。",
       introducedIn: "V1",
       form: "separated"
@@ -326,7 +326,7 @@ window.VENDING_PARTS = {
       qty: 1,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-link-arm.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-link-arm.stl",
+      display: "../models/v1/v1-dispensing-link-arm.stl",
       role: "分离的 V1 出货机构里的连杆臂。",
       introducedIn: "V1",
       form: "separated"
@@ -338,7 +338,7 @@ window.VENDING_PARTS = {
       qty: 2,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-ft90m.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-ft90m.stl",
+      display: "../models/v1/v1-dispensing-ft90m.stl",
       role: "分离的 V1 出货机构里的 FT90M。",
       introducedIn: "V1",
       form: "separated"
@@ -350,7 +350,7 @@ window.VENDING_PARTS = {
       qty: 1,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-upper-servo-plate.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-upper-servo-plate.stl",
+      display: "../models/v1/v1-dispensing-upper-servo-plate.stl",
       role: "分离的 V1 出货机构里的上舵机固定板。",
       introducedIn: "V1",
       form: "separated"
@@ -362,7 +362,7 @@ window.VENDING_PARTS = {
       qty: 1,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-lower-fixing-plate.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-lower-fixing-plate.stl",
+      display: "../models/v1/v1-dispensing-lower-fixing-plate.stl",
       role: "分离的 V1 出货机构里的下固定板。",
       introducedIn: "V1",
       form: "separated"
@@ -374,7 +374,7 @@ window.VENDING_PARTS = {
       qty: 8,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-m4-standoff.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-dispensing-m4-standoff.stl",
+      display: "../models/v1/v1-dispensing-m4-standoff.stl",
       role: "分离的 V1 出货机构里的 M4 铜柱。",
       introducedIn: "V1",
       form: "separated"
@@ -386,7 +386,7 @@ window.VENDING_PARTS = {
       qty: 1,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-integrated.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-integrated.stl",
+      display: "../models/v1/v1-storage-integrated.stl",
       role: "V1 储料的一体模型。装配时显示。",
       introducedIn: "V1",
       form: "integrated"
@@ -398,7 +398,7 @@ window.VENDING_PARTS = {
       qty: 1,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-upper-constraint-plate.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-upper-constraint-plate.stl",
+      display: "../models/v1/v1-storage-upper-constraint-plate.stl",
       role: "分离的 V1 储料里的上约束板。",
       introducedIn: "V1",
       form: "separated"
@@ -410,7 +410,7 @@ window.VENDING_PARTS = {
       qty: 1,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-lower-fixing-plate.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-lower-fixing-plate.stl",
+      display: "../models/v1/v1-storage-lower-fixing-plate.stl",
       role: "分离的 V1 储料里的下固定板。",
       introducedIn: "V1",
       form: "separated"
@@ -422,7 +422,7 @@ window.VENDING_PARTS = {
       qty: 1,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-middle-constraint-plate.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-middle-constraint-plate.stl",
+      display: "../models/v1/v1-storage-middle-constraint-plate.stl",
       role: "分离的 V1 储料里的中间约束板。",
       introducedIn: "V1",
       form: "separated"
@@ -434,7 +434,7 @@ window.VENDING_PARTS = {
       qty: 1,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-middle-constraint-plate-l.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-middle-constraint-plate-l.stl",
+      display: "../models/v1/v1-storage-middle-constraint-plate-l.stl",
       role: "分离的 V1 储料里的左侧中间约束板。",
       introducedIn: "V1",
       form: "separated"
@@ -446,7 +446,7 @@ window.VENDING_PARTS = {
       qty: 1,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-side-fix.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-side-fix.stl",
+      display: "../models/v1/v1-storage-side-fix.stl",
       role: "分离的 V1 储料里的侧向固定件。",
       introducedIn: "V1",
       form: "separated"
@@ -458,7 +458,7 @@ window.VENDING_PARTS = {
       qty: 6,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-xiao-tube.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-xiao-tube.stl",
+      display: "../models/v1/v1-storage-xiao-tube.stl",
       role: "分离的 V1 储料里的折弯 XIAO 桶。",
       introducedIn: "V1",
       form: "separated"
@@ -470,7 +470,7 @@ window.VENDING_PARTS = {
       qty: 1,
       source: "xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-xiao-tube-thick.stl",
       format: "stl",
-      display: "../../xiao-vending-machine-v1/xiao-vending-machine-assemble-steps/hardware-preparatory/stl-files/parts/v1-storage-xiao-tube-thick.stl",
+      display: "../models/v1/v1-storage-xiao-tube-thick.stl",
       role: "分离的 V1 储料里的厚款折弯 XIAO 桶。",
       introducedIn: "V1",
       form: "separated"
