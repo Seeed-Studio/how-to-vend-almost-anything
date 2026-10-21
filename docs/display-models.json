@@ -69,7 +69,9 @@
         "../models/wio-terminal.stl"
       ],
       "assemble": ""
-    }
+    },
+    "vending": { "separate": [], "assemble": "" },
+    "operator": { "separate": [], "assemble": "" }
   },
   "V1": {
     "full": {
@@ -102,6 +104,8 @@
       "assemble": "../models/v1/v1-storage-integrated.stl"
     },
     "enclosure": { "separate": [], "assemble": "" },
-    "control": { "separate": [], "assemble": "" }
+    "control": { "separate": [], "assemble": "" },
+    "vending": { "separate": [], "assemble": "" },
+    "operator": { "separate": [], "assemble": "" }
   }
 }

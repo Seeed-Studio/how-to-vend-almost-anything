@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="assets/css/site.css?v=20261008-2" />
   <link rel="stylesheet" href="assets/css/pages.css" />
   <link rel="stylesheet" href="assets/css/companions.css?v=20261008-5" />
-  <link rel="stylesheet" href="exploded.css?v=step-download" />
+  <link rel="stylesheet" href="exploded.css?v=idea-invite" />
 </head>
 <body class="companion compact-page workbench-page">
   <a class="skip-link" href="#explorer">Skip to the model</a>
@@ -39,12 +39,14 @@
         <p class="eyebrow">The workbench</p>
         <p id="machine-version-label">V0 / Reference</p>
       </div>
-      <div class="wb-tabs" role="tablist" aria-label="Four systems" data-system-tabs>
+      <div class="wb-tabs" role="tablist" aria-label="Six systems" data-system-tabs>
         <button type="button" role="tab" id="tab-full" data-system="full" data-groups="" aria-selected="true" aria-controls="inspector-content">00 Full design</button>
         <button type="button" role="tab" id="tab-dispensing" data-system="dispensing" data-groups="dispensing" aria-selected="false" tabindex="-1" aria-controls="inspector-content">01 Dispensing</button>
         <button type="button" role="tab" id="tab-storage" data-system="storage" data-groups="storage,dispensing" aria-selected="false" tabindex="-1" aria-controls="inspector-content">02 Storage</button>
         <button type="button" role="tab" id="tab-enclosure" data-system="enclosure" data-groups="shell,frame,foundation" aria-selected="false" tabindex="-1" aria-controls="inspector-content">03 Enclosure</button>
         <button type="button" role="tab" id="tab-control" data-system="control" data-groups="interface" aria-selected="false" tabindex="-1" aria-controls="inspector-content">04 Control</button>
+        <button type="button" role="tab" id="tab-vending" data-system="vending" data-groups="" aria-selected="false" tabindex="-1" aria-controls="inspector-content">05 Vending UI</button>
+        <button type="button" role="tab" id="tab-operator" data-system="operator" data-groups="" aria-selected="false" tabindex="-1" aria-controls="inspector-content">06 Control Panel</button>
       </div>
       <div class="wb-stage" id="explorer">
         <div class="viewport-panel">
@@ -81,6 +83,7 @@
               <div class="fallback-layer layer-foundation">Feet</div>
             </div>
             <canvas id="model-canvas" aria-label="Interactive three-dimensional view of the Version Zero parts"></canvas>
+            <div id="software-demo" class="software-demo" hidden></div>
             <div class="viewport-help">Drag to orbit · Scroll to zoom · Click a part</div>
             <a id="step-download" class="step-download" href="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/XIAO-vending-machine-v0.step" download="XIAO-vending-machine-v0.step">Download V0 STEP</a>
           </div>
@@ -101,7 +104,7 @@
             <p class="wb-welcome">Welcome to share an idea here.</p>
           </div>
           <div class="wb-feed" id="idea-feed"></div>
-          <button type="button" class="btn btn-dark wb-upload" id="idea-upload">Upload ideas</button>
+          <button type="button" class="btn btn-dark wb-upload" id="idea-upload">Share with us your ideas</button>
         </aside>
       </div>
       <ol class="wb-strip" aria-label="Release path">
@@ -130,6 +133,20 @@
       <p class="footer-note">Version Zero CAD stays untouched. The model uses Three.js and occt-import-js; see the <a href="open-source.html">open-source notices</a>. A proposal is not a release.</p>
     </div>
   </footer>
+
+  <dialog id="thanks-dialog" class="upload-dialog" aria-labelledby="thanks-title">
+    <div class="dialog-top">
+      <div>
+        <p class="eyebrow">Our contributions</p>
+        <h2 id="thanks-title">Thank you.</h2>
+      </div>
+      <button type="button" class="dialog-close" data-close-thanks aria-label="Close">✕</button>
+    </div>
+    <p id="thanks-body" class="dialog-intro"></p>
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-dark" data-close-thanks>Close</button>
+    </div>
+  </dialog>
 
   <dialog id="idea-dialog" class="upload-dialog" aria-labelledby="idea-title">
     <div class="dialog-top">
@@ -181,6 +198,8 @@
           <option value="storage">02 / Storage</option>
           <option value="enclosure">03 / Enclosure</option>
           <option value="control">04 / Control &amp; computing</option>
+          <option value="vending">05 / Vending UI</option>
+          <option value="operator">06 / Control Panel</option>
         </select>
       </label>
       <label>Version
@@ -228,8 +247,8 @@
   <script src="parts-manifest.js?v=pages-models"></script>
   <script src="replacements.js"></script>
   <script src="assets/js/contribution-config.js"></script>
-  <script src="assets/js/journey-upload.js?v=7"></script>
-  <script src="assets/js/workbench.js?v=10"></script>
+  <script src="assets/js/journey-upload.js?v=9"></script>
+  <script src="assets/js/workbench.js?v=13"></script>
   <script src="assets/js/initiative.js?v=20261008-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/occt-import-js@0.0.24/dist/occt-import-js.js"></script>
   <script type="importmap">
@@ -240,6 +259,7 @@
     }
   }
   </script>
-  <script type="module" src="exploded.js?v=step-save"></script>
+  <script src="../assets/js/vending-demo.js?v=3"></script>
+  <script type="module" src="exploded.js?v=idea-invite"></script>
 </body>
 </html>

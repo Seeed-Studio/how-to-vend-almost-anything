@@ -155,6 +155,15 @@
 .compact-page .feed p { font-size: 12px; margin-bottom: 12px; }
 .compact-page .feed a { font-size: 11px; font-weight: 650; text-underline-offset: 3px; }
 .compact-page .feed article + article { margin-top: 12px; }
+.compact-page .feed img { display: block; width: 100%; max-height: 160px; object-fit: cover; border-radius: 6px; margin-top: 8px; }
+.activity-board { max-height: min(52vh, 480px); overflow: auto; margin-bottom: 28px; border: 1px solid var(--line); border-radius: 7px; background: #fbfcf8; }
+.activity-board .feed { padding: 8px 22px 4px; }
+.activity-board .feed h3 { font-size: clamp(26px, 3vw, 34px); line-height: 1.15; letter-spacing: -0.03em; margin: 0 0 6px; }
+.activity-board .activity-time { margin: 0 0 8px; color: var(--muted); font-size: 13px; }
+.activity-board .activity-message { margin: 0 0 6px; color: var(--ink, #1c2b2f); font-size: 15px; line-height: 1.45; }
+.activity-board .feed article { padding: 18px 0; margin: 0; background: transparent; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; }
+.activity-board .feed article + article { margin-top: 0; }
+.activity-board .feed article:last-child { border-bottom: 0; }
 .compact-page .footer-note { max-width: 95ch; }
 @media (max-width: 1000px) {
   .compact-page .compact-hero { grid-template-columns: 1fr; gap: 23px; }

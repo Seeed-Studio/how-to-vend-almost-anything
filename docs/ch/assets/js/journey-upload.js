@@ -41,7 +41,9 @@
     dispensing: "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-dispensing.yml",
     storage: "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-product-module.yml",
     enclosure: "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml",
-    control: "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-operator-software.yml"
+    control: "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-operator-software.yml",
+    vending: "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-interfaces.yml",
+    operator: "https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=contribute-operator-software.yml"
   };
   const extensions = new Set(["stl", "step", "stp", "3mf", "glb", "gltf", "dxf", "svg", "pdf", "png", "jpg", "jpeg", "md", "txt", "json", "csv", "kicad_pcb", "kicad_sch", "ino", "py", "cpp", "h", "zip"]);
   const maxFile = 5 * 1024 * 1024;
@@ -232,6 +234,13 @@
       const response = await fetch(endpoint, { method: "POST", body });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || text.failed);
+      const labId = labSelect?.value || "";
+      const person = form.contributor?.value?.trim() || "";
+      const thanks = {
+        lab: labId && labId !== "individual" ? labName : "",
+        name: person,
+        pilot: Boolean(labId && labId !== "individual")
+      };
       setStatus(local ? text.added : (payload.pr_url || text.submit), "ok");
       if (payload.pr_url && issueLink) {
         issueLink.href = payload.pr_url;
@@ -243,6 +252,7 @@
         document.dispatchEvent(new CustomEvent("vending:submissions"));
         dialog.close();
       }
+      window.showContributionThanks?.(thanks);
     } catch (error) {
       setStatus(error.message || text.failed, "error");
       if (!local) window.turnstile?.reset(widgetId);
@@ -256,4 +266,28 @@
     submit.disabled = true;
     submit.textContent = text.unconfiguredButton;
   }
+
+  window.showContributionThanks = function ({ lab, name, pilot }) {
+    const thanks = document.querySelector("#thanks-dialog");
+    if (!thanks) return;
+    const who = lab || name || (zh ? "你" : "you");
+    const title = thanks.querySelector("#thanks-title");
+    const body = thanks.querySelector("#thanks-body");
+    if (title) title.textContent = zh ? `谢谢，${who}。` : `Thank you, ${who}.`;
+    const grateful = zh
+      ? "我们非常感激。这份分享已记为我们的贡献。"
+      : "We are grateful. This is labeled as one of our contributions.";
+    const marked = zh
+      ? `${who} 已在网络地图上标为试点。`
+      : `${who} is now labeled Pilot on the network map.`;
+    if (body) body.textContent = pilot && lab ? `${grateful} ${marked}` : grateful;
+    thanks.showModal();
+  };
+  document.querySelectorAll("[data-close-thanks]").forEach((button) => {
+    button.addEventListener("click", () => document.querySelector("#thanks-dialog")?.close());
+  });
+  const thanksDialog = document.querySelector("#thanks-dialog");
+  thanksDialog?.addEventListener("click", (event) => {
+    if (event.target === thanksDialog) thanksDialog.close();
+  });
 })();

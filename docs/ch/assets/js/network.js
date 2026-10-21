@@ -1,7 +1,7 @@
 const STATUS_LABEL = {
   directory: "名录条目",
   interested: "有兴趣参与项目",
-  pilot: "已确认的试点",
+  pilot: "试点",
   verified: "已核实的售货机",
   recent_update: "新公布的动态"
 };
@@ -81,110 +81,73 @@ function productCategories(lab, products) {
   return (products.products || []).filter((product) => machineIds.has(product.machine_id));
 }
 
-function renderList(labs, total) {
+function renderList(labs) {
   const list = document.querySelector("#lab-list");
-  const shown = labs.slice(0, 80);
-  if (!shown.length) {
-    list.innerHTML = total
-      ? `<li><p>没有实验室符合这些筛选。</p></li>`
-      : "";
+  if (!list) return;
+  if (!labs.length) {
+    list.innerHTML = "";
     return;
   }
-  list.innerHTML = shown.map((lab) => `
+  list.innerHTML = labs.map((lab) => `
     <li>
       <button type="button" data-lab="${esc(lab.lab_id)}">
         <strong>${esc(lab.name)}</strong>
-        <span>${esc(lab.city)}, ${esc(lab.country)} · ${esc(STATUS_LABEL[lab.marker_status] || lab.marker_status)}</span>
+        <span>${esc([lab.city, lab.country].filter(Boolean).join(", "))} · ${esc(STATUS_LABEL[lab.marker_status] || lab.marker_status)}</span>
       </button>
     </li>
   `).join("");
-  if (labs.length > shown.length) {
-    list.insertAdjacentHTML("beforeend", `<li><p>显示 ${labs.length} 中的 ${shown.length} 个。缩小搜索以查看更多。</p></li>`);
-  }
 }
 
-function renderPanel(lab, products) {
-  const panel = document.querySelector("#lab-panel");
-  if (!lab) {
-    panel.hidden = true;
-    panel.innerHTML = "";
-    return;
-  }
-  const profile = safeHref(lab.official_fablabs_url);
-  const website = safeHref(lab.lab_website);
-  const ownProducts = productCategories(lab, products);
-  const machineText = lab.machines.length
-    ? lab.machines.map((machine) => `${esc(machine.version)} · ${esc(machine.installation_status)} · 核对于 ${esc(machine.updated_at)}`).join("<br>")
-    : "这个实验室还没有公布已核实的售货机。";
-  const productText = ownProducts.length
-    ? `<ul>${ownProducts.map((product) => {
-        const confirmed = product.availability_status === "confirmed";
-        const state = confirmed
-          ? `最近确认可获得 ${esc(product.availability_updated_at)}`
-          : "已列出的产品。可获得性最近没有确认。";
-        return `<li>${esc(product.name)} · ${esc(product.category)} · ${state}</li>`;
-      }).join("")}</ul>`
-    : "<p>没有已审核的产品。</p>";
-  panel.hidden = false;
-  panel.innerHTML = `
-    <p class="status status-${lab.marker_status === "directory" ? "planned" : "done"}">${esc(STATUS_LABEL[lab.marker_status] || lab.marker_status)}</p>
-    <h2>${esc(lab.name)}</h2>
-    <p>${esc(lab.city)}, ${esc(lab.country)}</p>
-    <p>${profile ? `<a href="${esc(profile)}" target="_blank" rel="noreferrer">FabLabs.io 官方资料</a>` : ""}</p>
-    <p>${website ? `<a href="${esc(website)}" target="_blank" rel="noreferrer">实验室网站</a>` : "没有记录实验室网站。"}</p>
-    <p><strong>已安装的机器。</strong><br>${machineText}</p>
-    <div><strong>产品。</strong>${productText}</div>
-    <p>最近一次核实更新： ${esc(lab.verification_date || "尚未为本项目核实")}</p>
-  `;
+function pilotLabIds(submissions, labs) {
+  const ids = new Set();
+  const byName = new Map();
+  labs.forEach((lab) => {
+    if (lab.name) byName.set(String(lab.name).trim().toLowerCase(), lab.lab_id);
+  });
+  (submissions.items || []).forEach((item) => {
+    if (item.lab_id && item.lab_id !== "individual") ids.add(item.lab_id);
+    const named = byName.get(String(item.lab || "").trim().toLowerCase());
+    if (named) ids.add(named);
+  });
+  return ids;
 }
 
-function renderFeeds(machines, products, updates, labs) {
-  const labName = (id) => labs.find((lab) => lab.lab_id === id)?.name || id;
-  const publicMachines = (machines.machines || [])
-    .filter((machine) => machine.installation_status === "verified" || machine.installation_status === "pilot")
-    .sort((a, b) => String(b.published_at).localeCompare(String(a.published_at)));
-  const machineRoot = document.querySelector("#machine-feed");
-  if (!publicMachines.length) {
-    machineRoot.innerHTML = `
-      <article class="invite">
-        <h3>你的实验室可以参与塑造第一版。</h3>
-        <p>我们正在共同设计第一版。发布后开放申请，已确认的机器安装将随着实验室加入逐步展示。</p>
-        <p><a href="https://github.com/Seeed-Studio/how-to-vend-almost-anything/issues/new?template=register-interest.yml&title=%5BLab+interest%5D%3A+&body=A+maintainer+reviews+this+issue+before+any+lab+is+added+to+%60docs%2Fen%2Fdata%2Flabs.json%60+and+%60docs%2Fch%2Fdata%2Flabs.json%60.+Registering+interest+does+not+create+a+map+pin+for+a+vending+machine.%0A%0A%23%23%23+Fab+Lab+name%0A%0A%23%23%23+City%0A%0A%23%23%23+Country%0A%0A%23%23%23+Official+FabLabs.io+profile%0A%0A%23%23%23+Lab+website%0A%0A%23%23%23+What+the+lab+wants+to+know+or+try%0A" target="_blank" rel="noreferrer">登记实验室的参与意向 ↗</a></p>
-      </article>
-    `;
-  } else {
-    machineRoot.innerHTML = publicMachines.map((machine) => {
-      const categories = (products.products || []).filter((product) => product.machine_id === machine.machine_id).map((product) => product.category);
-      const photo = (machine.photo_urls || []).find((url) => safeHref(url));
-      return `
-        <article>
-          ${photo ? `<img src="${esc(photo)}" alt="安装于 ${esc(labName(machine.lab_id))}" />` : ""}
-          <h3>${esc(labName(machine.lab_id))}</h3>
-          <p>${esc(machine.version)} · ${esc(machine.installation_status)} · ${esc(machine.published_at)}</p>
-          <p>${esc(categories.join(", ") || "没有已审核的产品类别")}</p>
-          <p><a href="${esc(safeHref(machine.verification_source))}">核实来源</a></p>
-        </article>
-      `;
-    }).join("");
-  }
+function activitySeconds(item) {
+  const explicit = Number(item.created_at);
+  if (Number.isFinite(explicit) && explicit >= 1e9) return explicit;
+  const match = String(item.id || "").match(/(\d{10})$/);
+  return match ? Number(match[1]) : 0;
+}
 
-  const approved = (updates.updates || [])
-    .filter((item) => item.review_status === "approved")
-    .sort((a, b) => String(b.verified_at).localeCompare(String(a.verified_at)));
-  const updateRoot = document.querySelector("#update-feed");
-  if (!approved.length) {
-    updateRoot.innerHTML = `<article class="invite"><h3>共同设计下一步。</h3><p>公开的实验室动态将在这里展示。现在，欢迎把你的想法带到<a href="index.html#contribute">开放设计征集</a>。</p></article>`;
-    return;
-  }
-  updateRoot.innerHTML = approved.map((item) => `
-    <article>
-      <h3>${esc(item.type)}</h3>
-      <p>${esc(labName(item.lab_id))}</p>
-      <p>${esc(item.description)}</p>
-      <p>提交于 ${esc(item.submitted_at)} · 核实于 ${esc(item.verified_at)} · ${esc(item.review_status)}</p>
-      <p><a href="${esc(safeHref(item.source_url))}">Source</a></p>
-    </article>
-  `).join("");
+function activityStamp(item) {
+  const seconds = activitySeconds(item);
+  if (!seconds) return "";
+  const date = new Date(seconds * 1000);
+  const pad = (value) => String(value).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+function activityCard(item) {
+  const skip = new Set(["Individual contributor", "个人贡献者", "individual"]);
+  const lab = item.lab && !skip.has(item.lab) ? item.lab : "";
+  const person = item.name && !skip.has(item.name) ? item.name : "";
+  const who = lab || person;
+  const thanks = who ? `谢谢，${who}。` : "谢谢。";
+  const stamp = activityStamp(item);
+  const title = String(item.title || "").trim();
+  const description = String(item.description || "").trim();
+  const message = [title, description].filter((part, index, list) => part && list.indexOf(part) === index).map((part) => `<p class="activity-message">${esc(part)}</p>`).join("");
+  return `<article><h3>${esc(thanks)}</h3>${stamp ? `<p class="activity-time">${esc(stamp)}</p>` : ""}${message}</article>`;
+}
+
+function renderActivity(submissions, ideas) {
+  const board = document.querySelector("#community-activity");
+  if (!board) return;
+  const items = [...(submissions.items || []), ...(ideas.items || [])]
+    .sort((a, b) => activitySeconds(b) - activitySeconds(a));
+  board.innerHTML = items.length
+    ? items.map(activityCard).join("")
+    : `<article class="invite"><h3>谢谢。</h3><p class="activity-time">工作台上的上传和想法会出现在这里。</p></article>`;
 }
 
 function markerIcon(status) {
@@ -201,8 +164,10 @@ function initMap(onSelect) {
   const canvas = document.querySelector("#map");
   const note = document.querySelector("#map-fallback");
   if (!window.L) {
-    note.hidden = false;
-    note.textContent = "地图库没有加载。实验室列表仍然可用。";
+    if (note) {
+      note.hidden = false;
+      note.textContent = "地图库没有加载。实验室列表仍然可用。";
+    }
     return null;
   }
   const map = window.L.map(canvas, { scrollWheelZoom: true, minZoom: 2 }).setView([20, 0], 2);
@@ -211,113 +176,127 @@ function initMap(onSelect) {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   });
   tiles.on("tileerror", () => {
+    if (!note) return;
     note.hidden = false;
-    note.textContent = "地图瓦片没有加载。搜索和实验室列表仍然可用。";
+    note.textContent = "地图瓦片没有加载。实验室列表仍然可用。";
   });
   tiles.addTo(map);
   const layer = window.L.layerGroup().addTo(map);
+  let fitted = false;
   return {
     map,
-    layer,
     draw(labs) {
       layer.clearLayers();
       const points = [];
       labs.filter(hasCoords).forEach((lab) => {
-        const marker = window.L.marker([lab.latitude, lab.longitude], { icon: markerIcon(lab.marker_status), title: lab.name });
+        const marker = window.L.marker([lab.latitude, lab.longitude], { icon: markerIcon(lab.marker_status), title: lab.marker_status === "pilot" ? `${lab.name} · ${STATUS_LABEL.pilot}` : lab.name });
         marker.on("click", () => onSelect(lab.lab_id));
         marker.addTo(layer);
         points.push([lab.latitude, lab.longitude]);
       });
-      if (points.length) map.fitBounds(points, { padding: [40, 40], maxZoom: 4 });
-      else map.setView([20, 0], 2);
+      if (!fitted) {
+        if (points.length) map.fitBounds(points, { padding: [40, 40], maxZoom: 4 });
+        else map.setView([20, 0], 2);
+        fitted = true;
+      }
+    },
+    focus(lab) {
+      if (!lab || !hasCoords(lab)) return;
+      map.flyTo([lab.latitude, lab.longitude], 6, { duration: 0.6 });
     }
   };
+}
+
+async function loadOptional(path) {
+  try { return await load(path); }
+  catch { return { items: [] }; }
 }
 
 async function init() {
   const error = document.querySelector("#data-error");
   try {
-    const [directory, program, machines, products, updates] = await Promise.all([
+    const [directory, program, machines, updates, submissions, ideas] = await Promise.all([
       load("data/directory-labs.json"),
       load("data/labs.json"),
       load("data/machines.json"),
-      load("data/products.json"),
-      load("data/updates.json")
+      load("data/updates.json"),
+      loadOptional("../submissions.json"),
+      loadOptional("../ideas.json")
     ]);
     const labs = buildLabs(directory, program, machines, updates);
+    const pilots = pilotLabIds(submissions, labs);
     labs.forEach((lab) => {
-      lab.machines.forEach((machine) => {
-        machine.product_categories = (products.products || [])
-          .filter((product) => product.machine_id === machine.machine_id)
-          .map((product) => product.category);
-      });
+      if (pilots.has(lab.lab_id)) lab.marker_status = "pilot";
     });
-    const categorySelect = document.querySelector("#filter-category");
-    const categories = [...new Set((products.products || []).map((product) => product.category))].sort();
-    categories.forEach((category) => {
-      const option = document.createElement("option");
-      option.value = category;
-      option.textContent = category;
-      categorySelect.append(option);
-    });
-    if (!categories.length) {
-      const option = categorySelect.querySelector("option");
-      option.textContent = "没有已审核的产品类别";
+    const empty = document.querySelector("#map-empty");
+    if (empty && !labs.length) {
+      empty.hidden = false;
+      empty.textContent = "实验室网络正在形成。名录信息和已确认的机器将在公开后逐步展示。";
     }
-
-    let selected = null;
-    const mapApi = initMap((id) => {
-      selected = id;
-      renderPanel(labs.find((lab) => lab.lab_id === id), products);
-    });
+    function selectLab(id) {
+      const lab = labs.find((item) => item.lab_id === id);
+      document.querySelectorAll("#lab-list button[data-lab]").forEach((button) => {
+        const on = button.dataset.lab === id;
+        button.classList.toggle("is-selected", on);
+        if (on) button.scrollIntoView({ block: "nearest", inline: "nearest" });
+      });
+      mapApi?.focus(lab);
+    }
+    const mapApi = initMap(selectLab);
     document.addEventListener("companion:tabchange", (event) => {
       if (event.detail?.panelId === "explore") {
         window.requestAnimationFrame(() => mapApi?.map.invalidateSize({ pan: false }));
       }
     });
-
-    const apply = () => {
-      const state = {
-        status: document.querySelector("#filter-status").value,
-        machine: document.querySelector("#filter-machine").value,
-        category: document.querySelector("#filter-category").value,
-        recent: document.querySelector("#filter-recent").checked
-      };
-      const query = document.querySelector("#filter-search").value.trim().toLowerCase();
-      const visible = labs.filter((lab) => matches(lab, query, state));
-      const empty = document.querySelector("#map-empty");
-      if (!labs.length) {
-        empty.hidden = false;
-        empty.textContent = "实验室网络正在形成。名录信息和已确认的机器将在公开后逐步展示。";
-      } else if (!visible.length) {
-        empty.hidden = false;
-        empty.textContent = "没有符合这些筛选的结果。";
-      } else {
-        empty.hidden = true;
-      }
-      renderList(visible, labs.length);
+    let statusFilter = "";
+    const applyFilter = () => {
+      const visible = statusFilter ? labs.filter((lab) => lab.marker_status === statusFilter) : labs;
+      renderList(visible);
       mapApi?.draw(visible);
-      if (selected && !visible.some((lab) => lab.lab_id === selected)) renderPanel(null, products);
+      if (empty) {
+        const onMap = visible.filter(hasCoords).length;
+        if (!visible.length) {
+          empty.hidden = false;
+          empty.textContent = "没有这个状态的实验室。";
+        } else if (!onMap) {
+          empty.hidden = false;
+          empty.textContent = "这些实验室没有地图位置。";
+        } else {
+          empty.hidden = true;
+          empty.textContent = "";
+        }
+      }
+      document.querySelectorAll("#status-filters button").forEach((button) => {
+        const on = button.dataset.status === statusFilter;
+        button.setAttribute("aria-pressed", String(on));
+        button.classList.toggle("is-selected", on);
+      });
     };
-
-    document.querySelector("#map-filters").addEventListener("submit", (event) => event.preventDefault());
-    document.querySelector("#map-filters").addEventListener("input", apply);
-    document.querySelector("#map-filters").addEventListener("change", apply);
+    applyFilter();
+    document.querySelector("#status-filters")?.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-status]");
+      if (!button) return;
+      statusFilter = statusFilter === button.dataset.status ? "" : button.dataset.status;
+      applyFilter();
+    });
     document.querySelector("#lab-list").addEventListener("click", (event) => {
       const button = event.target.closest("button[data-lab]");
       if (!button) return;
-      selected = button.dataset.lab;
-      renderPanel(labs.find((lab) => lab.lab_id === selected), products);
+      selectLab(button.dataset.lab);
     });
-    document.querySelector("#directory-note").textContent = directory.status === "ok"
-      ? "名录信息来自 FabLabs.io，项目参与状态和机器安装记录另行审核。"
-      : "名录尚未开放。在准备第一版的同时，欢迎登记实验室意向并贡献设计。";
-    renderFeeds(machines, products, updates, labs);
-    apply();
+    const note = document.querySelector("#directory-note");
+    if (note) {
+      note.textContent = directory.status === "ok"
+        ? "名录信息来自 FabLabs.io，项目参与状态和机器安装记录另行审核。"
+        : "名录尚未开放。在准备第一版的同时，欢迎登记实验室意向并贡献设计。";
+    }
+    renderActivity(submissions, ideas);
     document.dispatchEvent(new CustomEvent("companion:ready"));
   } catch (cause) {
-    error.hidden = false;
-    error.textContent = `地图数据无法加载。 ${cause.message}`;
+    if (error) {
+      error.hidden = false;
+      error.textContent = `地图数据无法加载。 ${cause.message}`;
+    }
   }
 }
 

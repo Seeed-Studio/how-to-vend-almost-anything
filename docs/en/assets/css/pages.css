@@ -466,7 +466,9 @@ main { overflow: visible; }
   border-radius: 0;
   background: transparent;
   text-align: left;
+  cursor: pointer;
 }
+.lab-list button.is-selected { background: #edf2e4; }
 .lab-list button strong { display: block; color: var(--seeed-blue); font-size: 14px; }
 .lab-list button span { color: var(--muted); font-size: 13px; }
 .lab-panel h2 { margin-bottom: 6px; font-size: 26px; }
@@ -484,6 +486,8 @@ main { overflow: visible; }
   font-size: 13px;
 }
 .legend li { display: flex; align-items: center; gap: 6px; }
+.legend button { display: flex; align-items: center; gap: 6px; padding: 4px 8px; border: 1px solid transparent; border-radius: 999px; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+.legend button.is-selected { border-color: var(--seeed-blue); background: #edf2e4; }
 .swatch {
   width: 12px;
   height: 12px;

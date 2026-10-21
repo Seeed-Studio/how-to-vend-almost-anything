@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vending Machine Backend</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <style>
+    html, body { max-width: 100%; overflow-x: hidden; }
+    .topbar, .page, .panel, .layout-two, .operate-grid, .product-grid, .column-grid, .metrics-grid, .form-grid { min-width: 0; }
+    .topbar { flex-wrap: wrap; padding: 16px 16px 18px; }
+    .topbar h1 { font-size: clamp(1.45rem, 4vw, 2rem); overflow-wrap: anywhere; }
+    .subtitle { max-width: none; }
+    .actions, .nav { flex-wrap: wrap; }
+    .page { padding: 14px; }
+    .layout-two { grid-template-columns: minmax(0, 1fr); }
+    .operate-grid { grid-template-columns: minmax(0, 1fr); }
+    .product-grid, .column-grid, .metrics-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+    .form-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); }
+    .table-wrap { overflow-x: hidden; }
+    table { min-width: 0; table-layout: fixed; }
+    th, td, pre, .hint, h2, h3 { overflow-wrap: anywhere; }
+    .selected-card:not(.empty-state) { grid-template-columns: minmax(0, 1fr); }
+    .selected-card img { width: 72px; height: 72px; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="brand-lockup-pc">
+        <img src="seeed-logo.png" alt="Seeed Studio" class="seeed-logo" />
+      </div>
+      <p class="eyebrow" id="eyebrow">write cards - watch stock</p>
+      <h1 id="pageTitle">Vending Machine Backend</h1>
+      <p class="subtitle" id="pageSubtitle">Write a direct order card or a selecting balance card for the Wio writer.</p>
+    </div>
+    <div class="actions">
+      <nav class="nav">
+        <a class="nav-link active" href="#operate" id="navOperate" data-page="operate">Operate</a>
+        <a class="nav-link" href="#inventory" id="navInventory" data-page="inventory">Inventory</a>
+      </nav>
+      <button class="secondary" id="refreshButton" type="button">Refresh</button>
+    </div>
+  </header>
+
+  <main class="page" id="operatePage">
+    <section id="writerBanner" class="banner warn">Wio RFID writer offline. Cards queued here can be tapped on the vending screen.</section>
+    <section id="alertBanner" class="banner warn hidden"></section>
+    <section id="metrics" class="metrics-grid"></section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div><p class="section-tag" id="operateTag">Operate</p><h2 id="writeTitle">Write a card</h2></div>
+        <div class="mode-tabs">
+          <button class="mode-tab active" type="button" data-mode="product" id="modeDirect">Direct order</button>
+          <button class="mode-tab" type="button" data-mode="balance" id="modeBalance">Selecting balance</button>
+        </div>
+      </div>
+
+      <div id="productPane" class="mode-pane">
+        <div class="operate-grid">
+          <div>
+            <p class="section-tag" id="step1">Step 1 - set quantities (any mix, e.g. 2 of each)</p>
+            <div id="productGrid" class="product-grid"></div>
+          </div>
+          <div class="operate-side">
+            <p class="section-tag" id="step2">Step 2 - customer</p>
+            <div id="cartSummary" class="selected-card empty-state">Set a quantity on one or more products.</div>
+            <div class="form-grid">
+              <label><span id="userLabel">User Name</span><input id="user_name" placeholder="customer name" /></label>
+              <label><span id="paidLabel">Amount Paid</span><input id="amount_paid" type="number" step="0.01" placeholder="auto = sum of prices" /></label>
+            </div>
+            <div class="button-row"><button id="createOrderButton" type="button">Create order + queue card</button></div>
+            <p class="hint" id="directHint">All chosen products go on one card. Stock is deducted when the customer collects.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="balancePane" class="mode-pane hidden">
+        <div class="operate-grid">
+          <div class="balance-hero">
+            <p class="section-tag" id="storedTag">Stored value</p>
+            <p class="hint" id="balanceHint">The balance is tracked here by user name; the card only stores the selecting type + name. The customer picks products on the machine, spending this balance.</p>
+            <div class="quick-amounts" id="quickAmounts"></div>
+          </div>
+          <div class="operate-side">
+            <div class="form-grid">
+              <label><span id="balUserLabel">User Name</span><input id="bal_user_name" placeholder="customer name" /></label>
+              <label><span id="balAmountLabel">Amount</span><input id="bal_amount" type="number" step="0.01" min="0" placeholder="e.g. 50" /></label>
+              <label><span id="balModeLabel">Mode</span><select id="bal_mode"><option value="add">Add to balance</option><option value="set">Set exact balance</option></select></label>
+            </div>
+            <div class="button-row"><button id="writeBalanceButton" type="button">Update balance + queue card</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="payload-box">
+        <div class="payload-header"><strong id="payloadTitle">Last write job</strong><span class="hint" id="payloadHint">Present a card on the Wio writer to encode it</span></div>
+        <pre id="payloadOutput">No card queued yet.</pre>
+        <ol id="writerSteps" class="writer-steps"></ol>
+      </div>
+    </section>
+
+    <section class="layout-two">
+      <section class="panel">
+        <div class="panel-header"><div><p class="section-tag" id="opsTag">Operations</p><h2 id="ordersTitle">Recent Orders</h2></div></div>
+        <div class="table-wrap"><table id="ordersTable"></table></div>
+      </section>
+      <section class="panel">
+        <div class="panel-header"><div><p class="section-tag" id="cardsTag">Stored value</p><h2 id="cardsTitle">Balance Cards</h2></div></div>
+        <div class="table-wrap"><table id="cardsTable"></table></div>
+      </section>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header"><div><p class="section-tag" id="writerTag">RFID Writer</p><h2 id="jobsTitle">Recent Card Writes</h2></div></div>
+      <div class="table-wrap"><table id="writerJobsTable"></table></div>
+    </section>
+  </main>
+
+  <main class="page hidden" id="inventoryPage">
+    <section id="inventoryAlert" class="banner ok">Loading columns...</section>
+    <section class="panel">
+      <div class="panel-header">
+        <div><p class="section-tag" id="initTag">Initialize</p><h2 id="initTitle">Set current column counts</h2></div>
+        <div class="button-row" style="margin:0"><button id="initBtn" type="button">Save all counts</button></div>
+      </div>
+      <p class="hint" id="initHint">Enter the exact number of products loaded in each column (0-10). Saving overwrites the stored stock. Refill adds to it, capped at the max.</p>
+      <div id="columnGrid" class="column-grid"></div>
+    </section>
+    <section class="panel">
+      <div class="panel-header"><div><p class="section-tag" id="logTag">Log</p><h2 id="logTitle">Recent Inventory Log</h2></div></div>
+      <div class="table-wrap"><table id="logTable"></table></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const zh = params.get("lang") === "zh";
+    document.documentElement.lang = zh ? "zh" : "en";
+    const session = window.parent && window.parent.VENDING_SESSION;
+    const $ = (id) => document.getElementById(id);
+    const text = zh ? {
+      eyebrow: "写卡 - 查看库存",
+      title: "售货机后台",
+      subtitle: "为 Wio 写卡器写一张直接订单卡，或一张余额选购卡。",
+      operate: "运营",
+      inventory: "补货",
+      refresh: "刷新",
+      writer: "Wio RFID 写卡器离线。在这里排队的卡可以在售货界面点选。",
+      operateTag: "运营",
+      writeTitle: "写一张卡",
+      direct: "直接订单",
+      balance: "余额选购",
+      step1: "第 1 步 - 设置数量（可以混选，例如每种 2 件）",
+      step2: "第 2 步 - 顾客",
+      emptyCart: "先给一件或多件商品设置数量。",
+      user: "顾客名字",
+      paid: "实付金额",
+      paidPh: "留空则等于价格合计",
+      create: "创建订单并排队写卡",
+      directHint: "选中的商品写在同一张卡上。顾客取货时才扣库存。",
+      stored: "储值",
+      balanceHint: "余额按顾客名字记在这里；卡上只保存选购类型和名字。顾客在机器上选商品，从这笔余额里扣。",
+      amount: "金额",
+      mode: "方式",
+      add: "加到余额",
+      set: "设成这个余额",
+      update: "更新余额并排队写卡",
+      payload: "最近一次写卡",
+      payloadHint: "把卡放到 Wio 写卡器上写入",
+      none: "还没有排队的卡。",
+      ops: "操作记录",
+      orders: "最近订单",
+      cardsTag: "储值",
+      cards: "余额卡",
+      writerTag: "RFID 写卡",
+      jobs: "最近写卡",
+      invEyebrow: "初始化 - 补货 - 容量",
+      invTitle: "库存与补货",
+      invSubtitle: "每一列高 26 厘米，一件商品高 2.2 厘米，所以一列最多 10 件。填写当前数量，或补到上限。",
+      initTag: "初始化",
+      initTitle: "设置当前每列数量",
+      save: "保存全部数量",
+      initHint: "填写每一列实际装入的数量（0-10）。保存会覆盖库存。补货是在现有数量上增加，不超过上限。",
+      log: "记录",
+      logTitle: "最近库存记录",
+      setCount: "设置数量",
+      refill: "补货 +",
+      addBtn: "增加",
+      loaded: "已装入",
+      threshold: "补货阈值",
+      noOrders: "还没有订单。",
+      noCards: "还没有余额卡。",
+      noJobs: "还没有写卡记录。",
+      noLogs: "还没有库存操作。",
+      refillNow: "去补货",
+      needs: "需要补货：",
+      full: "已满：",
+      columnsReady: "各列库存正常。",
+      units: "已装数量",
+      unitsSub: "库存 / 容量",
+      refillMetric: "需要补货",
+      refillSub: "达到或低于阈值的列",
+      balanceMetric: "卡内余额",
+      balanceSub: "储值合计",
+      pending: "待写卡",
+      pendingSub: "等待写卡器的卡",
+      orderCols: ["订单", "顾客", "商品", "数量", "状态"],
+      cardCols: ["顾客", "余额", "卡号", "更新时间"],
+      jobCols: ["类型", "顾客", "订单", "状态", "说明"],
+      logCols: ["时间", "动作", "商品", "变化", "之后", "操作者", "备注"]
+    } : {
+      eyebrow: "write cards - watch stock",
+      title: "Vending Machine Backend",
+      subtitle: "Write a direct order card or a selecting balance card for the Wio writer.",
+      operate: "Operate",
+      inventory: "Inventory",
+      refresh: "Refresh",
+      writer: "Wio RFID writer offline. Cards queued here can be tapped on the vending screen.",
+      operateTag: "Operate",
+      writeTitle: "Write a card",
+      direct: "Direct order",
+      balance: "Selecting balance",
+      step1: "Step 1 - set quantities (any mix, e.g. 2 of each)",
+      step2: "Step 2 - customer",
+      emptyCart: "Set a quantity on one or more products.",
+      user: "User Name",
+      paid: "Amount Paid",
+      paidPh: "auto = sum of prices",
+      create: "Create order + queue card",
+      directHint: "All chosen products go on one card. Stock is deducted when the customer collects.",
+      stored: "Stored value",
+      balanceHint: "The balance is tracked here by user name; the card only stores the selecting type + name. The customer picks products on the machine, spending this balance.",
+      amount: "Amount",
+      mode: "Mode",
+      add: "Add to balance",
+      set: "Set exact balance",
+      update: "Update balance + queue card",
+      payload: "Last write job",
+      payloadHint: "Present a card on the Wio writer to encode it",
+      none: "No card queued yet.",
+      ops: "Operations",
+      orders: "Recent Orders",
+      cardsTag: "Stored value",
+      cards: "Balance Cards",
+      writerTag: "RFID Writer",
+      jobs: "Recent Card Writes",
+      invEyebrow: "initialize - refill - capacity",
+      invTitle: "Inventory & Refill",
+      invSubtitle: "Each column is 26 cm tall and one product is 2.2 cm, so a column holds at most 10 products. Set how many are loaded now, or refill up to the max.",
+      initTag: "Initialize",
+      initTitle: "Set current column counts",
+      save: "Save all counts",
+      initHint: "Enter the exact number of products loaded in each column (0-10). Saving overwrites the stored stock. Refill adds to it, capped at the max.",
+      log: "Log",
+      logTitle: "Recent Inventory Log",
+      setCount: "Set count",
+      refill: "Refill +",
+      addBtn: "Add",
+      loaded: "loaded",
+      threshold: "refill threshold",
+      noOrders: "No orders yet.",
+      noCards: "No balance cards yet.",
+      noJobs: "No card writes yet.",
+      noLogs: "No inventory activity yet.",
+      refillNow: "Refill now",
+      needs: "Needs refill:",
+      full: "Full:",
+      columnsReady: "Columns are stocked.",
+      units: "Units Loaded",
+      unitsSub: "Stock vs capacity",
+      refillMetric: "Needs Refill",
+      refillSub: "Columns at/below threshold",
+      balanceMetric: "Card Balance",
+      balanceSub: "Total stored value",
+      pending: "Pending Writes",
+      pendingSub: "Cards waiting for the writer",
+      orderCols: ["Order", "User", "Product", "Qty", "Status"],
+      cardCols: ["User", "Balance", "Card UID", "Updated"],
+      jobCols: ["Type", "User", "Order", "Status", "Message"],
+      logCols: ["Time", "Action", "Product", "Delta", "After", "Actor", "Notes"]
+    };
+
+    let page = "operate";
+    let mode = "product";
+    const money = (value) => `$${Number(value || 0).toFixed(2)}`;
+    const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (ch) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[ch]));
+    function showToast(message) {
+      const toast = $("toast");
+      toast.textContent = message;
+      toast.classList.remove("hidden");
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => toast.classList.add("hidden"), 3200);
+    }
+    function statusClass(status) {
+      return `<span class="status ${esc(status)}">${esc(status)}</span>`;
+    }
+    function stockBadge(product) {
+      if (product.inventory <= 0) return '<span class="stock-pill out">Empty</span>';
+      if (product.needs_refill) return '<span class="stock-pill low">Refill soon</span>';
+      if (product.is_full) return '<span class="stock-pill ok">Full</span>';
+      return '<span class="stock-pill ok">In stock</span>';
+    }
+    function tableHead(cols) {
+      return "<tr>" + cols.map((col) => `<th>${esc(col)}</th>`).join("") + "</tr>";
+    }
+    function applyChrome() {
+      $("eyebrow").textContent = page === "inventory" ? text.invEyebrow : text.eyebrow;
+      $("pageTitle").textContent = page === "inventory" ? text.invTitle : text.title;
+      $("pageSubtitle").textContent = page === "inventory" ? text.invSubtitle : text.subtitle;
+      $("navOperate").textContent = text.operate;
+      $("navInventory").textContent = text.inventory;
+      $("refreshButton").textContent = text.refresh;
+      $("writerBanner").textContent = text.writer;
+      $("operateTag").textContent = text.operateTag;
+      $("writeTitle").textContent = text.writeTitle;
+      $("modeDirect").textContent = text.direct;
+      $("modeBalance").textContent = text.balance;
+      $("step1").textContent = text.step1;
+      $("step2").textContent = text.step2;
+      $("userLabel").textContent = text.user;
+      $("paidLabel").textContent = text.paid;
+      $("user_name").placeholder = "customer name";
+      $("amount_paid").placeholder = text.paidPh;
+      $("createOrderButton").textContent = text.create;
+      $("directHint").textContent = text.directHint;
+      $("storedTag").textContent = text.stored;
+      $("balanceHint").textContent = text.balanceHint;
+      $("balUserLabel").textContent = text.user;
+      $("balAmountLabel").textContent = text.amount;
+      $("balModeLabel").textContent = text.mode;
+      $("bal_mode").options[0].textContent = text.add;
+      $("bal_mode").options[1].textContent = text.set;
+      $("writeBalanceButton").textContent = text.update;
+      $("payloadTitle").textContent = text.payload;
+      $("payloadHint").textContent = text.payloadHint;
+      $("opsTag").textContent = text.ops;
+      $("ordersTitle").textContent = text.orders;
+      $("cardsTag").textContent = text.cardsTag;
+      $("cardsTitle").textContent = text.cards;
+      $("writerTag").textContent = text.writerTag;
+      $("jobsTitle").textContent = text.jobs;
+      $("initTag").textContent = text.initTag;
+      $("initTitle").textContent = text.initTitle;
+      $("initBtn").textContent = text.save;
+      $("initHint").textContent = text.initHint;
+      $("logTag").textContent = text.log;
+      $("logTitle").textContent = text.logTitle;
+    }
+    function render(data) {
+      applyChrome();
+      const refill = data.products.filter((product) => product.needs_refill || product.inventory <= 0);
+      const alert = $("alertBanner");
+      if (!refill.length) alert.classList.add("hidden");
+      else {
+        alert.classList.remove("hidden");
+        alert.className = "banner warn";
+        alert.innerHTML = `<strong>${esc(text.needs)}</strong> ${refill.map((product) => `${esc(product.product_name)} (${product.inventory}/${product.max_capacity})`).join(", ")} &nbsp; <a class="text-link" href="#inventory" data-page="inventory">${esc(text.refillNow)}</a>`;
+      }
+      const m = data.metrics;
+      $("metrics").innerHTML = [
+        [text.units, `${m.units}/${m.capacity}`, text.unitsSub],
+        [text.refillMetric, m.refill, text.refillSub],
+        [text.balanceMetric, money(m.balance), text.balanceSub],
+        [text.pending, m.pending, text.pendingSub]
+      ].map(([label, value, sub]) => `<article class="metric-card"><div class="metric-label">${esc(label)}</div><div class="metric-value">${esc(value)}</div><div class="metric-sub">${esc(sub)}</div></article>`).join("");
+
+      $("productGrid").innerHTML = data.products.map((product) => {
+        const qty = data.cart[product.product_id] || 0;
+        return `<article class="product-card ${qty > 0 ? "has-qty" : ""}" data-product-id="${esc(product.product_id)}">
+          <div class="product-image-wrap"><img src="${esc(product.image_path)}" alt="${esc(product.product_name)}" /></div>
+          <div class="product-card-body">
+            <div class="card-head"><div><div class="tag">${esc(product.tag)}</div><h3>${esc(product.product_name)}</h3></div><div class="price">${money(product.price)}</div></div>
+            <div class="stock-row">${stockBadge(product)}<span>${product.inventory}/${product.max_capacity} - servo ${product.servo_id}</span></div>
+            <div class="qty-stepper">
+              <button class="secondary qbtn" type="button" data-qminus="${esc(product.product_id)}">-</button>
+              <input class="qty-input" type="number" min="0" max="${product.max_capacity}" value="${qty}" data-qty="${esc(product.product_id)}" />
+              <button class="secondary qbtn" type="button" data-qplus="${esc(product.product_id)}">+</button>
+            </div>
+          </div>
+        </article>`;
+      }).join("");
+
+      const chosen = data.products.filter((product) => (data.cart[product.product_id] || 0) > 0);
+      const summary = $("cartSummary");
+      if (!chosen.length) {
+        summary.className = "selected-card empty-state";
+        summary.textContent = text.emptyCart;
+      } else {
+        const total = chosen.reduce((sum, product) => sum + product.price * data.cart[product.product_id], 0);
+        summary.className = "selected-card";
+        summary.innerHTML = `<div class="tag">Card contents</div><ul class="cart-lines">${chosen.map((product) => `<li><span>${esc(product.product_name)} ×${data.cart[product.product_id]}</span><span>${money(product.price * data.cart[product.product_id])}</span></li>`).join("")}</ul><div class="cart-total">Total ${money(total)}</div>`;
+      }
+
+      $("quickAmounts").innerHTML = [10, 20, 50, 100].map((value) => `<button class="secondary chip" type="button" data-amount="${value}">+${money(value)}</button>`).join("");
+      $("payloadOutput").textContent = data.lastWrite.body || text.none;
+      $("writerSteps").innerHTML = (data.lastWrite.steps || []).map((step) => `<li>${esc(step)}</li>`).join("");
+
+      $("ordersTable").innerHTML = tableHead(text.orderCols) + (data.orders.length
+        ? data.orders.slice(0, 8).map((order) => `<tr><td><strong>${esc(order.order_number)}</strong></td><td>${esc(order.user_name)}</td><td>${esc(order.product_name)}</td><td>${order.quantity}</td><td>${statusClass(order.status)}</td></tr>`).join("")
+        : `<tr><td colspan="5" class="hint">${esc(text.noOrders)}</td></tr>`);
+      const balances = data.cards.filter((card) => card.type === "selecting");
+      $("cardsTable").innerHTML = tableHead(text.cardCols) + (balances.length
+        ? balances.slice(0, 8).map((card) => `<tr><td><strong>${esc(card.user_name)}</strong></td><td>${money(card.balance)}</td><td>${esc(card.card_uid || "-")}</td><td>${esc(card.updated_at || "")}</td></tr>`).join("")
+        : `<tr><td colspan="4" class="hint">${esc(text.noCards)}</td></tr>`);
+      $("writerJobsTable").innerHTML = tableHead(text.jobCols) + (data.jobs.length
+        ? data.jobs.slice(0, 8).map((job) => `<tr><td>${esc(job.job_type || "ORDER")}</td><td>${esc(job.user_name)}</td><td>${esc(job.order_number || "-")}</td><td>${statusClass(job.status)}</td><td>${esc(job.message || "")}</td></tr>`).join("")
+        : `<tr><td colspan="5" class="hint">${esc(text.noJobs)}</td></tr>`);
+
+      const full = data.products.filter((product) => product.is_full);
+      const inventoryAlert = $("inventoryAlert");
+      const parts = [];
+      if (refill.length) parts.push(`<strong>${esc(text.needs)}</strong> ${refill.map((product) => `${esc(product.product_name)} (${product.inventory}/${product.max_capacity})`).join(", ")}`);
+      if (full.length) parts.push(`<strong>${esc(text.full)}</strong> ${full.map((product) => esc(product.product_name)).join(", ")}`);
+      inventoryAlert.className = refill.length ? "banner warn" : "banner ok";
+      inventoryAlert.innerHTML = parts.join(" &nbsp; ") || esc(text.columnsReady);
+      $("columnGrid").innerHTML = data.products.map((product) => {
+        const pct = Math.round(Math.min(100, (product.inventory / (product.max_capacity || 10)) * 100));
+        const barClass = product.inventory <= 0 ? "empty" : (product.needs_refill ? "low" : "");
+        return `<article class="column-card">
+          <div class="column-thumb"><img src="${esc(product.image_path)}" alt="${esc(product.product_name)}" /></div>
+          <div class="column-head"><div><div class="tag">Servo ${product.servo_id} · slot ${esc(product.slot_id)}</div><h3>${esc(product.product_name)}</h3></div>${stockBadge(product)}</div>
+          <div class="capacity-bar"><span class="capacity-fill ${barClass}" style="width:${pct}%"></span></div>
+          <div class="capacity-label">${product.inventory} / ${product.max_capacity} ${esc(text.loaded)} · ${esc(text.threshold)} ${product.low_stock_threshold}</div>
+          <div class="form-grid">
+            <label><span>${esc(text.setCount)}</span><input type="number" min="0" max="${product.max_capacity}" value="${product.inventory}" data-set="${esc(product.product_id)}" /></label>
+            <label><span>${esc(text.refill)}</span><div class="inline-controls"><input class="small-input" type="number" min="1" value="1" data-refill-qty="${esc(product.product_id)}" /><button type="button" data-refill="${esc(product.product_id)}">${esc(text.addBtn)}</button></div></label>
+          </div>
+        </article>`;
+      }).join("");
+      $("logTable").innerHTML = tableHead(text.logCols) + (data.logs.length
+        ? data.logs.slice(0, 12).map((entry) => `<tr><td>${esc(entry.time)}</td><td>${esc(entry.action)}</td><td>${esc(entry.product_name)}</td><td>${esc(entry.quantity_delta)}</td><td>${esc(entry.inventory_after)}</td><td>${esc(entry.actor)}</td><td>${esc(entry.notes)}</td></tr>`).join("")
+        : `<tr><td colspan="7" class="hint">${esc(text.noLogs)}</td></tr>`);
+      $("productPane").classList.toggle("hidden", mode !== "product");
+      $("balancePane").classList.toggle("hidden", mode !== "balance");
+      document.querySelectorAll(".mode-tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.mode === mode));
+      $("operatePage").classList.toggle("hidden", page !== "operate");
+      $("inventoryPage").classList.toggle("hidden", page !== "inventory");
+      $("navOperate").classList.toggle("active", page === "operate");
+      $("navInventory").classList.toggle("active", page === "inventory");
+      $("metrics").hidden = page !== "operate";
+    }
+    function paint() {
+      if (!session) return;
+      render(session.snapshot());
+    }
+    document.body.addEventListener("click", (event) => {
+      const pageLink = event.target.closest("[data-page]");
+      if (pageLink) {
+        event.preventDefault();
+        page = pageLink.dataset.page;
+        paint();
+        return;
+      }
+      const modeButton = event.target.closest("[data-mode]");
+      if (modeButton) {
+        mode = modeButton.dataset.mode;
+        paint();
+        return;
+      }
+      const minus = event.target.closest("[data-qminus]");
+      if (minus && session) {
+        const id = minus.dataset.qminus;
+        session.setQty(id, (session.snapshot().cart[id] || 0) - 1);
+        return;
+      }
+      const plus = event.target.closest("[data-qplus]");
+      if (plus && session) {
+        const id = plus.dataset.qplus;
+        session.setQty(id, (session.snapshot().cart[id] || 0) + 1);
+        return;
+      }
+      const amount = event.target.closest("[data-amount]");
+      if (amount) {
+        $("bal_amount").value = amount.dataset.amount;
+        return;
+      }
+      const refillButton = event.target.closest("[data-refill]");
+      if (refillButton && session) {
+        const id = refillButton.dataset.refill;
+        const input = document.querySelector(`[data-refill-qty="${id}"]`);
+        const result = session.refill(id, input ? input.value : 1);
+        showToast(result.message);
+      }
+    });
+    document.body.addEventListener("change", (event) => {
+      const qty = event.target.closest("[data-qty]");
+      if (qty && session) session.setQty(qty.dataset.qty, qty.value);
+    });
+    $("createOrderButton").addEventListener("click", () => {
+      if (!session) return;
+      const result = session.createOrder($("user_name").value, $("amount_paid").value);
+      showToast(result.message);
+      if (result.ok) {
+        $("user_name").value = "";
+        $("amount_paid").value = "";
+      }
+    });
+    $("writeBalanceButton").addEventListener("click", () => {
+      if (!session) return;
+      const result = session.writeBalance($("bal_user_name").value, $("bal_amount").value, $("bal_mode").value);
+      showToast(result.message);
+    });
+    $("initBtn").addEventListener("click", () => {
+      if (!session) return;
+      const counts = {};
+      document.querySelectorAll("[data-set]").forEach((input) => { counts[input.dataset.set] = input.value; });
+      showToast(session.saveCounts(counts).message);
+    });
+    $("refreshButton").addEventListener("click", paint);
+    if (!session) {
+      $("writerBanner").textContent = "Open this panel from the workbench.";
+    } else {
+      session.subscribe(paint);
+      paint();
+    }
+  </script>
+</body>
+</html>

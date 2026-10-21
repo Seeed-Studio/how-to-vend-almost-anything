@@ -49,8 +49,8 @@
   }
 
   const systemNames = zh
-    ? { full: "00 整机", dispensing: "01 出货", storage: "02 货道", enclosure: "03 箱体", control: "04 控制" }
-    : { full: "00 Full design", dispensing: "01 Dispensing", storage: "02 Storage", enclosure: "03 Enclosure", control: "04 Control" };
+    ? { full: "00 整机", dispensing: "01 出货", storage: "02 货道", enclosure: "03 箱体", control: "04 控制", vending: "05 售货界面", operator: "06 控制面板" }
+    : { full: "00 Full design", dispensing: "01 Dispensing", storage: "02 Storage", enclosure: "03 Enclosure", control: "04 Control", vending: "05 Vending UI", operator: "06 Control Panel" };
   const sketchLabel = zh ? "示意图" : "Sketch diagram";
   const actualLabel = zh ? "实物" : "Actual looking";
 
@@ -279,8 +279,8 @@
     const status = document.querySelector("#idea-status");
     const labSelect = document.querySelector("#idea-lab");
     const systemNames = zh
-      ? { full: "00 整机", dispensing: "01 出货", storage: "02 货道", enclosure: "03 箱体", control: "04 控制" }
-      : { full: "00 Full design", dispensing: "01 Dispensing", storage: "02 Storage", enclosure: "03 Enclosure", control: "04 Control" };
+      ? { full: "00 整机", dispensing: "01 出货", storage: "02 货道", enclosure: "03 箱体", control: "04 控制", vending: "05 售货界面", operator: "06 控制面板" }
+      : { full: "00 Full design", dispensing: "01 Dispensing", storage: "02 Storage", enclosure: "03 Enclosure", control: "04 Control", vending: "05 Vending UI", operator: "06 Control Panel" };
     let ideas = [];
 
     function activeSystem() {
@@ -299,7 +299,7 @@
       const title = document.querySelector("#idea-system-title");
       if (title) title.textContent = systemNames[system] || system;
       const items = ideas
-        .filter((item) => item.system === system)
+        .filter((item) => system === "full" || item.system === system)
         .sort((a, b) => score(b) - score(a) || String(b.id).localeCompare(String(a.id)));
       feed.replaceChildren();
       if (!items.length) {
@@ -307,7 +307,7 @@
         return;
       }
       items.forEach((item) => {
-        const who = [item.name, item.lab].filter(Boolean).join(" · ");
+        const who = [system === "full" ? systemNames[item.system] : "", item.name, item.lab].filter(Boolean).join(" · ");
         const images = (item.images || []).map((path) => {
           const href = src(path);
           return `<figure><button type="button" class="wb-zoom" data-zoom="${esc(href)}"><img src="${esc(href)}" alt=""></button></figure>`;
@@ -350,6 +350,10 @@
       })
       .catch(() => {});
 
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest("[data-open-idea]")) return;
+      document.querySelector("#idea-upload")?.click();
+    });
     document.querySelector("#idea-upload")?.addEventListener("click", () => {
       if (status) {
         status.textContent = "";
@@ -401,9 +405,17 @@
         const response = await fetch("/api/ideas", { method: "POST", body });
         const payload = await response.json().catch(() => ({}));
         if (!response.ok) throw new Error(payload.error || copy.failed);
+        const labId = labSelect?.value || "";
+        const labName = labSelect?.selectedOptions?.[0]?.textContent?.trim() || "";
+        const person = form.contributor.value.trim();
         form.reset();
         dialog?.close();
         await loadIdeas();
+        window.showContributionThanks?.({
+          lab: labId && labId !== "individual" ? labName : "",
+          name: person,
+          pilot: false
+        });
       } catch (error) {
         status.textContent = error.message || copy.failed;
         status.dataset.state = "error";

@@ -649,11 +649,55 @@ async function ensureStepAssembly(path) {
   return stepAssemblyPromise;
 }
 
+function ideaInvite() {
+  const zh = document.documentElement.lang.startsWith('zh');
+  const line = zh ? '一个想法，就够让下一台机器变得更好。' : 'One idea is enough to make the next machine better.';
+  const label = zh ? '和我们分享你的想法' : 'Share with us your ideas';
+  return `<div class="idea-invite"><p>${line}</p><button type="button" class="btn btn-dark wb-upload" data-open-idea>${label}</button></div>`;
+}
+
 function assemblyStatusText(state) {
   const zh = document.documentElement.lang.startsWith('zh');
   if (state === 'loading') return zh ? '正在加载装配…' : 'Loading assembly…';
   if (state === 'ready') return zh ? '已装配' : 'Assembled';
   return zh ? '装配不可用，正在显示分离零件。' : 'Assembly unavailable. Showing separate parts.';
+}
+
+function syncSoftwareView() {
+  const software = currentSystem() === 'vending' || currentSystem() === 'operator';
+  const panel = document.getElementById('software-demo');
+  const canvas = document.getElementById('model-canvas');
+  const help = document.querySelector('.viewport-help');
+  const step = document.getElementById('step-download');
+  const ghost = document.querySelector('.reference-ghost');
+  const modeFilter = document.querySelector('#assembly-mode-controls')?.closest('.view-filter');
+  const viewEmpty = document.getElementById('view-empty');
+  if (canvas) canvas.hidden = software;
+  if (help) help.hidden = software;
+  if (step) step.hidden = software;
+  if (ghost) ghost.hidden = software;
+  if (modeFilter) modeFilter.hidden = software;
+  if (assemblyModeControls) assemblyModeControls.hidden = software;
+  if (software) {
+    modelRoot.visible = false;
+    assemblyRoot.visible = false;
+    stepAssemblyRoot.visible = false;
+    if (zoneLabels) zoneLabels.style.display = 'none';
+    if (viewEmpty) viewEmpty.hidden = true;
+  }
+  if (!panel) return;
+  panel.hidden = !software;
+  if (!software) {
+    panel.classList.remove('is-operator', 'is-vending', 'is-invite');
+    return;
+  }
+  panel.classList.remove('is-operator', 'is-vending', 'is-invite');
+  if (selectedVersion !== 'V0') {
+    panel.classList.add('is-invite');
+    panel.innerHTML = `<div class="software-empty">${ideaInvite()}</div>`;
+    return;
+  }
+  window.VENDING_DEMO?.mount(panel, currentSystem());
 }
 
 function syncDisplayMode() {
@@ -677,8 +721,7 @@ function syncDisplayMode() {
     viewEmpty.id = 'view-empty';
     viewport.appendChild(viewEmpty);
   }
-  const zh = document.documentElement.lang.startsWith('zh');
-  viewEmpty.textContent = zh ? '此视图还没有模型' : 'No model for this view';
+  viewEmpty.innerHTML = ideaInvite();
   viewEmpty.hidden = hasView;
   if (assemblyModeControls) {
     assemblyModeControls.hidden = false;
@@ -689,6 +732,7 @@ function syncDisplayMode() {
     });
   }
   if (assemblyStatus) assemblyStatus.hidden = true;
+  syncSoftwareView();
 }
 
 async function setDisplayMode(mode) {

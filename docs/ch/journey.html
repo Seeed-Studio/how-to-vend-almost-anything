@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="assets/css/site.css?v=20261008-2" />
   <link rel="stylesheet" href="assets/css/pages.css" />
   <link rel="stylesheet" href="assets/css/companions.css?v=20261008-5" />
-  <link rel="stylesheet" href="exploded.css?v=step-download" />
+  <link rel="stylesheet" href="exploded.css?v=idea-invite" />
 </head>
 <body class="companion compact-page workbench-page">
   <a class="skip-link" href="#explorer">跳到模型</a>
@@ -39,12 +39,14 @@
         <p class="eyebrow">共建工作台</p>
         <p id="machine-version-label">V0 / 参考</p>
       </div>
-      <div class="wb-tabs" role="tablist" aria-label="四个系统" data-system-tabs>
+      <div class="wb-tabs" role="tablist" aria-label="六个系统" data-system-tabs>
         <button type="button" role="tab" id="tab-full" data-system="full" data-groups="" aria-selected="true" aria-controls="inspector-content">00 整机</button>
         <button type="button" role="tab" id="tab-dispensing" data-system="dispensing" data-groups="dispensing" aria-selected="false" tabindex="-1" aria-controls="inspector-content">01 出货</button>
         <button type="button" role="tab" id="tab-storage" data-system="storage" data-groups="storage,dispensing" aria-selected="false" tabindex="-1" aria-controls="inspector-content">02 货道</button>
         <button type="button" role="tab" id="tab-enclosure" data-system="enclosure" data-groups="shell,frame,foundation" aria-selected="false" tabindex="-1" aria-controls="inspector-content">03 箱体</button>
         <button type="button" role="tab" id="tab-control" data-system="control" data-groups="interface" aria-selected="false" tabindex="-1" aria-controls="inspector-content">04 控制</button>
+        <button type="button" role="tab" id="tab-vending" data-system="vending" data-groups="" aria-selected="false" tabindex="-1" aria-controls="inspector-content">05 售货界面</button>
+        <button type="button" role="tab" id="tab-operator" data-system="operator" data-groups="" aria-selected="false" tabindex="-1" aria-controls="inspector-content">06 控制面板</button>
       </div>
       <div class="wb-stage" id="explorer">
         <div class="viewport-panel">
@@ -81,6 +83,7 @@
               <div class="fallback-layer layer-foundation">基座</div>
             </div>
             <canvas id="model-canvas" aria-label="零号版本零件的交互三维视图"></canvas>
+            <div id="software-demo" class="software-demo" hidden></div>
             <div class="viewport-help">拖动旋转 · 滚动缩放 · 点击零件</div>
             <a id="step-download" class="step-download" href="https://raw.githubusercontent.com/Seeed-Studio/how-to-vend-almost-anything/site/fab-vending-pages/xiao-vending-machine-v0/xiao-vending-machine-assemble-steps/hardware-preparatory/XIAO-vending-machine-v0.step" download="XIAO-vending-machine-v0.step">下载 V0 STEP</a>
           </div>
@@ -101,7 +104,7 @@
             <p class="wb-welcome">欢迎在这里分享一个想法。</p>
           </div>
           <div class="wb-feed" id="idea-feed"></div>
-          <button type="button" class="btn btn-dark wb-upload" id="idea-upload">上传想法</button>
+          <button type="button" class="btn btn-dark wb-upload" id="idea-upload">和我们分享你的想法</button>
         </aside>
       </div>
       <ol class="wb-strip" aria-label="发布路径">
@@ -134,6 +137,20 @@
   <dialog id="image-zoom" class="image-zoom">
     <button type="button" data-close-zoom aria-label="关闭">✕</button>
     <img alt="">
+  </dialog>
+
+  <dialog id="thanks-dialog" class="upload-dialog" aria-labelledby="thanks-title">
+    <div class="dialog-top">
+      <div>
+        <p class="eyebrow">我们的贡献</p>
+        <h2 id="thanks-title">谢谢。</h2>
+      </div>
+      <button type="button" class="dialog-close" data-close-thanks aria-label="关闭">✕</button>
+    </div>
+    <p id="thanks-body" class="dialog-intro"></p>
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-dark" data-close-thanks>关闭</button>
+    </div>
   </dialog>
 
   <dialog id="idea-dialog" class="upload-dialog" aria-labelledby="idea-title">
@@ -181,6 +198,8 @@
           <option value="storage">02 / 货道</option>
           <option value="enclosure">03 / 箱体</option>
           <option value="control">04 / 控制与计算</option>
+          <option value="vending">05 / 售货界面</option>
+          <option value="operator">06 / 控制面板</option>
         </select>
       </label>
       <label>版本
@@ -228,8 +247,8 @@
   <script src="parts-manifest.js?v=pages-models"></script>
   <script src="replacements.js"></script>
   <script src="assets/js/contribution-config.js"></script>
-  <script src="assets/js/journey-upload.js?v=6"></script>
-  <script src="assets/js/workbench.js?v=10"></script>
+  <script src="assets/js/journey-upload.js?v=9"></script>
+  <script src="assets/js/workbench.js?v=13"></script>
   <script src="assets/js/initiative.js?v=20261008-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/occt-import-js@0.0.24/dist/occt-import-js.js"></script>
   <script type="importmap">
@@ -240,6 +259,7 @@
     }
   }
   </script>
-  <script type="module" src="exploded.js?v=step-save"></script>
+  <script src="../assets/js/vending-demo.js?v=3"></script>
+  <script type="module" src="exploded.js?v=idea-invite"></script>
 </body>
 </html>

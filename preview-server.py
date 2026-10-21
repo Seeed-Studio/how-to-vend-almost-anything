@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parent
 DOCS = ROOT / "docs"
 SUBMISSIONS = DOCS / "submissions.json"
 IDEAS = DOCS / "ideas.json"
-SYSTEMS = {"full", "dispensing", "storage", "enclosure", "control"}
+SYSTEMS = {"full", "dispensing", "storage", "enclosure", "control", "vending", "operator"}
 VERSIONS = {"V0", "V1"}
 IMAGE_TYPES = {
     "image/png": ".png",
@@ -174,6 +174,7 @@ def save_contribution(fields, files):
         "description": description,
         "sketch": f"submissions/{system}/{folder_name}/{sketch_name}",
         "actual": f"submissions/{system}/{folder_name}/{actual_name}",
+        "created_at": int(time.time()),
         "upvotes": 0,
     }
     current = {"items": []}
@@ -227,6 +228,7 @@ def save_idea(fields, files):
         "name": name,
         "description": description,
         "images": saved,
+        "created_at": int(time.time()),
         "upvotes": 0,
     }
     write_items(IDEAS, item)
