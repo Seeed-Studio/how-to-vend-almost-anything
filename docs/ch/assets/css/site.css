@@ -38,7 +38,8 @@ button:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visibl
 .site-header { height: 82px; position: sticky; top: 0; z-index: 30; background: rgba(255,255,255,.97); border-bottom: 1px solid var(--line); }
 .header-inner { height: 100%; display: flex; align-items: center; gap: 26px; }
 .identity { display: flex; align-items: center; gap: 11px; text-decoration: none; flex-shrink: 0; }
-.identity-symbol { display: grid; place-items: center; width: 38px; height: 38px; border: 2px solid var(--seeed-green); border-radius: 9px; color: var(--seeed-blue); font-size: 21px; font-weight: 800; line-height: 1; }
+.identity-symbol { display: block; width: 40px; height: 40px; border: 0; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+.identity-symbol img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .identity-label { display: flex; flex-direction: column; line-height: 1.15; }
 .identity-label strong { font-size: 16px; font-weight: 800; letter-spacing: -.035em; color: var(--seeed-blue); }
 .identity-label small { font-size: 10px; letter-spacing: .07em; color: var(--muted); margin-top: 4px; }
@@ -48,6 +49,9 @@ button:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visibl
 .nav a[aria-current="page"] { border-bottom-color: var(--seeed-green); }
 .nav a.nav-github { border: 1px solid #c8d6d3; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--seeed-blue); }
 .nav a.nav-github:hover { background: var(--surface-alt); }
+.nav-tools { display: inline-flex; align-items: center; gap: 8px; }
+.nav a.nav-repo { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 0; border: 1px solid var(--seeed-blue); border-radius: 5px; color: var(--seeed-blue); }
+.nav a.nav-repo svg { width: 16px; height: 16px; fill: currentColor; }
 main { overflow: hidden; }
 .eyebrow { margin: 0 0 20px; display: flex; align-items: center; gap: 9px; color: #49656b; font-size: 11px; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
 .eyebrow::before { content:""; width: 18px; height: 3px; border-radius: 3px; background: var(--seeed-green); }
@@ -247,14 +251,16 @@ p { line-height: 1.7; }
 html { scroll-padding-top: 0; }
 .site-header { height: 72px; background: rgba(247, 248, 242, .97); }
 .header-inner { gap: 20px; }
-.identity-symbol { width: 32px; height: 32px; border-radius: 6px; font-size: 23px; font-weight: 500; }
-.identity-label strong { font-size: 14px; font-weight: 700; }
+.identity-symbol { width: 36px; height: 36px; border-radius: 50%; }
+.identity-label strong { font-size: 13px; font-weight: 700; letter-spacing: -.03em; white-space: nowrap; }
 .identity-label small { font-size: 8px; letter-spacing: .1em; }
 .nav { gap: clamp(16px, 2.2vw, 30px); }
 .nav a { font-size: 11px; font-weight: 600; padding-block: 12px; }
 .nav a.nav-lang { font-size: 10px; padding: 6px 9px; border-radius: 4px; }
 .nav a.nav-github { font-size: 11px; border-color: var(--seeed-blue); border-radius: 5px; padding: 10px 13px; background: var(--seeed-blue); color: white; }
 .nav a.nav-github:hover { background: #145765; }
+.companion .nav a.nav-repo { width: 34px; height: 34px; border-color: var(--seeed-blue); color: var(--seeed-blue); background: transparent; }
+.companion .nav a.nav-repo:hover { background: #edf2e4; }
 .menu-toggle { display: none; }
 .icon { width: 18px; height: 18px; display: inline-block; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; }
 .btn { border-radius: 6px; }

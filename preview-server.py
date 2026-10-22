@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parent
 DOCS = ROOT / "docs"
 SUBMISSIONS = DOCS / "submissions.json"
 IDEAS = DOCS / "ideas.json"
+INTEREST = DOCS / "interest.json"
 SYSTEMS = {"full", "dispensing", "storage", "enclosure", "control", "vending", "operator"}
 VERSIONS = {"V0", "V1"}
 IMAGE_TYPES = {
@@ -44,6 +45,9 @@ class Handler(SimpleHTTPRequestHandler):
         path = urlparse(self.path).path
         if path == "/api/votes":
             self.vote()
+            return
+        if path == "/api/interest":
+            self.interest()
             return
         if path not in ("/api/contributions", "/api/ideas"):
             self.send_error(404)
@@ -84,6 +88,23 @@ class Handler(SimpleHTTPRequestHandler):
                 item = save_idea(fields, files)
             else:
                 item = save_contribution(fields, files)
+        except ValueError as error:
+            self.reply(400, {"error": str(error)})
+            return
+        self.reply(200, {"ok": True, "item": item})
+
+    def interest(self):
+        length = int(self.headers.get("Content-Length") or 0)
+        if length <= 0 or length > 20000:
+            self.reply(400, {"error": "Missing interest."})
+            return
+        try:
+            payload = json.loads(self.rfile.read(length).decode("utf-8"))
+        except json.JSONDecodeError:
+            self.reply(400, {"error": "Missing interest."})
+            return
+        try:
+            item = save_interest(payload)
         except ValueError as error:
             self.reply(400, {"error": str(error)})
             return
@@ -185,6 +206,28 @@ def save_contribution(fields, files):
     temporary = SUBMISSIONS.with_suffix(".json.tmp")
     temporary.write_text(json.dumps({"items": items}, indent=2) + "\n")
     temporary.replace(SUBMISSIONS)
+    return item
+
+
+def save_interest(payload):
+    lab_id = str(payload.get("lab_id") or "").strip()
+    note = str(payload.get("note") or "").strip()
+    if len(note) > 2500:
+        raise ValueError("The note is too long.")
+    directory = json.loads((DOCS / "en" / "data" / "directory-labs.json").read_text())
+    lab = next((item for item in directory.get("labs") or [] if item.get("lab_id") == lab_id), None)
+    if not lab:
+        raise ValueError("Choose a lab from the directory.")
+    item = {
+        "id": f"interest-{slug(lab_id)}-{int(time.time())}",
+        "lab_id": lab_id,
+        "name": lab.get("name") or "",
+        "city": lab.get("city") or "",
+        "country": lab.get("country") or "",
+        "note": note,
+        "created_at": int(time.time()),
+    }
+    write_items(INTEREST, item)
     return item
 
 

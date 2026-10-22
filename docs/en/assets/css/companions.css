@@ -156,9 +156,26 @@
 .compact-page .feed a { font-size: 11px; font-weight: 650; text-underline-offset: 3px; }
 .compact-page .feed article + article { margin-top: 12px; }
 .compact-page .feed img { display: block; width: 100%; max-height: 160px; object-fit: cover; border-radius: 6px; margin-top: 8px; }
+.interest-dialog { width: min(520px, calc(100vw - 24px)); max-height: calc(100vh - 24px); overflow: auto; padding: 22px; border: 1px solid var(--line); border-radius: 8px; background: #f7f4ec; color: var(--ink, #1c2b2f); }
+.interest-dialog::backdrop { background: rgba(0, 58, 74, .45); }
+.interest-dialog form { display: grid; gap: 12px; }
+.interest-top { display: flex; justify-content: space-between; gap: 16px; align-items: start; }
+.interest-dialog h2 { margin: 0; font-size: 28px; line-height: 1.15; letter-spacing: -.03em; }
+.interest-close { border: 0; background: transparent; color: var(--seeed-blue); font-size: 20px; line-height: 1; cursor: pointer; }
+.interest-dialog label { display: grid; gap: 6px; color: var(--seeed-blue); font-size: 12px; font-weight: 700; }
+.interest-dialog input, .interest-dialog textarea { width: 100%; padding: 10px 12px; border: 1px solid #c9d5cf; border-radius: 6px; background: white; color: inherit; font: inherit; font-weight: 500; }
+.interest-dialog input[readonly] { background: #f3f6f1; }
+.interest-place { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.interest-matches { list-style: none; margin: -6px 0 0; padding: 0; max-height: 220px; overflow: auto; border: 1px solid var(--line); border-radius: 6px; background: white; }
+.interest-matches button { display: block; width: 100%; padding: 8px 12px; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.interest-matches button:hover, .interest-matches button:focus { background: #edf2e4; }
+.interest-matches small { display: block; color: var(--muted); font-size: 12px; font-weight: 500; }
+.interest-status { margin: 0; color: var(--muted); font-size: 12px; }
+.interest-status[data-state="error"] { color: #8a3b2a; }
+.interest-actions { display: flex; }
 .activity-board { max-height: min(52vh, 480px); overflow: auto; margin-bottom: 28px; border: 1px solid var(--line); border-radius: 7px; background: #fbfcf8; }
 .activity-board .feed { padding: 8px 22px 4px; }
-.activity-board .feed h3 { font-size: clamp(26px, 3vw, 34px); line-height: 1.15; letter-spacing: -0.03em; margin: 0 0 6px; }
+.activity-board .feed h3 { font-size: 18px; line-height: 1.3; letter-spacing: 0; font-weight: 650; margin: 0 0 4px; }
 .activity-board .activity-time { margin: 0 0 8px; color: var(--muted); font-size: 13px; }
 .activity-board .activity-message { margin: 0 0 6px; color: var(--ink, #1c2b2f); font-size: 15px; line-height: 1.45; }
 .activity-board .feed article { padding: 18px 0; margin: 0; background: transparent; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; }

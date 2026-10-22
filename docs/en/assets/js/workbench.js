@@ -249,7 +249,14 @@
   });
 
   document.addEventListener("vending:submissions", () => loadSubmissions());
-  showSystem(current);
+  function openHashedSystem() {
+    const name = location.hash.replace(/^#/, "");
+    const tab = tabs.find((item) => item.dataset.system === name);
+    if (tab) current = tab;
+    showSystem(current);
+  }
+  openHashedSystem();
+  window.addEventListener("hashchange", openHashedSystem);
   loadSubmissions();
   setupIdeas();
   if (!window.VENDING_VIEWER) {

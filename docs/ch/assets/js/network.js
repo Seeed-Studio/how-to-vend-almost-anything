@@ -81,6 +81,20 @@ function productCategories(lab, products) {
   return (products.products || []).filter((product) => machineIds.has(product.machine_id));
 }
 
+function renderDirectoryStats(directory, labs, submissions) {
+  const root = document.querySelector("#directory-stats");
+  if (!root) return;
+  const records = directory.labs || [];
+  const pilotContributions = (submissions?.items || []).filter((item) => item.lab_id && item.lab_id !== "individual").length;
+  const entries = [
+    [records.length, "名录条目"],
+    [new Set(records.map((lab) => lab.country).filter(Boolean)).size, "国家与地区"],
+    [records.filter((lab) => safeHref(lab.lab_website)).length, "有网站链接"],
+    [pilotContributions, "试点贡献"]
+  ];
+  root.innerHTML = entries.map(([value, label]) => `<div><strong>${value.toLocaleString()}</strong><span>${esc(label)}</span></div>`).join("") + `<p class="snapshot-note">${directory.status === "ok" ? `名录抓取于 ${esc(directory.fetched_at?.slice(0, 10) || "未记录日期")}。${records.filter((lab) => lab.activity_status === "active").length.toLocaleString()} 条列为活跃；请向实验室确认当前开放情况。` : "名录快照尚未就绪。已审核的项目记录另行保存。"}</p>`;
+}
+
 function renderList(labs) {
   const list = document.querySelector("#lab-list");
   if (!list) return;
@@ -207,6 +221,114 @@ function initMap(onSelect) {
   };
 }
 
+function markInterested(labs, interest) {
+  const ids = new Set((interest.items || []).map((item) => item.lab_id).filter(Boolean));
+  labs.forEach((lab) => {
+    if (ids.has(lab.lab_id) && lab.marker_status === "directory") lab.marker_status = "interested";
+  });
+}
+
+function setupInterest(labs, refresh) {
+  const dialog = document.querySelector("#interest-dialog");
+  const form = document.querySelector("#interest-form");
+  const search = document.querySelector("#interest-search");
+  const matches = document.querySelector("#interest-matches");
+  const labId = document.querySelector("#interest-lab-id");
+  const city = document.querySelector("#interest-city");
+  const country = document.querySelector("#interest-country");
+  const note = document.querySelector("#interest-note");
+  const status = document.querySelector("#interest-status");
+  if (!dialog || !form || !search || !matches) return;
+  const copy = {
+    need: "请从名录中选择一个实验室。",
+    saved: "已登记。这个实验室在地图上标为有意向。",
+    kept: "已登记。这个实验室保持当前的地图标记。",
+    failed: "没有写入。"
+  };
+  let chosen = null;
+
+  function choose(lab) {
+    chosen = lab;
+    search.value = lab.name;
+    labId.value = lab.lab_id;
+    city.value = lab.city || "";
+    country.value = lab.country || "";
+    matches.hidden = true;
+    matches.innerHTML = "";
+  }
+
+  function showMatches() {
+    if (chosen && search.value === chosen.name) {
+      matches.hidden = true;
+      return;
+    }
+    chosen = null;
+    labId.value = "";
+    city.value = "";
+    country.value = "";
+    const query = search.value.trim().toLowerCase();
+    const found = query
+      ? labs.filter((lab) => `${lab.name} ${lab.city} ${lab.country}`.toLowerCase().includes(query)).slice(0, 8)
+      : [];
+    matches.hidden = !found.length;
+    matches.innerHTML = found.map((lab) => `<li><button type="button" data-interest-lab="${esc(lab.lab_id)}"><strong>${esc(lab.name)}</strong><small>${esc([lab.city, lab.country].filter(Boolean).join(", "))}</small></button></li>`).join("");
+  }
+
+  document.querySelector("#register-interest")?.addEventListener("click", () => {
+    form.reset();
+    chosen = null;
+    city.value = "";
+    country.value = "";
+    matches.hidden = true;
+    matches.innerHTML = "";
+    status.textContent = "";
+    delete status.dataset.state;
+    dialog.showModal();
+    search.focus();
+  });
+  document.querySelectorAll("[data-close-interest]").forEach((button) => {
+    button.addEventListener("click", () => dialog.close());
+  });
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+  search.addEventListener("input", showMatches);
+  matches.addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-interest-lab]");
+    if (!button) return;
+    const lab = labs.find((item) => item.lab_id === button.dataset.interestLab);
+    if (lab) choose(lab);
+  });
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!chosen) {
+      status.textContent = copy.need;
+      status.dataset.state = "error";
+      return;
+    }
+    const submit = document.querySelector("#interest-submit");
+    if (submit) submit.disabled = true;
+    try {
+      const response = await fetch("/api/interest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lab_id: chosen.lab_id, note: note.value.trim() })
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || copy.failed);
+      const wasDirectory = chosen.marker_status === "directory";
+      if (wasDirectory) chosen.marker_status = "interested";
+      dialog.close();
+      refresh(chosen, wasDirectory);
+    } catch (error) {
+      status.textContent = error.message || copy.failed;
+      status.dataset.state = "error";
+    } finally {
+      if (submit) submit.disabled = false;
+    }
+  });
+}
+
 async function loadOptional(path) {
   try { return await load(path); }
   catch { return { items: [] }; }
@@ -215,19 +337,22 @@ async function loadOptional(path) {
 async function init() {
   const error = document.querySelector("#data-error");
   try {
-    const [directory, program, machines, updates, submissions, ideas] = await Promise.all([
+    const [directory, program, machines, updates, submissions, ideas, interest] = await Promise.all([
       load("data/directory-labs.json"),
       load("data/labs.json"),
       load("data/machines.json"),
       load("data/updates.json"),
       loadOptional("../submissions.json"),
-      loadOptional("../ideas.json")
+      loadOptional("../ideas.json"),
+      loadOptional("../interest.json")
     ]);
     const labs = buildLabs(directory, program, machines, updates);
     const pilots = pilotLabIds(submissions, labs);
     labs.forEach((lab) => {
       if (pilots.has(lab.lab_id)) lab.marker_status = "pilot";
     });
+    markInterested(labs, interest);
+    renderDirectoryStats(directory, labs, submissions);
     const empty = document.querySelector("#map-empty");
     if (empty && !labs.length) {
       empty.hidden = false;
@@ -273,6 +398,10 @@ async function init() {
       });
     };
     applyFilter();
+    setupInterest(labs, (lab) => {
+      applyFilter();
+      selectLab(lab.lab_id);
+    });
     document.querySelector("#status-filters")?.addEventListener("click", (event) => {
       const button = event.target.closest("button[data-status]");
       if (!button) return;

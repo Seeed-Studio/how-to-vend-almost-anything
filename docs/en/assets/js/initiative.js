@@ -181,4 +181,112 @@
       });
     });
   }
+
+  if (document.body.classList.contains("initiative") && document.querySelector("#idea-form")) {
+    const zh = (document.documentElement.lang || "en").toLowerCase().startsWith("zh");
+    const copy = zh
+      ? {
+          needText: "想法至少 15 个字。",
+          needName: "请填写名字。",
+          tooMany: "最多 4 张图片。",
+          sending: "正在写入仓库…",
+          failed: "没有写入。",
+          grateful: "我们非常感激。这个想法已记为我们的贡献，并出现在实验室网络里。",
+          you: "你"
+        }
+      : {
+          needText: "The idea needs at least 15 characters.",
+          needName: "Add the contributor name.",
+          tooMany: "Maximum four images.",
+          sending: "Saving into the repository…",
+          failed: "The idea was not saved.",
+          grateful: "We are grateful. This idea is saved with our contributions and listed on the network.",
+          you: "you"
+        };
+    const dialog = document.querySelector("#idea-dialog");
+    const form = document.querySelector("#idea-form");
+    const status = document.querySelector("#idea-status");
+    const labSelect = document.querySelector("#idea-lab");
+    const thanks = document.querySelector("#thanks-dialog");
+
+    fetch("data/directory-labs.json")
+      .then((response) => response.json())
+      .then((data) => {
+        if (!labSelect) return;
+        const first = labSelect.querySelector("option");
+        const labs = [...(data.labs || [])].sort((a, b) => String(a.name).localeCompare(String(b.name)));
+        const options = [first ? first.outerHTML : ""];
+        for (const lab of labs) {
+          if (!lab.name) continue;
+          const value = String(lab.lab_id || lab.name).replace(/"/g, "&quot;");
+          const name = String(lab.name).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+          options.push(`<option value="${value}">${name}</option>`);
+        }
+        labSelect.innerHTML = options.join("");
+      })
+      .catch(() => {});
+
+    const openIdea = () => {
+      if (status) {
+        status.textContent = "";
+        delete status.dataset.state;
+      }
+      dialog?.showModal();
+    };
+    document.querySelector("#idea-upload")?.addEventListener("click", openIdea);
+    document.querySelectorAll("[data-close-idea]").forEach((button) => {
+      button.addEventListener("click", () => dialog?.close());
+    });
+    dialog?.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    document.querySelectorAll("[data-close-thanks]").forEach((button) => {
+      button.addEventListener("click", () => thanks?.close());
+    });
+    thanks?.addEventListener("click", (event) => {
+      if (event.target === thanks) thanks.close();
+    });
+
+    form?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const description = form.description.value.trim();
+      const name = form.contributor.value.trim();
+      const images = [...(document.querySelector("#idea-images")?.files || [])];
+      const local = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+      const fail = (message) => {
+        status.textContent = message;
+        status.dataset.state = "error";
+      };
+      if (description.length < 15) return fail(copy.needText);
+      if (!name) return fail(copy.needName);
+      if (images.length > 4) return fail(copy.tooMany);
+      if (!local) return fail(copy.failed);
+      const submit = document.querySelector("#idea-submit");
+      if (submit) submit.disabled = true;
+      status.textContent = copy.sending;
+      delete status.dataset.state;
+      try {
+        const body = new FormData(form);
+        body.set("lab_name", labSelect?.selectedOptions?.[0]?.textContent?.trim() || "");
+        const response = await fetch("/api/ideas", { method: "POST", body });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(payload.error || copy.failed);
+        const labId = labSelect?.value || "";
+        const labName = labSelect?.selectedOptions?.[0]?.textContent?.trim() || "";
+        const person = form.contributor.value.trim();
+        form.reset();
+        dialog?.close();
+        const who = labId && labId !== "individual" ? labName : (person || copy.you);
+        const title = thanks?.querySelector("#thanks-title");
+        const note = thanks?.querySelector("#thanks-body");
+        if (title) title.textContent = zh ? `谢谢，${who}。` : `Thank you, ${who}.`;
+        if (note) note.textContent = copy.grateful;
+        thanks?.showModal();
+      } catch (error) {
+        fail(error.message || copy.failed);
+      } finally {
+        if (submit) submit.disabled = false;
+      }
+    });
+  }
 })();
