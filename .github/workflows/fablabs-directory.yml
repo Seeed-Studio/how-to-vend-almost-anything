@@ -17,6 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: site/fab-vending-pages
 
       - uses: actions/setup-node@v4
         with:
@@ -41,4 +43,4 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "Keep lab discovery aligned with the public directory" -m "Confidence: high" -m "Scope-risk: narrow" -m "Tested: Directory regression tests and site data validation"
-          git push
+          git push origin HEAD:site/fab-vending-pages
